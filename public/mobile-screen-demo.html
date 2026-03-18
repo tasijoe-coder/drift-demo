@@ -1,0 +1,530 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Mobile Timeline Demo</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --panel-bg: rgba(2, 6, 23, 0.62);
+        --panel-border: rgba(255, 255, 255, 0.12);
+        --button-bg: rgba(255, 255, 255, 0.1);
+        --button-hover: rgba(255, 255, 255, 0.18);
+        --button-border: rgba(255, 255, 255, 0.18);
+        --text-main: rgba(248, 250, 252, 0.96);
+        --text-soft: rgba(226, 232, 240, 0.72);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #020617;
+        font-family:
+          "Noto Sans TC",
+          "PingFang TC",
+          "Microsoft JhengHei",
+          system-ui,
+          sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      #app {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: #020617;
+      }
+
+      #bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+        filter: brightness(0.72) saturate(0.95);
+      }
+
+      #bg.is-fading {
+        opacity: 0;
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(2, 6, 23, 0.38) 0%, rgba(2, 6, 23, 0.2) 24%, rgba(2, 6, 23, 0.48) 58%, rgba(2, 6, 23, 0.9) 100%),
+          radial-gradient(circle at top, rgba(15, 23, 42, 0.26), transparent 44%);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .top-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: calc(14px + env(safe-area-inset-top)) 16px 0;
+        pointer-events: none;
+      }
+
+      .top-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 14px;
+        border: 1px solid var(--panel-border);
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.4);
+        color: var(--text-soft);
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        backdrop-filter: blur(16px);
+      }
+
+      .scene-copy {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 164px;
+        z-index: 2;
+        padding: 0 16px;
+      }
+
+      .scene-copy__card {
+        max-width: 540px;
+        margin: 0 auto;
+        padding: 20px 20px 18px;
+        border: 1px solid var(--panel-border);
+        border-radius: 28px;
+        background: var(--panel-bg);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 18px 40px rgba(2, 6, 23, 0.32);
+      }
+
+      .scene-kicker {
+        color: var(--text-soft);
+        font-size: 11px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      .scene-title {
+        margin: 12px 0 0;
+        color: var(--text-main);
+        font-size: clamp(28px, 8vw, 40px);
+        line-height: 1.15;
+        font-weight: 700;
+      }
+
+      .scene-body {
+        margin: 14px 0 0;
+        color: var(--text-main);
+        font-size: clamp(18px, 4.8vw, 22px);
+        line-height: 1.85;
+        white-space: pre-line;
+      }
+
+      .bottom-ui {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+      }
+
+      .bottom-ui__inner {
+        max-width: 540px;
+        margin: 0 auto;
+        display: grid;
+        gap: 12px;
+      }
+
+      .event-buttons {
+        display: grid;
+        gap: 12px;
+      }
+
+      .action-button {
+        width: 100%;
+        min-height: 56px;
+        border: 1px solid var(--button-border);
+        border-radius: 20px;
+        padding: 16px 18px;
+        background: var(--button-bg);
+        color: var(--text-main);
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.5;
+        backdrop-filter: blur(16px);
+        transition:
+          transform 0.2s ease,
+          background-color 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .action-button:active {
+        transform: scale(0.985);
+      }
+
+      .action-button:hover {
+        background: var(--button-hover);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+
+      .action-button--primary {
+        text-align: center;
+      }
+
+      .action-button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .cover {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: calc(28px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
+        text-align: center;
+      }
+
+      .cover__content {
+        width: 100%;
+        max-width: 540px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .cover__eyebrow {
+        color: var(--text-soft);
+        font-size: 11px;
+        letter-spacing: 0.38em;
+        text-transform: uppercase;
+      }
+
+      .cover__title {
+        margin: 0;
+        color: var(--text-main);
+        font-size: clamp(34px, 11vw, 56px);
+        line-height: 1.12;
+        font-weight: 700;
+      }
+
+      .cover__body {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 16px;
+        line-height: 1.9;
+        white-space: pre-line;
+      }
+
+      .cover__spacer {
+        flex: 1;
+        min-height: 24px;
+      }
+
+      @media (min-width: 768px) {
+        .scene-copy {
+          bottom: 178px;
+        }
+
+        .scene-copy__card {
+          padding: 24px 24px 22px;
+        }
+
+        .bottom-ui {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+
+        .top-bar {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <img id="bg" src="/cover_mobile.jpg" alt="background" />
+      <div class="overlay"></div>
+
+      <div id="topBar" class="top-bar hidden">
+        <div id="dayChip" class="top-chip">Day 1</div>
+        <div id="typeChip" class="top-chip">background</div>
+      </div>
+
+      <section id="sceneCopy" class="scene-copy hidden">
+        <div class="scene-copy__card">
+          <div id="sceneKicker" class="scene-kicker">timeline</div>
+          <h1 id="sceneTitle" class="scene-title"></h1>
+          <p id="sceneBody" class="scene-body"></p>
+        </div>
+      </section>
+
+      <section id="bottomUI" class="bottom-ui hidden">
+        <div class="bottom-ui__inner">
+          <div id="eventButtons" class="event-buttons hidden">
+            <button id="optionA" class="action-button" type="button">選項 A</button>
+            <button id="optionB" class="action-button" type="button">選項 B</button>
+          </div>
+          <button id="nextButton" class="action-button action-button--primary" type="button">進入下一天</button>
+        </div>
+      </section>
+
+      <section id="coverScreen" class="cover">
+        <div class="cover__content">
+          <div class="cover__eyebrow">Mobile Narrative Demo</div>
+          <h1 class="cover__title">30 天生存</h1>
+          <p class="cover__body">背景與事件會依天數切換。
+先從封面開始，按下開始後才進入 Day 1。</p>
+          <div class="cover__spacer"></div>
+          <button id="startButton" class="action-button action-button--primary" type="button">開始</button>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const timeline = [
+        { day: 1, type: "bg", src: "bg_phase1.jpg" },
+        { day: 3, type: "event", src: "event_resource.jpg" },
+        { day: 6, type: "bg", src: "bg_phase2.jpg" },
+        { day: 8, type: "event", src: "event_conflict.jpg" },
+        { day: 12, type: "bg", src: "bg_phase3.jpg" },
+        { day: 14, type: "event", src: "event_silence.jpg" },
+        { day: 18, type: "event", src: "event_split.jpg" },
+        { day: 22, type: "bg", src: "bg_phase4.jpg" },
+        { day: 24, type: "event", src: "event_paranoia.jpg" },
+        { day: 27, type: "bg", src: "bg_phase5.jpg" },
+        { day: 29, type: "event", src: "event_storm.jpg" },
+      ];
+
+      const eventContent = {
+        3: {
+          kicker: "event / resource",
+          title: "岸邊的殘留物",
+          body: "你在潮線附近看見一批還沒完全泡爛的補給。數量不多，卻足夠讓今天的分配變得敏感。",
+          options: ["先收起來再分", "現在就當場攤開"],
+        },
+        8: {
+          kicker: "event / conflict",
+          title: "目光停得太久",
+          body: "對方看著你的背包停了太久。你分不清那是擔心，還是盤算。",
+          options: ["直接問清楚", "假裝沒發現"],
+        },
+        14: {
+          kicker: "event / silence",
+          title: "他沒有接話",
+          body: "你提到昨天少掉的那一口水，他只是看著海面，像是根本沒打算回答。",
+          options: ["逼他現在回答", "把這件事先記下來"],
+        },
+        18: {
+          kicker: "event / split",
+          title: "只夠一個人的份量",
+          body: "食物剛好只剩下一份完整的。你們都知道該怎麼分，但誰也沒有先伸手。",
+          options: ["主動讓出去", "先留給自己"],
+        },
+        24: {
+          kicker: "event / paranoia",
+          title: "你開始懷疑記憶",
+          body: "你記得自己明明把水留在左邊，可現在容器卻放在另一個位置。是他動過，還是你記錯了？",
+          options: ["質問對方", "先確認是不是自己記錯"],
+        },
+        29: {
+          kicker: "event / storm",
+          title: "風暴前一晚",
+          body: "黑雲壓得很低。今晚如果守不住營地，明天可能什麼都不剩。",
+          options: ["先守住營地", "先保住食物與水"],
+        },
+      };
+
+      const backgroundContent = {
+        1: {
+          kicker: "day 1",
+          title: "第 1 天",
+          body: "你們剛把能拖上岸的東西清點完。海面還很平，但真正麻煩的事，現在才開始。",
+        },
+        6: {
+          kicker: "phase 2",
+          title: "氣氛開始變了",
+          body: "你們已經習慣彼此的存在，卻沒有習慣彼此的沉默。日子越往後，猜測也越容易長出形狀。",
+        },
+        12: {
+          kicker: "phase 3",
+          title: "每一次分配都像考驗",
+          body: "資源不再只是資源。誰先開口、誰先伸手、誰把話吞回去，都會被記得。",
+        },
+        22: {
+          kicker: "phase 4",
+          title: "疲憊讓判斷變薄",
+          body: "你已經很難確定自己到底是看清了真相，還是只是把懷疑說服成答案。",
+        },
+        27: {
+          kicker: "phase 5",
+          title: "快要到盡頭了",
+          body: "如果這座島真的會給人出口，那它一定不會免費。最後幾天，任何決定都可能太晚。",
+        },
+      };
+
+      const bg = document.getElementById("bg");
+      const coverScreen = document.getElementById("coverScreen");
+      const startButton = document.getElementById("startButton");
+      const topBar = document.getElementById("topBar");
+      const dayChip = document.getElementById("dayChip");
+      const typeChip = document.getElementById("typeChip");
+      const sceneCopy = document.getElementById("sceneCopy");
+      const sceneKicker = document.getElementById("sceneKicker");
+      const sceneTitle = document.getElementById("sceneTitle");
+      const sceneBody = document.getElementById("sceneBody");
+      const bottomUI = document.getElementById("bottomUI");
+      const eventButtons = document.getElementById("eventButtons");
+      const optionA = document.getElementById("optionA");
+      const optionB = document.getElementById("optionB");
+      const nextButton = document.getElementById("nextButton");
+
+      let currentDay = 0;
+      let isTransitioning = false;
+
+      function getSceneForDay(day) {
+        const exactEvent = timeline.find((item) => item.day === day && item.type === "event");
+        if (exactEvent) {
+          return exactEvent;
+        }
+
+        const background = [...timeline]
+          .filter((item) => item.type === "bg" && item.day <= day)
+          .sort((a, b) => b.day - a.day)[0];
+
+        return background || { day: 0, type: "bg", src: "cover_mobile.jpg" };
+      }
+
+      function getSceneCopy(scene, day) {
+        if (scene.type === "event") {
+          return eventContent[day] || {
+            kicker: "event",
+            title: `第 ${day} 天`,
+            body: "今天發生了一件讓你無法完全放心的事。",
+            options: ["接受", "拒絕"],
+          };
+        }
+
+        const phaseKey = [...Object.keys(backgroundContent)]
+          .map(Number)
+          .filter((value) => value <= day)
+          .sort((a, b) => b - a)[0];
+
+        return backgroundContent[phaseKey] || {
+          kicker: "day",
+          title: `第 ${day} 天`,
+          body: "海面暫時平靜，但你知道這不代表安全。",
+        };
+      }
+
+      function swapBackground(src) {
+        return new Promise((resolve) => {
+          bg.classList.add("is-fading");
+
+          window.setTimeout(() => {
+            const nextSrc = `/${src}`;
+
+            const finish = () => {
+              bg.onload = null;
+              bg.onerror = null;
+              bg.classList.remove("is-fading");
+              resolve();
+            };
+
+            bg.onload = finish;
+            bg.onerror = finish;
+            bg.src = nextSrc;
+
+            if (bg.complete) {
+              finish();
+            }
+          }, 500);
+        });
+      }
+
+      async function renderDay() {
+        const scene = getSceneForDay(currentDay);
+        const copy = getSceneCopy(scene, currentDay);
+
+        dayChip.textContent = `Day ${currentDay}`;
+        typeChip.textContent = scene.type === "event" ? "event" : "background";
+        sceneKicker.textContent = copy.kicker;
+        sceneTitle.textContent = copy.title;
+        sceneBody.textContent = copy.body;
+
+        if (scene.type === "event") {
+          optionA.textContent = copy.options[0] || "接受";
+          optionB.textContent = copy.options[1] || "拒絕";
+          eventButtons.classList.remove("hidden");
+          nextButton.classList.add("hidden");
+        } else {
+          eventButtons.classList.add("hidden");
+          nextButton.classList.remove("hidden");
+          nextButton.textContent = currentDay >= 30 ? "已抵達第 30 天" : "進入下一天";
+          nextButton.disabled = currentDay >= 30;
+        }
+
+        await swapBackground(scene.src);
+      }
+
+      async function nextDay() {
+        if (isTransitioning || currentDay >= 30) {
+          return;
+        }
+
+        isTransitioning = true;
+        currentDay += 1;
+        await renderDay();
+        isTransitioning = false;
+      }
+
+      startButton.addEventListener("click", async () => {
+        if (isTransitioning) {
+          return;
+        }
+
+        coverScreen.classList.add("hidden");
+        topBar.classList.remove("hidden");
+        sceneCopy.classList.remove("hidden");
+        bottomUI.classList.remove("hidden");
+
+        await nextDay();
+      });
+
+      optionA.addEventListener("click", nextDay);
+      optionB.addEventListener("click", nextDay);
+      nextButton.addEventListener("click", nextDay);
+    </script>
+  </body>
+</html>

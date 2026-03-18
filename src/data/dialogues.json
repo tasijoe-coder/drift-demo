@@ -1,0 +1,157 @@
+﻿{
+  "companionCamp": {
+    "lowTrust": [
+      {
+        "text": "對方把聲音壓得很低：『你最好先說清楚，今天到底拿了多少。』",
+        "effects": {
+          "stress": 1,
+          "otherStress": 3,
+          "otherTrust": -1
+        }
+      },
+      {
+        "text": "另一個人盯著火光外的黑處看，像是不想讓你讀出表情。",
+        "effects": {
+          "stress": 1,
+          "otherStress": 2,
+          "otherTrust": -2
+        }
+      },
+      {
+        "text": "同行者問得很慢：『你剛才那句話，是故意沒說完整嗎？』",
+        "effects": {
+          "stress": 2,
+          "suspicion": 2,
+          "otherStress": 3
+        }
+      },
+      {
+        "text": "對方把水瓶往自己身邊挪了一點，才抬眼看你。",
+        "effects": {
+          "stress": 1,
+          "otherStress": 2,
+          "otherTrust": -1
+        }
+      }
+    ],
+    "midTrust": [
+      {
+        "text": "對方低聲說：『先把今天撐過去，明天再算別的。』",
+        "effects": {
+          "trust": 2,
+          "stress": -1,
+          "otherTrust": 2,
+          "otherStress": -1
+        }
+      },
+      {
+        "text": "另一個人把手伸到火邊烘了一下，語氣沒有那麼硬了。",
+        "effects": {
+          "trust": 2,
+          "stress": -2,
+          "otherTrust": 1,
+          "otherStress": -2
+        }
+      },
+      {
+        "text": "同行者看著海面說：『我不確定明天會不會更好，但至少今晚別先亂掉。』",
+        "effects": {
+          "trust": 1,
+          "stress": -1,
+          "otherTrust": 1,
+          "relationship": 1
+        }
+      },
+      {
+        "text": "對方把剛記下的痕跡遞給你，像是在試著把事情說清楚。",
+        "effects": {
+          "trust": 2,
+          "otherTrust": 2,
+          "relationship": 1
+        }
+      }
+    ],
+    "highTrust": [
+      {
+        "text": "對方把最後那句話放得很輕：『如果你先倒下，我一個人也撐不了多久。』",
+        "effects": {
+          "trust": 4,
+          "stress": -3,
+          "otherTrust": 4,
+          "otherStress": -2,
+          "relationship": 1,
+          "suspicion": -2
+        }
+      },
+      {
+        "text": "另一個人坐得離你近了一點，像是終於不用每句話都先防著。",
+        "effects": {
+          "trust": 3,
+          "stress": -2,
+          "otherTrust": 3,
+          "otherStress": -2,
+          "relationship": 1
+        }
+      },
+      {
+        "text": "同行者低聲說：『明天如果要冒險，我們就一起去，不要再各算各的。』",
+        "effects": {
+          "trust": 3,
+          "otherTrust": 2,
+          "relationship": 1,
+          "stress": -1
+        }
+      },
+      {
+        "text": "對方把視線從海面收回來：『至少現在，我願意先相信你。』",
+        "effects": {
+          "trust": 4,
+          "otherTrust": 3,
+          "relationship": 2,
+          "stress": -1,
+          "otherStress": -1
+        }
+      }
+    ],
+    "highSuspicion": [
+      {
+        "text": "對方盯著你看了太久，才問：『你剛才到底藏了什麼？』",
+        "effects": {
+          "stress": 2,
+          "suspicion": 2,
+          "otherStress": 4,
+          "otherTrust": -3
+        }
+      },
+      {
+        "text": "另一個人把語氣壓得很平，反而更像一種警告。",
+        "effects": {
+          "stress": 1,
+          "suspicion": 3,
+          "otherStress": 3,
+          "otherTrust": -2
+        }
+      },
+      {
+        "text": "同行者沒有靠近營火，只在黑暗邊緣說：『別把我當成什麼都沒看到。』",
+        "effects": {
+          "stress": 2,
+          "suspicion": 2,
+          "otherStress": 4,
+          "otherTrust": -3,
+          "relationship": -1
+        }
+      },
+      {
+        "text": "對方停了很久才開口：『如果你還有事瞞著，最好現在就說。』",
+        "effects": {
+          "stress": 2,
+          "suspicion": 2,
+          "otherStress": 3,
+          "otherTrust": -2,
+          "relationship": -1
+        }
+      }
+    ]
+  }
+}

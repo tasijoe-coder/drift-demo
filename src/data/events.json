@@ -1,0 +1,3474 @@
+﻿[
+    {
+        "id":  "beach_debris",
+        "type":  "resource",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase1"
+                  ],
+        "text":  "退潮後的沙灘堆著濕重的漂木，其中幾段夠結實，卻卡在鋒利的礁角間。對方站在後面看著，像是在等你先決定值不值得冒這一下。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "踩進石縫，把最大那段木料硬拖出來",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -25,
+                                            "resources":  {
+                                                              "materials":  2
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先拆外圍鬆動的木段，慢慢整理",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -15,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "先記住位置，別為了幾段木頭在這裡摔傷",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  4,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "tidal_crabs",
+        "type":  "resource",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase1"
+                  ],
+        "text":  "礁石縫裡還留著幾隻沒來得及退回去的沙蟹。牠們不大，卻是今天少數看得見的食物。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "冒險撲進濕滑的石面把牠們全抓住",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -15,
+                                            "resources":  {
+                                                              "food":  2
+                                                          },
+                                            "stress":  2
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "慢慢逼近，只撿最靠近岸邊的幾隻",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "food":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "看著牠們鑽回石縫，別在這裡扭傷腳",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "resources":  {
+
+                                                          },
+                                            "stress":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "freshwater_pool",
+        "type":  "resource",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase1"
+                  ],
+        "text":  "岩面低處積著一小灘清水，表面安靜得幾乎像個陷阱。你不確定它夠不夠乾淨，也不確定錯過它之後今天還能不能找到下一處。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻舀走能拿的那一份",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "resources":  {
+                                                              "water":  2
+                                                          },
+                                            "stress":  3
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先試著確認水底，再小心收集",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "先離開這裡，別把今天賭在一灘可疑的水上",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "resources":  {
+
+                                                          },
+                                            "stress":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "tangled_vines",
+        "type":  "resource",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase1"
+                  ],
+        "text":  "樹叢邊緣垂下一大團纏死的藤蔓，其中夾著能用的纖維，也夾著看不見的刺。對方抬手撥了一下，又很快縮回去。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "直接伸進去扯出最完整的纖維",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "resources":  {
+                                                              "materials":  2
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "一段一段剝開，只拿看得準的部分",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "先別碰，免得為了材料把手也賠進去",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "resources":  {
+
+                                                          },
+                                            "stress":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "shared_rations",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase1"
+                  ],
+        "text":  "今天剩下的食物不多，剛好少到無法假裝沒有差別。你們都知道這次怎麼分，不只是在分口糧。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把份量重新切平，兩個人都別多拿",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "relationship":  8,
+                                            "trust":  10,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          },
+                                            "stress":  -5
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "把稍微完整的那一份先讓給對方",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "relationship":  4,
+                                            "trust":  4,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          }
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你今晚會更餓，但有些話可能不用說出口"
+                        },
+                        {
+                            "text":  "先把看起來比較能撐的一份留在自己手裡",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "relationship":  -5,
+                                            "trust":  -6,
+                                            "stress":  4,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        }
+                    ]
+    },
+    {
+        "id":  "low_tide_rocks",
+        "type":  "danger",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase1"
+                  ],
+        "text":  "退潮露出的黑岩一路延到外側，看起來像能通往更多東西，腳下卻滑得像根本不歡迎人靠近。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "踩過去，趁浪還沒回來前多拿一點",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -15,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          },
+                                            "stress":  5
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "沿著最穩的邊緣慢慢試探",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "stress":  2,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          }
+                                        },
+                            "setFlags":  [
+                                             "oddity_exposure"
+                                         ],
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "停在岸邊，別為了眼前那點收穫摔進水裡",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "resources":  {
+
+                                                          },
+                                            "stress":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "broken_crate",
+        "type":  "resource",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase2"
+                  ],
+        "text":  "浪線邊卡著一個裂開的木箱，裡面可能還有能用的東西，也可能只剩被海水泡壞的碎片。對方看著箱縫，像是在想要不要先讓你伸手。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "直接撬開箱子，把能拿的先拿出來",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "resources":  {
+                                                              "materials":  1,
+                                                              "oddities":  1
+                                                          },
+                                            "stress":  5
+                                        },
+                            "setFlags":  [
+                                             "oddity_exposure"
+                                         ],
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先檢查木板和釘子，再動手拆",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "materials":  2
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "先離開，別讓壞掉的箱子浪費今天的體力",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "resources":  {
+
+                                                          },
+                                            "stress":  2
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "fruit_grove",
+        "type":  "resource",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase2"
+                  ],
+        "text":  "林子深處有幾顆低矮果樹，果實顏色鮮得不太自然。飢餓讓它們看起來像救命，理智卻提醒你沒有哪一口是免費的。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "先摘最熟的果實，賭它能吃",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "resources":  {
+                                                              "food":  2
+                                                          },
+                                            "stress":  3
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "只收幾顆，看起來最安全的帶回去",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -8,
+                                            "resources":  {
+                                                              "food":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "忍住，別把明天賠在今晚的衝動上",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "resources":  {
+
+                                                          },
+                                            "stress":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "rain_catcher",
+        "type":  "resource",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase2"
+                  ],
+        "text":  "前幾天搭的小接水面還掛著幾滴水，看起來不多，卻足夠讓你們再多撐一會。問題是它只夠一邊先安心。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻把能倒的水全倒進容器裡",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -15,
+                                            "resources":  {
+                                                              "water":  2,
+                                                              "materials":  -1
+                                                          }
+                                        },
+                            "hint":  "先拿到手，但可能漏掉更多"
+                        },
+                        {
+                            "text":  "慢慢調整角度，盡量別讓每一滴浪費",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "算了，等下一場雨，別把現在這點希望弄壞",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "smoke_on_horizon",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase2"
+                  ],
+        "text":  "海平線那頭升起一縷極淡的煙。它可能意味著人，也可能只是你們太需要有誰在那裡。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻往高處趕，想辦法確認那是不是船",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "relationship":  8,
+                                            "trust":  6,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          },
+                                            "stress":  -5
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先記住方向，等體力更穩時再去確認",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "relationship":  4,
+                                            "trust":  4,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "別追了，免得又把希望浪費在看錯的東西上",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "relationship":  -6,
+                                            "trust":  -4,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "cliff_path",
+        "type":  "danger",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase2"
+                  ],
+        "text":  "山壁邊有條狹窄的路，抄過去可以省下很長一段繞路，但風從下方往上捲，像在提醒你這裡沒有失誤的空間。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "直接過去，趁天還亮著",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "stress":  16,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "貼著岩面慢慢走，不搶時間",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "stress":  6,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "改走遠路，至少今晚還能完整回去",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "energy":  -5,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "storm_signs",
+        "type":  "danger",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase2"
+                  ],
+        "text":  "海風忽然變重，雲層壓得很低。你們都看得出來風暴要來了，卻還沒決定今晚要先保什麼。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "趁風暴前再衝一次，把外面的東西收回來",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "stress":  8,
+                                            "resources":  {
+                                                              "materials":  2
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先把營地周圍能固定的固定好",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -12,
+                                            "trust":  4,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          },
+                                            "stress":  -4
+                                        },
+                            "hint":  "不一定拿得到更多，但能少失去一點"
+                        },
+                        {
+                            "text":  "立刻撤回營地，別在這個時間多做一件事",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  16,
+                                            "resources":  {
+
+                                                          }
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "footprints_found",
+        "type":  "danger",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "濕沙上留下了一串不是你們兩個的腳印，方向筆直，像有人知道自己要去哪裡。你忽然意識到，這座島也許從來不只你們。",
+        "tags":  [
+                     "day"
+                 ],
+        "conditions":  {
+                           "minEnergy":  10
+                       },
+        "options":  [
+                        {
+                            "text":  "立刻沿著腳印追上去",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "setFlags":  [
+                                             "footprints_found"
+                                         ],
+                            "effects":  {
+                                            "energy":  -15,
+                                            "stress":  10
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先記下方向，留著白天體力更穩時再追",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "setFlags":  [
+                                             "footprints_found"
+                                         ],
+                            "effects":  {
+                                            "energy":  -5,
+                                            "stress":  1
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "把腳印當沒看見，別讓未知把今天拖垮",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "setFlags":  [
+                                             "footprints_found"
+                                         ],
+                            "effects":  {
+                                            "stress":  4,
+                                            "trust":  -4,
+                                            "relationship":  -2
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "cave_drip",
+        "type":  "resource",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "岩縫深處傳來規律的滴水聲，像是在故意勾著你往裡走。洞口不大，但裡面的黑足夠把人整個吞掉。",
+        "tags":  [
+                     "day"
+                 ],
+        "conditions":  {
+                           "minEnergy":  8
+                       },
+        "options":  [
+                        {
+                            "text":  "往更深處鑽，想辦法找到真正的水源",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -18,
+                                            "stress":  6,
+                                            "resources":  {
+                                                              "water":  2
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "把容器放在洞口附近，先收得到的部分",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -8,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "離開這裡，別讓一點水聲把你困在黑裡",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  3
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "split_supplies",
+        "type":  "companion",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "補給攤在你們中間，少得讓每一樣東西都像是在逼人站隊。對方沒有碰，只是等你先動。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "先把你最需要的那部分拿到自己面前",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "relationship":  0,
+                                            "stress":  2
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "強調今天外出更多的是你，所以你該多拿",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -4,
+                                            "relationship":  4,
+                                            "stress":  4
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "把東西推回中間，重新一起分一次",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "trust":  8,
+                                            "relationship":  6
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        }
+                    ]
+    },
+    {
+        "id":  "hidden_rations",
+        "type":  "companion",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "你在遮布後面摸到一小包被另外藏起來的口糧。它不多，卻足夠讓你瞬間分不清自己更在意的是食物，還是這個舉動本身。",
+        "tags":  [
+                     "day"
+                 ],
+        "conditions":  {
+                           "maxFood":  3
+                       },
+        "options":  [
+                        {
+                            "text":  "當場把東西拿出來，逼對方解釋",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "setFlags":  [
+                                             "found_hidden_rations"
+                                         ],
+                            "effects":  {
+                                            "trust":  -7,
+                                            "relationship":  -4,
+                                            "stress":  6,
+                                            "resources":  {
+                                                              "food":  1
+                                                          },
+                                            "suspicion":  10
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先把其中一份扣在自己手裡，再看之後怎麼說",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "found_hidden_rations"
+                                         ],
+                            "effects":  {
+                                            "trust":  -6,
+                                            "stress":  4,
+                                            "relationship":  -1,
+                                            "suspicion":  7
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "把它放回中間，要求重新分配",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "setFlags":  [
+                                             "found_hidden_rations"
+                                         ],
+                            "effects":  {
+                                            "trust":  4,
+                                            "relationship":  4,
+                                            "resources":  {
+                                                              "food":  1
+                                                          },
+                                            "suspicion":  -4
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        }
+                    ]
+    },
+    {
+        "id":  "confessed_error",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "對方終於承認，前幾天那次繞遠不是天氣的錯，而是他當時其實沒有看清。你明明等的就是這句，聽到時卻還是覺得晚了。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "接住這句實話，先把之後的路算清楚",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "setFlags":  [
+                                             "confessed_error"
+                                         ],
+                            "effects":  {
+                                            "trust":  8,
+                                            "relationship":  6,
+                                            "stress":  -2,
+                                            "suspicion":  -4
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "把這幾天的損失一口氣全丟回去",
+                            "result":  "你把壓力推回去。事情往前走了，關係卻往後退了一步。",
+                            "setFlags":  [
+                                             "confessed_error"
+                                         ],
+                            "effects":  {
+                                            "trust":  -4,
+                                            "relationship":  -3,
+                                            "stress":  2,
+                                            "suspicion":  3
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "你把壓力丟回去，場面會更冷"
+                        },
+                        {
+                            "text":  "冷冷提醒他，這種錯一次就夠了",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "setFlags":  [
+                                             "confessed_error"
+                                         ],
+                            "effects":  {
+                                            "trust":  -14,
+                                            "relationship":  -9,
+                                            "stress":  4,
+                                            "suspicion":  6
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        }
+                    ]
+    },
+    {
+        "id":  "shared_watch",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "夜裡的風把營火吹得忽明忽暗，今晚總得有人先守。你知道這不只是分工，也是把疲憊和信任都攤開來算。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "先陪對方把第一段守完，再輪流休息",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "relationship":  8,
+                                            "trust":  8
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "和對方約好時間，一人一半",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "relationship":  4,
+                                            "trust":  4,
+                                            "stress":  -1
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "比較公平，但今晚誰都睡不好"
+                        },
+                        {
+                            "text":  "假裝自己更累，讓對方先扛著",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "relationship":  -6,
+                                            "trust":  -9,
+                                            "stress":  2
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        }
+                    ],
+        "requiresBehavior":  {
+                                 "cooperative":  1
+                             }
+    },
+    {
+        "id":  "track_footprints",
+        "type":  "danger",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "那些腳印一路往濃密的草叢深處去，越走越像故意要把人帶進看不清的地方。你回頭時，連原路都快被風抹掉了。",
+        "tags":  [
+                     "day"
+                 ],
+        "requires":  [
+                         "footprints_found"
+                     ],
+        "conditions":  {
+                           "minEnergy":  15
+                       },
+        "options":  [
+                        {
+                            "text":  "繼續追，哪怕前面真的有人",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "setFlags":  [
+                                             "track_footprints",
+                                             "oddity_exposure"
+                                         ],
+                            "effects":  {
+                                            "energy":  -20,
+                                            "stress":  11,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "放慢腳步，只跟到還看得清退路的位置",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "setFlags":  [
+                                             "track_footprints"
+                                         ],
+                            "effects":  {
+                                            "energy":  -8,
+                                            "stress":  2
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "停下來，別再把自己送進更深的未知裡",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  12
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "find_remains",
+        "type":  "danger",
+        "rarity":  "rare",
+        "weight":  15,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "草叢盡頭剩下一些被海鹽和時間磨過的殘骸，像是一個沒來得及說完的結局。裡面也許有能用的東西，也可能只有比現在更難忘掉的畫面。",
+        "tags":  [
+                     "day"
+                 ],
+        "requires":  [
+                         "track_footprints"
+                     ],
+        "conditions":  {
+                           "minRelationship":  10
+                       },
+        "options":  [
+                        {
+                            "text":  "翻找殘骸，把還能用的都帶走",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "setFlags":  [
+                                             "find_remains",
+                                             "oddity_exposure"
+                                         ],
+                            "effects":  {
+                                            "energy":  -20,
+                                            "relationship":  5,
+                                            "trust":  4,
+                                            "resources":  {
+                                                              "materials":  2,
+                                                              "oddities":  2
+                                                          },
+                                            "stress":  10
+                                        },
+                            "hint":  "你也許能多活一天，但會多背上一些東西"
+                        },
+                        {
+                            "text":  "先把遺留的東西收整一下，再挑必要的拿",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "setFlags":  [
+                                             "find_remains"
+                                         ],
+                            "effects":  {
+                                            "energy":  -10,
+                                            "relationship":  10,
+                                            "stress":  5,
+                                            "trust":  3
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "離開，別讓別人的下場變成今天的重量",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  8,
+                                            "trust":  -2
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "water_choice",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  50,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "容器裡只剩一點點水，少到再怎麼分都不會舒服。對方把視線停在你手上，像是在等你先決定今天誰更需要活下去。",
+        "tags":  [
+                     "day"
+                 ],
+        "conditions":  {
+                           "maxWater":  2
+                       },
+        "options":  [
+                        {
+                            "text":  "兩個人輪流喝，誰也別多拿",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "relationship":  10,
+                                            "trust":  13,
+                                            "resources":  {
+                                                              "water":  -1
+                                                          },
+                                            "suspicion":  -5
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "把較大的那口先讓給對方",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "effects":  {
+                                            "relationship":  4,
+                                            "trust":  4,
+                                            "stress":  -1,
+                                            "resources":  {
+                                                              "water":  -1
+                                                          },
+                                            "suspicion":  -2
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "先把比較完整的那一口留給自己",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -16,
+                                            "relationship":  -10,
+                                            "stress":  3,
+                                            "resources":  {
+                                                              "water":  -1
+                                                          },
+                                            "suspicion":  8
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        }
+                    ]
+    },
+    {
+        "id":  "accuse_theft",
+        "type":  "companion",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "少掉的那份補給讓你一路都在想同一件事。現在東西就在眼前，人也在眼前，只差你願不願意把那句話說出來。",
+        "tags":  [
+                     "day"
+                 ],
+        "requires":  [
+                         "found_hidden_rations"
+                     ],
+        "options":  [
+                        {
+                            "text":  "直接指控對方偷拿補給",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "setFlags":  [
+                                             "accused_companion"
+                                         ],
+                            "effects":  {
+                                            "trust":  -18,
+                                            "relationship":  -11,
+                                            "stress":  6,
+                                            "suspicion":  10
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先把東西一樣樣攤開，重新一起確認",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "trust":  2,
+                                            "relationship":  2,
+                                            "stress":  -1,
+                                            "suspicion":  -5
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "先說你也可能看錯了，再慢慢問",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -6,
+                                            "stress":  4,
+                                            "relationship":  -1,
+                                            "suspicion":  6
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ]
+    },
+    {
+        "id":  "abandoned_path",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  15,
+        "phase":  [
+                      "phase5"
+                  ],
+        "text":  "暴雨前只剩一條還算能走的路，但窄得讓人無法並肩。你忽然明白，有些時候所謂一起撐下去，只是看誰先被留下。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "先保住自己的步子，別讓自己掉下去",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "abandoned_companion"
+                                         ],
+                            "effects":  {
+                                            "trust":  -38,
+                                            "relationship":  -29,
+                                            "stress":  8
+                                        },
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "放慢速度，逼自己和對方一起走",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "energy":  -15,
+                                            "relationship":  10,
+                                            "trust":  13
+                                        },
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "乾脆退回去，承認今天過不去",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "relationship":  6,
+                                            "trust":  8,
+                                            "stress":  -2
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "last_water",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  15,
+        "phase":  [
+                      "phase5"
+                  ],
+        "text":  "最後一點水只夠濕潤喉嚨，卻不夠讓誰真正安心。瓶口在你們之間停著，像一個不肯替任何人做決定的問題。",
+        "tags":  [
+                     "day"
+                 ],
+        "conditions":  {
+                           "maxWater":  1
+                       },
+        "options":  [
+                        {
+                            "text":  "把那口水先讓給對方",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "effects":  {
+                                            "relationship":  12,
+                                            "trust":  14,
+                                            "resources":  {
+                                                              "water":  -1
+                                                          },
+                                            "suspicion":  -6
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "一人一半，哪怕兩邊都不夠",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "relationship":  15,
+                                            "trust":  19,
+                                            "resources":  {
+                                                              "water":  -1
+                                                          },
+                                            "hp":  -5,
+                                            "suspicion":  -8
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "公平，但公平不會讓口渴消失"
+                        },
+                        {
+                            "text":  "一口喝掉，別再讓這件事拖下去",
+                            "result":  "你把壓力推回去。事情往前走了，關係卻往後退了一步。",
+                            "setFlags":  [
+                                             "killed_companion"
+                                         ],
+                            "effects":  {
+                                            "trust":  -60,
+                                            "relationship":  -45,
+                                            "stress":  12,
+                                            "resources":  {
+                                                              "water":  -1
+                                                          },
+                                            "suspicion":  14
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "你把壓力丟回去，場面會更冷"
+                        }
+                    ]
+    },
+    {
+        "id":  "distant_lantern",
+        "type":  "danger",
+        "rarity":  "rare",
+        "weight":  15,
+        "text":  "夜裡海面遠處浮著一點微弱的光，忽明忽暗，像船，也像只是浪在戲弄視線。你們誰都不敢先把它說成希望。",
+        "tags":  [
+                     "night"
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻設法回應那道光",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -25,
+                                            "stress":  18,
+                                            "resources":  {
+                                                              "oddities":  2
+                                                          }
+                                        },
+                            "setFlags":  [
+                                             "oddity_exposure"
+                                         ],
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先躲在暗處觀察，別急著暴露位置",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "當作沒看到，別讓夜晚再多出一個錯覺",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "energy":  5,
+                                            "stress":  9
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "shore_whisper",
+        "type":  "danger",
+        "rarity":  "uncommon",
+        "weight":  30,
+        "text":  "浪聲裡夾著像人聲的細語，近得像就在岸邊，卻又聽不出一句完整的話。對方也停下來了，但你分不清他是真聽見了，還是只看見你變了臉色。",
+        "tags":  [
+                     "night"
+                 ],
+        "options":  [
+                        {
+                            "text":  "沿著聲音找過去",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "stress":  16,
+                                            "resources":  {
+                                                              "oddities":  1,
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "setFlags":  [
+                                             "oddity_exposure"
+                                         ],
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "站在原地多聽一會，先確認不是風",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          },
+                                            "stress":  5
+                                        },
+                            "setFlags":  [
+                                             "oddity_exposure"
+                                         ],
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "回頭走，別讓夜裡的聲音帶著你走",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "energy":  5,
+                                            "stress":  4
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "day5_first_ration_test",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  220,
+        "phase":  [
+                      "phase1"
+                  ],
+        "excludes":  [
+                         "milestone_day5_done"
+                     ],
+        "conditions":  {
+                           "minDay":  5,
+                           "maxDay":  5
+                       },
+        "text":  "第五天的口糧第一次明顯少到需要你們當場算給彼此看。對方沒有先伸手，但也沒有把目光移開。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把每一份都攤開，當面平分",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "setFlags":  [
+                                             "milestone_day5_done",
+                                             "shared_fairly"
+                                         ],
+                            "effects":  {
+                                            "trust":  8,
+                                            "relationship":  6,
+                                            "stress":  -2,
+                                            "suspicion":  -4,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          }
+                                        },
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "先把比較完整的一份留給自己",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "milestone_day5_done",
+                                             "gave_food_up"
+                                         ],
+                            "effects":  {
+                                            "trust":  10,
+                                            "relationship":  8,
+                                            "stress":  2,
+                                            "suspicion":  -6,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          }
+                                        },
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "先承認你也不知道這樣能撐多久",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "setFlags":  [
+                                             "milestone_day5_done",
+                                             "hid_rations"
+                                         ],
+                            "effects":  {
+                                            "trust":  -8,
+                                            "relationship":  -6,
+                                            "stress":  4,
+                                            "suspicion":  12,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          }
+                                        },
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ]
+    },
+    {
+        "id":  "day10_hidden_canteen",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  220,
+        "phase":  [
+                      "phase2"
+                  ],
+        "excludes":  [
+                         "milestone_day10_done"
+                     ],
+        "conditions":  {
+                           "minDay":  10,
+                           "maxDay":  10
+                       },
+        "text":  "第十天傍晚，你在陰影裡摸到一只還有分量的水壺。它不該出現在這裡，除非有人早就把它藏起來。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻追問對方這只水壺是怎麼回事",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "setFlags":  [
+                                             "milestone_day10_done",
+                                             "shared_water_truthfully"
+                                         ],
+                            "effects":  {
+                                            "trust":  10,
+                                            "relationship":  7,
+                                            "stress":  -3,
+                                            "suspicion":  -6,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先把水壺留在自己手裡，暫時不說破",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "milestone_day10_done",
+                                             "hid_rations",
+                                             "hid_water_truth"
+                                         ],
+                            "effects":  {
+                                            "trust":  -6,
+                                            "relationship":  -4,
+                                            "stress":  3,
+                                            "suspicion":  14,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "把它拿到火邊，直接攤開來算",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "setFlags":  [
+                                             "milestone_day10_done",
+                                             "lied_about_water",
+                                             "hid_rations"
+                                         ],
+                            "effects":  {
+                                            "trust":  -12,
+                                            "relationship":  -8,
+                                            "stress":  5,
+                                            "suspicion":  18,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ]
+    },
+    {
+        "id":  "day15_wrong_turn_truth",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  220,
+        "phase":  [
+                      "phase3"
+                  ],
+        "excludes":  [
+                         "milestone_day15_done"
+                     ],
+        "conditions":  {
+                           "minDay":  15,
+                           "maxDay":  15
+                       },
+        "text":  "第十五天，你們終於說破那次錯路到底是誰記錯了方向。事情已經過去，損失卻一直留著，像還沒輪到它結束。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把錯說清楚，不再往別的地方推",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "setFlags":  [
+                                             "milestone_day15_done",
+                                             "told_the_truth"
+                                         ],
+                            "effects":  {
+                                            "trust":  8,
+                                            "relationship":  4,
+                                            "stress":  2,
+                                            "suspicion":  -6
+                                        },
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "把責任分散到天氣和地形上",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "setFlags":  [
+                                             "milestone_day15_done",
+                                             "partial_truth"
+                                         ],
+                            "effects":  {
+                                            "trust":  -4,
+                                            "relationship":  -2,
+                                            "stress":  3,
+                                            "suspicion":  8
+                                        },
+                            "hint":  "可以暫時止血，但不是真的解決"
+                        },
+                        {
+                            "text":  "別再追究，先把剩下的體力留給明天",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "setFlags":  [
+                                             "milestone_day15_done",
+                                             "lied_about_error"
+                                         ],
+                            "effects":  {
+                                            "trust":  -10,
+                                            "relationship":  -6,
+                                            "stress":  5,
+                                            "suspicion":  12
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ]
+    },
+    {
+        "id":  "day20_missing_portion",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  220,
+        "phase":  [
+                      "phase3"
+                  ],
+        "excludes":  [
+                         "milestone_day20_done"
+                     ],
+        "conditions":  {
+                           "minDay":  20,
+                           "maxDay":  20
+                       },
+        "text":  "第二十天晚上的那一份明顯少了一口，少到誰都看得出來。你們都沒有先伸手，像是都在等對方先暴露。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "重新平分剩下的那點東西",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "setFlags":  [
+                                             "milestone_day20_done"
+                                         ],
+                            "effects":  {
+                                            "trust":  4,
+                                            "relationship":  4,
+                                            "stress":  -1,
+                                            "suspicion":  -6
+                                        },
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "趁對方還沒開口，把比較完整的一邊先拿走",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "milestone_day20_done",
+                                             "accused_companion"
+                                         ],
+                            "effects":  {
+                                            "trust":  -12,
+                                            "relationship":  -10,
+                                            "stress":  6,
+                                            "suspicion":  10
+                                        },
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "要求現在就當面重數一次",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "setFlags":  [
+                                             "milestone_day20_done",
+                                             "hid_rations"
+                                         ],
+                            "effects":  {
+                                            "trust":  -10,
+                                            "relationship":  -8,
+                                            "stress":  5,
+                                            "suspicion":  16,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          }
+                                        },
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        }
+                    ]
+    },
+    {
+        "id":  "day25_storm_position",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  220,
+        "phase":  [
+                      "phase4"
+                  ],
+        "excludes":  [
+                         "milestone_day25_done"
+                     ],
+        "conditions":  {
+                           "minDay":  25,
+                           "maxDay":  25
+                       },
+        "text":  "第二十五天的風暴前，遮蔽處只剩一個真正能避開直風的位置。你知道這種時候再說公平，往往只是換個方式叫人犧牲。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把最穩的位置先讓給對方",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "setFlags":  [
+                                             "milestone_day25_done",
+                                             "camp_reinforced"
+                                         ],
+                            "effects":  {
+                                            "hp":  -5,
+                                            "trust":  12,
+                                            "relationship":  10,
+                                            "stress":  2,
+                                            "suspicion":  -8
+                                        },
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "輪流撐在最裡面，兩個人都別太舒服",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "setFlags":  [
+                                             "milestone_day25_done",
+                                             "camp_reinforced"
+                                         ],
+                            "effects":  {
+                                            "hp":  -3,
+                                            "trust":  6,
+                                            "relationship":  6,
+                                            "stress":  1,
+                                            "suspicion":  -3
+                                        },
+                            "hint":  "比較公平，但誰都不好受"
+                        },
+                        {
+                            "text":  "先把自己塞進最安全的位置",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "milestone_day25_done",
+                                             "left_them_outside"
+                                         ],
+                            "effects":  {
+                                            "trust":  -14,
+                                            "relationship":  -10,
+                                            "stress":  4,
+                                            "suspicion":  14
+                                        },
+                            "hint":  "先保住自己，但對方會記得"
+                        }
+                    ]
+    },
+    {
+        "id":  "day30_last_truth",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  260,
+        "phase":  [
+                      "phase5"
+                  ],
+        "excludes":  [
+                         "milestone_day30_done"
+                     ],
+        "conditions":  {
+                           "minDay":  30,
+                           "maxDay":  30
+                       },
+        "text":  "第三十天終於到了。你們都知道有些話如果今天不說，就會跟著活下來，或者跟著死掉。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把該說的全說出來，哪怕太晚",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "setFlags":  [
+                                             "milestone_day30_done",
+                                             "final_confession"
+                                         ],
+                            "effects":  {
+                                            "trust":  10,
+                                            "relationship":  6,
+                                            "stress":  -4,
+                                            "suspicion":  -10
+                                        },
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "把最後那一層真相繼續壓住",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "milestone_day30_done",
+                                             "partial_final_truth"
+                                         ],
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -2,
+                                            "stress":  2,
+                                            "suspicion":  6
+                                        },
+                            "hint":  "活著比較重要，但有些東西會跟著你一起留下"
+                        },
+                        {
+                            "text":  "只說足夠讓今天過去的部分",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "setFlags":  [
+                                             "milestone_day30_done",
+                                             "blamed_companion_at_end"
+                                         ],
+                            "effects":  {
+                                            "trust":  -16,
+                                            "relationship":  -12,
+                                            "stress":  6,
+                                            "suspicion":  12
+                                        },
+                            "hint":  "能撐住場面，卻不一定能真正補回來"
+                        }
+                    ]
+    },
+    {
+        "id":  "canteen_weight_feels_wrong",
+        "type":  "companion",
+        "rarity":  "uncommon",
+        "weight":  45,
+        "phase":  [
+                      "phase3",
+                      "phase4",
+                      "phase5"
+                  ],
+        "conditions":  {
+                           "minSuspicion":  35,
+                           "maxWater":  3
+                       },
+        "excludes":  [
+                         "canteen_truth_settled"
+                     ],
+        "text":  "你拿起那只水壺時，重量和記憶裡的不一樣。差得不多，卻剛好足夠讓人開始懷疑這不是錯覺。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把水壺拿到兩人中間，一起檢查",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "setFlags":  [
+                                             "canteen_truth_settled",
+                                             "accused_companion"
+                                         ],
+                            "effects":  {
+                                            "trust":  -10,
+                                            "relationship":  -8,
+                                            "stress":  5,
+                                            "suspicion":  8
+                                        },
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "先不說，繼續觀察對方接下來的反應",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "setFlags":  [
+                                             "canteen_truth_settled",
+                                             "marked_canteen"
+                                         ],
+                            "effects":  {
+                                            "trust":  -4,
+                                            "relationship":  -3,
+                                            "stress":  3,
+                                            "suspicion":  10
+                                        },
+                            "hint":  "你避免了正面衝突，但猜疑會自己長大"
+                        },
+                        {
+                            "text":  "做個小測試，看看對方會不會露出破綻",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "setFlags":  [
+                                             "canteen_truth_settled"
+                                         ],
+                            "effects":  {
+                                            "trust":  1,
+                                            "relationship":  2,
+                                            "stress":  -1,
+                                            "suspicion":  -4
+                                        },
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        }
+                    ]
+    },
+    {
+        "id":  "ledge_risk_assignment",
+        "type":  "companion",
+        "rarity":  "uncommon",
+        "weight":  40,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "conditions":  {
+                           "minDay":  21
+                       },
+        "text":  "岩壁邊那個最危險的位置，總得有人先去。你可以說這是戰術，也可以說這只是換個方法決定誰先冒險。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "先把自己送上去，別讓對方先承受",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "setFlags":  [
+                                             "took_the_risk"
+                                         ],
+                            "effects":  {
+                                            "energy":  -15,
+                                            "hp":  -4,
+                                            "trust":  8,
+                                            "relationship":  8,
+                                            "suspicion":  -6,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "讓對方先上，自己留在比較穩的位置",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "setFlags":  [
+                                             "sent_them_first"
+                                         ],
+                            "effects":  {
+                                            "trust":  -8,
+                                            "relationship":  -6,
+                                            "stress":  4,
+                                            "suspicion":  10,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "改用更慢的方式一起處理",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "trust":  2,
+                                            "relationship":  2,
+                                            "stress":  1
+                                        },
+                            "hint":  "效率更差，但不必立刻犧牲誰"
+                        }
+                    ]
+    },
+    {
+        "id":  "stolen_bite_at_dusk",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  18,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "入夜後，你發現口糧明顯少了一口。火光太暗，誰都能說自己沒碰，而那一小口剛好夠把今天的疲憊全點著。",
+        "tags":  [
+                     "night"
+                 ],
+        "options":  [
+                        {
+                            "text":  "直接質問對方是不是偷吃了",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -8,
+                                            "relationship":  -6,
+                                            "suspicion":  3,
+                                            "stress":  6
+                                        },
+                            "setFlags":  [
+                                             "confronted_secret_eating"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "把少掉的份量默默從共同口糧裡補回自己手上",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -5,
+                                            "relationship":  -3,
+                                            "suspicion":  7,
+                                            "stress":  5
+                                        },
+                            "setFlags":  [
+                                             "looked_away_from_theft"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "把剩下的重新分開，當作今晚誰也別再追究",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "trust":  4,
+                                            "relationship":  5,
+                                            "suspicion":  -3,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "shared_after_theft"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "暫時不說，把這件事先記在心裡",
+                            "result":  "你沒有繼續說。衝突沒有爆開，空氣卻更難呼吸。",
+                            "effects":  {
+                                            "trust":  -3,
+                                            "relationship":  -1,
+                                            "suspicion":  5,
+                                            "stress":  1
+                                        },
+                            "setFlags":  [
+                                             "kept_silent_after_theft"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "避免當場爆開，猜疑會留下"
+                        }
+                    ],
+        "requiresBehavior":  {
+                                 "selfish":  1
+                             }
+    },
+    {
+        "id":  "hidden_spring_secret",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  16,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "conditions":  {
+                           "maxWater":  2
+                       },
+        "text":  "你終於意識到，對方前幾天提過的那條水痕也許根本不是隨口一提，而是一處被刻意沒有帶你去看的水源。現在再追問，已經不是單純問路。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "把話逼到對方面前，要求現在就說清楚",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -7,
+                                            "relationship":  -5,
+                                            "suspicion":  -2,
+                                            "stress":  5
+                                        },
+                            "setFlags":  [
+                                             "confronted_hidden_spring"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先把那條可能的路線記下，必要時自己去找",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -6,
+                                            "relationship":  -4,
+                                            "suspicion":  8,
+                                            "stress":  6
+                                        },
+                            "setFlags":  [
+                                             "hid_water_source"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "要求明天一起去看，不再由一個人掌握",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "trust":  3,
+                                            "relationship":  4,
+                                            "suspicion":  -4,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "shared_hidden_spring"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "今晚先不拆穿，等對方自己開口",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -4,
+                                            "relationship":  -1,
+                                            "suspicion":  6,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "kept_silent_about_spring"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ]
+    },
+    {
+        "id":  "ration_count_dispute",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  22,
+        "phase":  [
+                      "phase2",
+                      "phase3"
+                  ],
+        "conditions":  {
+                           "maxFood":  2,
+                           "maxWater":  2
+                       },
+        "text":  "清點補給時，數量就是對不上。你腦中有一個版本，對方有另一個版本，而真正消失的那部分安靜得像從沒存在過。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "把所有東西都攤開，重新一起數一次",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "trust":  2,
+                                            "relationship":  2,
+                                            "suspicion":  -4,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "counted_supplies_together"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "直接指向對方，說問題就在他那邊",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -9,
+                                            "relationship":  -7,
+                                            "suspicion":  6,
+                                            "stress":  7
+                                        },
+                            "setFlags":  [
+                                             "openly_accused_companion"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先承認自己也可能記錯了",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  0,
+                                            "suspicion":  3,
+                                            "stress":  3
+                                        },
+                            "setFlags":  [
+                                             "swallowed_the_doubt"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "先不追了，今晚別讓這件事炸開",
+                            "result":  "你沒有繼續說。衝突沒有爆開，空氣卻更難呼吸。",
+                            "effects":  {
+                                            "trust":  -3,
+                                            "relationship":  -1,
+                                            "suspicion":  5,
+                                            "stress":  -2
+                                        },
+                            "setFlags":  [
+                                             "kept_quiet_during_shortage"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "避免當場爆開，猜疑會留下"
+                        }
+                    ]
+    },
+    {
+        "id":  "confess_after_lie",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  14,
+        "phase":  [
+                      "phase4"
+                  ],
+        "requires":  [
+                         "hid_rations"
+                     ],
+        "text":  "那個先前說出口的謊，現在已經撐不住了。你知道再拖下去只會更難看，但承認之後，對方也不會突然變得比較容易原諒。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "現在就承認，哪怕對方會更生氣",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  4,
+                                            "relationship":  1,
+                                            "suspicion":  -8,
+                                            "stress":  3
+                                        },
+                            "setFlags":  [
+                                             "admitted_hidden_rations"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "把謊再補大一點，先把今晚混過去",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -10,
+                                            "relationship":  -7,
+                                            "suspicion":  10,
+                                            "stress":  6
+                                        },
+                            "setFlags":  [
+                                             "doubled_down_on_lie"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "先把藏起來的那份還回去，再慢慢說",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  -2,
+                                            "stress":  2
+                                        },
+                            "setFlags":  [
+                                             "returned_hidden_ration"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "動作比解釋更早，但傷害不會立刻消失"
+                        },
+                        {
+                            "text":  "什麼都不說，等明天再看",
+                            "result":  "你沒有繼續說。衝突沒有爆開，空氣卻更難呼吸。",
+                            "effects":  {
+                                            "trust":  -4,
+                                            "relationship":  -2,
+                                            "suspicion":  5,
+                                            "stress":  1
+                                        },
+                            "setFlags":  [
+                                             "kept_lying_in_silence"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "避免當場爆開，猜疑會留下"
+                        }
+                    ]
+    },
+    {
+        "id":  "companion_dropped_rope",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  18,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "那條重要的繩子從對方手裡滑下去時，誰都來不及抓住。你看得出來那不全是故意，但也很難把損失當成純粹的意外。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "先接住這個失誤，想辦法補救",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "effects":  {
+                                            "trust":  5,
+                                            "relationship":  6,
+                                            "suspicion":  -3,
+                                            "stress":  4
+                                        },
+                            "setFlags":  [
+                                             "covered_companion_mistake"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "要求對方自己承認，別讓事情被帶過",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -3,
+                                            "relationship":  -2,
+                                            "suspicion":  1,
+                                            "stress":  3
+                                        },
+                            "setFlags":  [
+                                             "forced_companion_confession"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "把剩下能用的部分先留給自己",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "relationship":  2,
+                                            "suspicion":  3,
+                                            "stress":  2
+                                        },
+                            "setFlags":  [
+                                             "blamed_the_storm"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "今晚先不追究，別再多碎一樣東西",
+                            "result":  "你沒有繼續說。衝突沒有爆開，空氣卻更難呼吸。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  4,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "left_mistake_unspoken"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "避免當場爆開，猜疑會留下"
+                        }
+                    ]
+    },
+    {
+        "id":  "send_them_first",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  17,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "text":  "前面的裂口一次只容得下一個人通過，而第一個過去的人要承受最大的風險。你忽然很討厭這種只能用先後順序分配危險的時刻。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "讓對方先過去，你留在較穩的位置照應",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  4,
+                                            "relationship":  5,
+                                            "suspicion":  -3,
+                                            "stress":  4
+                                        },
+                            "setFlags":  [
+                                             "took_the_risk_first"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "你自己先上，先把最危險的那一下吃掉",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "effects":  {
+                                            "trust":  -8,
+                                            "relationship":  -6,
+                                            "suspicion":  6,
+                                            "stress":  5
+                                        },
+                            "setFlags":  [
+                                             "sent_companion_into_risk"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "想辦法多耗點時間，也要把風險拆開",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "trust":  2,
+                                            "relationship":  3,
+                                            "suspicion":  -2,
+                                            "stress":  1
+                                        },
+                            "setFlags":  [
+                                             "chose_the_long_route"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "慢，但不必立刻把誰送出去"
+                        }
+                    ]
+    },
+    {
+        "id":  "silent_about_sinkhole",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  15,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "conditions":  {
+                           "minSuspicion":  30
+                       },
+        "text":  "你比對方早一步看見前面的陷坑。那一瞬間很短，短到足夠讓人想：只要自己先避開，就不一定非得把話說出口。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻提醒對方停下",
+                            "result":  "你把風險接了過來。對方沒有道謝，只是站得離你近了一點。",
+                            "effects":  {
+                                            "trust":  4,
+                                            "relationship":  3,
+                                            "suspicion":  -4,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "warned_about_sinkhole"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "你替對方擋下風險，自己會更吃緊"
+                        },
+                        {
+                            "text":  "自己先繞開，不急著提醒",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -11,
+                                            "relationship":  -8,
+                                            "suspicion":  9,
+                                            "stress":  7
+                                        },
+                            "setFlags":  [
+                                             "kept_silent_about_sinkhole"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        },
+                        {
+                            "text":  "不說真相，只把人往另一邊帶",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  1,
+                                            "suspicion":  3,
+                                            "stress":  2
+                                        },
+                            "setFlags":  [
+                                             "redirected_without_truth"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "你避免了最壞的事，卻沒把信任留在原地"
+                        }
+                    ]
+    },
+    {
+        "id":  "suspect_missing_canteen",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  19,
+        "phase":  [
+                      "phase3",
+                      "phase4",
+                      "phase5"
+                  ],
+        "conditions":  {
+                           "minSuspicion":  25
+                       },
+        "text":  "水壺的位置和你記得的不一樣。你沒有證據，只有一種越想越像真的直覺，而這種直覺往往比事實更快傷人。",
+        "tags":  [
+
+                 ],
+        "options":  [
+                        {
+                            "text":  "提議一起重新檢查補給",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "relationship":  1,
+                                            "suspicion":  -3,
+                                            "stress":  1
+                                        },
+                            "setFlags":  [
+                                             "searched_with_companion"
+                                         ],
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "直接說你懷疑對方偷拿",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -10,
+                                            "relationship":  -8,
+                                            "suspicion":  7,
+                                            "stress":  6
+                                        },
+                            "setFlags":  [
+                                             "accused_companion_of_theft"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先設個小陷阱，看看明天會不會再少",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -5,
+                                            "relationship":  -4,
+                                            "suspicion":  6,
+                                            "stress":  4
+                                        },
+                            "setFlags":  [
+                                             "set_a_test_for_companion"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        }
+                    ]
+    },
+    {
+        "id":  "uncertain_smoke_column",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  16,
+        "unreliable":  true,
+        "phase":  [
+                      "phase2",
+                      "phase3"
+                  ],
+        "text":  "遠處升起一縷像煙的灰線，細得幾乎一眨眼就會散掉。你無法確定那是求救、炊煙，還是只是天氣在對你開玩笑。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "朝那個方向追過去看看",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -18,
+                                            "trust":  2,
+                                            "stress":  3,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先等它再出現一次，再決定要不要去",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "stress":  1,
+                                            "suspicion":  1
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "先當作看錯了，別讓希望再領著你跑",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  2,
+                                            "stress":  2
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ],
+        "misleadLevel":  1,
+        "distortionVariants":  {
+                                   "normal":  "遠處升起一縷像煙的灰線，細得幾乎一眨眼就會散掉。你無法確定那是求救、炊煙，還是只是天氣在對你開玩笑。",
+                                   "distorted":  "遠處那條灰線像煙，也像只是你太需要看見煙。你越盯著它，它就越不像真的存在。"
+                               }
+    },
+    {
+        "id":  "echoing_drip",
+        "type":  "resource",
+        "rarity":  "rare",
+        "weight":  15,
+        "unreliable":  true,
+        "phase":  [
+                      "phase3"
+                  ],
+        "text":  "石壁後頭傳來滴水聲，一下一下很穩，穩得像故意在引人靠近。可當你換個角度，那聲音又像只是回音。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "跟著聲音走進去找水",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -20,
+                                            "stress":  4,
+                                            "resources":  {
+                                                              "water":  2
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先在入口附近留下記號，再慢慢試",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -8,
+                                            "stress":  2,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "承認自己也可能只是聽錯回音",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "stress":  1,
+                                            "suspicion":  1
+                                        },
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ],
+        "misleadLevel":  2,
+        "distortionVariants":  {
+                                   "normal":  "石壁後頭傳來滴水聲，一下一下很穩，穩得像故意在引人靠近。",
+                                   "distorted":  "你明明聽見滴水聲，可每換一個方向，它都像從另一邊傳來，像是這面岩壁根本不想讓你確定。"
+                               }
+    },
+    {
+        "id":  "buried_cache_rumor",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  14,
+        "unreliable":  true,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "對方提起一個前幾天看見的記號，說也許某處埋著被人留下的補給。你無法分辨那是線索、安慰，還是另一種把人往前推的說法。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "現在就去挖，別再讓機會沉下去",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -16,
+                                            "relationship":  2,
+                                            "trust":  1,
+                                            "stress":  3,
+                                            "resources":  {
+                                                              "materials":  1,
+                                                              "food":  1
+                                                          }
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先對位置和細節，再決定要不要動手",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "suspicion":  3,
+                                            "stress":  2
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "把這件事當成安慰就好，別真的追",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "relationship":  -1,
+                                            "trust":  -1,
+                                            "stress":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ],
+        "misleadLevel":  2,
+        "distortionVariants":  {
+                                   "normal":  "對方提起一個前幾天看見的記號，說也許某處埋著被人留下的補給。",
+                                   "distorted":  "那個記號忽然在你腦中變得很清楚，清楚得不像真的。你開始懷疑，是對方說了這件事，還是你自己補出了這個版本。"
+                               }
+    },
+    {
+        "id":  "reef_light_signal",
+        "type":  "danger",
+        "rarity":  "rare",
+        "weight":  13,
+        "unreliable":  true,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "text":  "夜裡礁區閃過一點不穩的亮光，像燈，也像被浪折碎的月色。只要看久一點，你就開始分不清那是不是在回應你。",
+        "tags":  [
+                     "night"
+                 ],
+        "options":  [
+                        {
+                            "text":  "用手邊的光回應它",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "stress":  4,
+                                            "trust":  1
+                                        },
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先躲著觀察，看它會不會再亮一次",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "energy":  -16,
+                                            "stress":  5,
+                                            "resources":  {
+                                                              "oddities":  1,
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "轉身離開，別讓夜裡的光替你做決定",
+                            "result":  "你暫時退開，眼前的麻煩過去了，空下來的疑問卻沒有。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  1
+                                        },
+                            "hint":  "保住眼前，問題留到之後"
+                        }
+                    ],
+        "misleadLevel":  3,
+        "distortionVariants":  {
+                                   "normal":  "夜裡礁區閃過一點不穩的亮光，像燈，也像被浪折碎的月色。",
+                                   "distorted":  "那點光像是在移動，又像從一開始就停在原地。你越想追住它，越像只是跟著自己的渴望跑。"
+                               }
+    },
+    {
+        "id":  "missing_food_unclear_cause",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  16,
+        "unreliable":  true,
+        "misleadLevel":  2,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "食物少了，可你既沒看見誰拿，也沒看見任何動物留下痕跡。越是想找原因，越像每個版本都只差一點就能說服自己。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "把懷疑直接指向對方",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -8,
+                                            "relationship":  -6,
+                                            "suspicion":  7,
+                                            "stress":  6
+                                        },
+                            "setFlags":  [
+                                             "misjudged_missing_food"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先承認自己也可能記錯了",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  2,
+                                            "resources":  {
+                                                              "food":  1
+                                                          }
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "從現在開始把剩下的份量先護在自己手裡",
+                            "result":  "你把份量往自己這邊挪。對方沒有馬上開口，但那一瞬間被記住了。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  5,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "silent_missing_food_doubt"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "先保住自己，但對方會記得"
+                        }
+                    ],
+        "requiresBehavior":  {
+                                 "selfish":  1
+                             },
+        "distortionVariants":  {
+                                   "normal":  "食物少了，可你既沒看見誰拿，也沒看見任何動物留下痕跡。",
+                                   "distorted":  "你記得自己明明數過那份食物，可下一秒又不太確定是不是別的晚上。真相沒有變清楚，只有臉色先變了。"
+                               }
+    },
+    {
+        "id":  "dry_channel_memory",
+        "type":  "resource",
+        "rarity":  "rare",
+        "weight":  15,
+        "unreliable":  true,
+        "misleadLevel":  3,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "你很確定自己記得某條乾掉的水道盡頭有水，可越往那個方向想，記憶裡的石頭和樹影就越像在互相交換位置。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "照著記憶走，賭自己沒有記錯",
+                            "result":  "你把腳步壓了出去。收穫不是沒有，只是代價比想像中更快靠近。",
+                            "effects":  {
+                                            "energy":  -18,
+                                            "stress":  5,
+                                            "suspicion":  2,
+                                            "resources":  {
+                                                              "water":  1
+                                                          }
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "快，但代價更難收回"
+                        },
+                        {
+                            "text":  "先在附近找別的痕跡，別完全押在記憶上",
+                            "result":  "你把動作放慢，局勢沒有立刻惡化，但那份緊繃還在。",
+                            "effects":  {
+                                            "trust":  -1,
+                                            "relationship":  1,
+                                            "stress":  3,
+                                            "suspicion":  2
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "較穩，但不會拿到最多"
+                        },
+                        {
+                            "text":  "承認自己可能把別天的畫面記成今天",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ],
+        "distortionVariants":  {
+                                   "normal":  "你很確定自己記得某條乾掉的水道盡頭有水。",
+                                   "distorted":  "那條水道在記憶裡越來越清楚，清楚得反而像假的。你不知道自己是在想起路，還是在替絕望補一條路。"
+                               }
+    },
+    {
+        "id":  "uncertain_words_by_fire",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  14,
+        "unreliable":  true,
+        "misleadLevel":  1,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "營火快熄時，對方低聲說了句什麼。你聽見了幾個字，卻怎麼也湊不成一句完整的意思，而最糟的是你不知道這是不是你自己漏掉的。",
+        "tags":  [
+                     "night"
+                 ],
+        "options":  [
+                        {
+                            "text":  "逼對方再說一次，別讓話停在這裡",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -3,
+                                            "suspicion":  4,
+                                            "stress":  3
+                                        },
+                            "setFlags":  [
+                                             "heard_uncertain_words"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "放低聲音，請他慢慢重說",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -1,
+                                            "suspicion":  3,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "kept_uncertain_words_inside"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "假裝沒聽見，讓今晚先過去",
+                            "result":  "你沒有繼續說。衝突沒有爆開，空氣卻更難呼吸。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  2
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "避免當場爆開，猜疑會留下"
+                        }
+                    ],
+        "distortionVariants":  {
+                                   "normal":  "營火快熄時，對方低聲說了句什麼。你聽見了幾個字，卻怎麼也湊不成一句完整的意思。",
+                                   "distorted":  "那句話像說過一次，又像已經說過很多次。你甚至開始懷疑，真正補完它的人是不是自己。"
+                               }
+    },
+    {
+        "id":  "misread_companion_gesture",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  16,
+        "unreliable":  true,
+        "misleadLevel":  2,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "你看見對方把手迅速收回去，像是剛碰了什麼不該碰的東西。可當你再看一次，那動作又普通得像只是你把它想得太重。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "立刻追問對方剛才在做什麼",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -7,
+                                            "relationship":  -5,
+                                            "suspicion":  6,
+                                            "stress":  5
+                                        },
+                            "setFlags":  [
+                                             "misread_bag_gesture"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "先問一句，看看對方怎麼回答",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  5,
+                                            "stress":  1
+                                        },
+                            "setFlags":  [
+                                             "kept_watching_gesture"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "提醒自己也可能只是誤會了",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  -1,
+                                            "trust":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "你壓住了指控，卻不一定真的放下懷疑"
+                        }
+                    ],
+        "distortionVariants":  {
+                                   "normal":  "你看見對方把手迅速收回去，像是剛碰了什麼不該碰的東西。",
+                                   "distorted":  "那一下動作在你腦中被放大得過頭，等你再確認時，連自己都說不準究竟看見了什麼。"
+                               }
+    },
+    {
+        "id":  "blurred_choice_memory",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  13,
+        "unreliable":  true,
+        "misleadLevel":  3,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "text":  "你忽然非常肯定，自己以前已經做過這個選擇。可再往下想，又找不到任何一晚真的對得上，像記憶只剩形狀沒有時間。",
+        "tags":  [
+                     "night"
+                 ],
+        "options":  [
+                        {
+                            "text":  "堅持自己的記憶沒有錯",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -5,
+                                            "relationship":  -3,
+                                            "suspicion":  5,
+                                            "stress":  4
+                                        },
+                            "setFlags":  [
+                                             "rewrote_own_memory"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "承認自己現在也不確定",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "relationship":  1,
+                                            "suspicion":  1,
+                                            "stress":  2
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        },
+                        {
+                            "text":  "先把這件事記下來，今晚別再吵下去",
+                            "result":  "你沒有繼續說。衝突沒有爆開，空氣卻更難呼吸。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  4,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "delayed_false_memory"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "避免當場爆開，猜疑會留下"
+                        }
+                    ],
+        "distortionVariants":  {
+                                   "normal":  "你忽然非常肯定，自己以前已經做過這個選擇。",
+                                   "distorted":  "那份熟悉感太真了，真到讓你分不清自己是在回想，還是在把恐懼誤認成記憶。"
+                               }
+    },
+    {
+        "id":  "wrong_person_suspicion",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  15,
+        "unreliable":  true,
+        "misleadLevel":  3,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "conditions":  {
+                           "minSuspicion":  35
+                       },
+        "text":  "你幾乎已經相信是對方拿了東西。問題是，越接近那個答案，心裡另一個聲音就越提醒你：如果你這次怪錯了人，後面就很難再補回來。",
+        "tags":  [
+                     "day"
+                 ],
+        "options":  [
+                        {
+                            "text":  "直接把懷疑說出口",
+                            "result":  "你把話挑明。答案沒有完全出來，裂痕倒是先被看見了。",
+                            "effects":  {
+                                            "trust":  -9,
+                                            "relationship":  -7,
+                                            "suspicion":  8,
+                                            "stress":  6
+                                        },
+                            "setFlags":  [
+                                             "wrongly_accused_companion"
+                                         ],
+                            "behavior":  "aggressive",
+                            "hint":  "逼近真相，也可能直接撕裂"
+                        },
+                        {
+                            "text":  "提議一起找線索，先別把人定死",
+                            "result":  "你讓出手上的份量。對方沉默了一下，沒有再把視線移開。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  -1,
+                                            "trust":  1
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "你會更吃緊，但裂痕可能不再擴大"
+                        },
+                        {
+                            "text":  "把那句指控吞回去，先再看一晚",
+                            "result":  "你把實話放在中間。沒有因此變輕鬆，但至少不再往更深處滑。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "relationship":  -1,
+                                            "suspicion":  5,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "withheld_wrong_suspicion"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "把代價說出來，至少不再加深裂痕"
+                        }
+                    ],
+        "requiresBehavior":  {
+                                 "aggressive":  2
+                             },
+        "distortionVariants":  {
+                                   "normal":  "你幾乎已經相信是對方拿了東西。",
+                                   "distorted":  "那份確信來得太快，快得像根本不是事實，而是壓力終於找到一個能掛上去的人。"
+                               }
+    },
+    {
+        "id":  "npc_ration_advice",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  18,
+        "phase":  [
+                      "phase2",
+                      "phase3"
+                  ],
+        "text":  "對方看著剩下的口糧，語氣平得像是在講一件很合理的事。可你越聽，越分不清那是計算、照顧，還是另一種更精緻的自保。",
+        "tags":  [
+                     "night"
+                 ],
+        "npcSuggestion":  "今晚先把較完整的那份留在我這裡，明天我比較扛得住。",
+        "npcIntent":  "selfish",
+        "options":  [
+                        {
+                            "text":  "照他的話，把較完整的口糧先交給對方",
+                            "result":  "你照著對方的話做了。看起來比較像一起決定，代價卻不一定平分。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "stress":  2,
+                                            "resources":  {
+                                                              "food":  -1
+                                                          }
+                                        },
+                            "setFlags":  [
+                                             "followed_ration_advice"
+                                         ],
+                            "behavior":  "selfish",
+                            "hint":  "順著對方走，也把主導權交出去"
+                        },
+                        {
+                            "text":  "拒絕這個提議，改成當面平分",
+                            "result":  "你沒有接那句建議。對方沒再勸，只把沉默留給你。",
+                            "effects":  {
+                                            "relationship":  -1,
+                                            "stress":  1,
+                                            "suspicion":  1
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "拒絕之後，結果只剩你負責"
+                        },
+                        {
+                            "text":  "不照他的算法，自己重新分一遍",
+                            "result":  "你自己做了判斷。沒有人替你背書，也沒有人替你分擔那份不確定。",
+                            "effects":  {
+                                            "stress":  2,
+                                            "suspicion":  2
+                                        },
+                            "setFlags":  [
+                                             "delayed_food_decision"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "不站任何一邊，但責任也全在你"
+                        }
+                    ]
+    },
+    {
+        "id":  "npc_risky_route_push",
+        "type":  "danger",
+        "rarity":  "uncommon",
+        "weight":  17,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "對方指向前方那條更窄、更快，也更像在要人交出運氣的路。你知道他不一定是錯的，但也不覺得自己該這麼輕易把判斷交出去。",
+        "tags":  [
+                     "day"
+                 ],
+        "npcSuggestion":  "前面的狹路應該能省很多時間，現在不走就更晚了。",
+        "npcIntent":  "uncertain",
+        "options":  [
+                        {
+                            "text":  "照他的話，直接走那條更危險的近路",
+                            "result":  "你照著對方的話做了。看起來比較像一起決定，代價卻不一定平分。",
+                            "effects":  {
+                                            "energy":  -15,
+                                            "stress":  4,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          }
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "順著對方走，也把主導權交出去"
+                        },
+                        {
+                            "text":  "拒絕這個提議，改走較慢但穩的路",
+                            "result":  "你沒有接那句建議。對方沒再勸，只把沉默留給你。",
+                            "effects":  {
+                                            "energy":  -8,
+                                            "trust":  -1,
+                                            "stress":  1
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "拒絕之後，結果只剩你負責"
+                        },
+                        {
+                            "text":  "不聽他的，先用自己的方式再看一次地形",
+                            "result":  "你自己做了判斷。沒有人替你背書，也沒有人替你分擔那份不確定。",
+                            "effects":  {
+                                            "energy":  -10,
+                                            "stress":  -1,
+                                            "suspicion":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "不站任何一邊，但責任也全在你"
+                        }
+                    ]
+    },
+    {
+        "id":  "npc_water_location_claim",
+        "type":  "resource",
+        "rarity":  "rare",
+        "weight":  16,
+        "unreliable":  true,
+        "misleadLevel":  2,
+        "phase":  [
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "對方說得像是真的看見過那條水痕，可你看著那片地形，只覺得每塊黑石都長得差不多。相信這句話，也許能快一點；信錯了，代價也會更快。",
+        "tags":  [
+                     "day"
+                 ],
+        "npcSuggestion":  "黑石後面應該有一條細水痕，我記得就在那裡。",
+        "npcIntent":  "uncertain",
+        "options":  [
+                        {
+                            "text":  "照他的話，立刻朝那個位置找過去",
+                            "result":  "你照著對方的話做了。看起來比較像一起決定，代價卻不一定平分。",
+                            "effects":  {
+                                            "energy":  -14,
+                                            "stress":  3,
+                                            "resources":  {
+                                                              "water":  2
+                                                          }
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "順著對方走，也把主導權交出去"
+                        },
+                        {
+                            "text":  "拒絕這個說法，改往別的方向找",
+                            "result":  "你沒有接那句建議。對方沒再勸，只把沉默留給你。",
+                            "effects":  {
+                                            "trust":  -1,
+                                            "stress":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "拒絕之後，結果只剩你負責"
+                        },
+                        {
+                            "text":  "不完全信也不完全否定，先去確認痕跡",
+                            "result":  "你自己做了判斷。沒有人替你背書，也沒有人替你分擔那份不確定。",
+                            "effects":  {
+                                            "suspicion":  1,
+                                            "stress":  1,
+                                            "relationship":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "不站任何一邊，但責任也全在你"
+                        }
+                    ],
+        "distortionVariants":  {
+                                   "normal":  "對方提到黑石後方可能有一條細水痕，位置說得像很確定，卻又缺了幾個真正能讓人放心的細節。",
+                                   "distorted":  "那條所謂的水痕在你腦中一會清楚、一會模糊。你越想記住位置，越像只是把對方的語氣誤認成了證據。"
+                               }
+    },
+    {
+        "id":  "npc_confession_timing",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  15,
+        "phase":  [
+                      "phase4"
+                  ],
+        "text":  "對方把這句話說得很輕，輕得像是在替你留台階，也像是在提醒你，台階不會一直都在。你聽得出其中有善意，但善意不會自動抵消代價。",
+        "tags":  [
+                     "night"
+                 ],
+        "npcSuggestion":  "如果有什麼沒說，今晚說，明天就來不及了。",
+        "npcIntent":  "helpful",
+        "options":  [
+                        {
+                            "text":  "照他的話，今晚就把真相說出來",
+                            "result":  "你照著對方的話做了。看起來比較像一起決定，代價卻不一定平分。",
+                            "effects":  {
+                                            "trust":  3,
+                                            "relationship":  2,
+                                            "stress":  2,
+                                            "suspicion":  -3
+                                        },
+                            "setFlags":  [
+                                             "confessed_after_prompt"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "順著對方走，也把主導權交出去"
+                        },
+                        {
+                            "text":  "拒絕這個提議，把話繼續壓到明天",
+                            "result":  "你沒有接那句建議。對方沒再勸，只把沉默留給你。",
+                            "effects":  {
+                                            "trust":  -3,
+                                            "relationship":  -1,
+                                            "suspicion":  2,
+                                            "stress":  1
+                                        },
+                            "behavior":  "selfish",
+                            "hint":  "拒絕之後，結果只剩你負責"
+                        },
+                        {
+                            "text":  "不全照做，只挑能先說的部分開口",
+                            "result":  "你自己做了判斷。沒有人替你背書，也沒有人替你分擔那份不確定。",
+                            "effects":  {
+                                            "trust":  1,
+                                            "suspicion":  2,
+                                            "stress":  -1
+                                        },
+                            "setFlags":  [
+                                             "partial_confession"
+                                         ],
+                            "behavior":  "honest",
+                            "hint":  "不站任何一邊，但責任也全在你"
+                        }
+                    ],
+        "requiresBehavior":  {
+                                 "honest":  1
+                             }
+    },
+    {
+        "id":  "npc_push_on_or_rest",
+        "type":  "companion",
+        "rarity":  "common",
+        "weight":  18,
+        "phase":  [
+                      "phase2",
+                      "phase3",
+                      "phase4"
+                  ],
+        "text":  "對方看起來還撐得住，所以這句話聽起來特別像命令。你知道再多做一點事也許有用，可你也知道，體力不是靠說服就能再擠出來。",
+        "tags":  [
+                     "day"
+                 ],
+        "npcSuggestion":  "先別停，營地晚點再弄，我們現在不能浪費這段亮光。",
+        "npcIntent":  "selfish",
+        "options":  [
+                        {
+                            "text":  "照他的話，繼續往前做一件事",
+                            "result":  "你照著對方的話做了。看起來比較像一起決定，代價卻不一定平分。",
+                            "effects":  {
+                                            "energy":  -12,
+                                            "trust":  1,
+                                            "stress":  3,
+                                            "resources":  {
+                                                              "oddities":  1
+                                                          }
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "順著對方走，也把主導權交出去"
+                        },
+                        {
+                            "text":  "拒絕這個提議，現在就停下來收整",
+                            "result":  "你沒有接那句建議。對方沒再勸，只把沉默留給你。",
+                            "effects":  {
+                                            "stress":  -1,
+                                            "trust":  -1,
+                                            "relationship":  -1
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "拒絕之後，結果只剩你負責"
+                        },
+                        {
+                            "text":  "不照單全收，只做最小限度的處理",
+                            "result":  "你自己做了判斷。沒有人替你背書，也沒有人替你分擔那份不確定。",
+                            "effects":  {
+                                            "energy":  -6,
+                                            "resources":  {
+                                                              "materials":  1
+                                                          },
+                                            "suspicion":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "不站任何一邊，但責任也全在你"
+                        }
+                    ]
+    },
+    {
+        "id":  "npc_trust_their_read",
+        "type":  "companion",
+        "rarity":  "rare",
+        "weight":  16,
+        "phase":  [
+                      "phase4",
+                      "phase5"
+                  ],
+        "text":  "對方把判斷丟到你面前，要你決定是信他的直覺，還是信自己一路累積下來的戒心。最難的是，這兩樣東西現在都不算完整。",
+        "tags":  [
+                     "day"
+                 ],
+        "npcSuggestion":  "我覺得這次你該相信我，不然我們只會一直繞圈。",
+        "npcIntent":  "uncertain",
+        "options":  [
+                        {
+                            "text":  "照他的話，先信這一次",
+                            "result":  "你照著對方的話做了。看起來比較像一起決定，代價卻不一定平分。",
+                            "effects":  {
+                                            "trust":  2,
+                                            "relationship":  2,
+                                            "stress":  2
+                                        },
+                            "behavior":  "cooperative",
+                            "hint":  "順著對方走，也把主導權交出去"
+                        },
+                        {
+                            "text":  "拒絕這個要求，維持自己的判斷",
+                            "result":  "你沒有接那句建議。對方沒再勸，只把沉默留給你。",
+                            "effects":  {
+                                            "trust":  -2,
+                                            "suspicion":  2,
+                                            "stress":  1
+                                        },
+                            "behavior":  "aggressive",
+                            "hint":  "拒絕之後，結果只剩你負責"
+                        },
+                        {
+                            "text":  "不把答案全交出去，先保留自己的疑心",
+                            "result":  "你自己做了判斷。沒有人替你背書，也沒有人替你分擔那份不確定。",
+                            "effects":  {
+                                            "suspicion":  -1,
+                                            "relationship":  1,
+                                            "stress":  1
+                                        },
+                            "behavior":  "honest",
+                            "hint":  "不站任何一邊，但責任也全在你"
+                        }
+                    ],
+        "requiresBehavior":  {
+                                 "cooperative":  2
+                             }
+    }
+]
