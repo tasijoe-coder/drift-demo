@@ -1,271 +1,245 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react'
+﻿import { useEffect, useMemo, useReducer, useRef } from 'react'
 
 import events from '../data/events.json'
-import {
-  useProjectStore,
-  type BehaviorType,
-  type DayPhase,
-  type ResourceType,
-} from '../store/useProjectStore'
+import { useProjectStore, type BehaviorType, type DayPhase } from '../store/useProjectStore'
 
-export type EventTag = 'day' | 'night'
-export type EventType = 'resource' | 'danger' | 'companion'
-export type EventRarity = 'common' | 'uncommon' | 'rare'
-export type NpcIntent = 'helpful' | 'selfish' | 'uncertain'
+export type EventCategory = 'resource' | 'trust' | 'psychological' | 'external' | 'collapse'
 
-type WeightedEncounterEvent = EncounterEvent & {
+export type NarrativeEventConditions = {
+  minDay?: number
+  maxDay?: number
+  minTrust?: number
+  maxTrust?: number
+  minSuspicion?: number
+  maxSuspicion?: number
+  minStress?: number
+  maxStress?: number
+  minStamina?: number
+  maxStamina?: number
+  minResource?: number
+  maxResource?: number
+  minOddities?: number
+  maxOddities?: number
+}
+
+export type BehaviorRequirements = Partial<Record<BehaviorType, number>>
+
+export type NarrativeEffect = {
+  trust?: number
+  resource?: number
+  stress?: number
+  suspicion?: number
+  stamina?: number
+  hp?: number
+  oddities?: number
+}
+
+export type RandomOutcome = {
+  chance: number
+  effect?: NarrativeEffect
+  feeling?: string
+  setFlags?: string[]
+}
+
+export type NarrativeChoice = {
+  text: string
+  effect: NarrativeEffect
+  feeling: string
+  hoverHint?: string
+  behavior?: BehaviorType
+  setFlags?: string[]
+  randomOutcomes?: RandomOutcome[]
+}
+
+export type NarrativeEvent = {
+  id: string
+  title: string
+  category: EventCategory
+  text: string[]
+  choices: NarrativeChoice[]
+  background?: string
+  weight?: number
+  tags?: string[]
+  unreliable?: boolean
+  misleadLevel?: 1 | 2 | 3
+  days?: number[]
+  dayRange?: {
+    min: number
+    max: number
+  }
+  dayPhase?: DayPhase[]
+  requiredFlags?: string[]
+  excludedFlags?: string[]
+  conditions?: NarrativeEventConditions
+  requiresBehavior?: BehaviorRequirements
+}
+
+type WeightedEvent = NarrativeEvent & {
   adjustedWeight: number
 }
 
-export type EncounterConditions = {
-  minDay?: number
-  maxDay?: number
-  minEnergy?: number
-  maxEnergy?: number
-  minRelationship?: number
-  maxRelationship?: number
-  minSuspicion?: number
-  maxSuspicion?: number
-  minFood?: number
-  maxFood?: number
-  minWater?: number
-  maxWater?: number
+type EncounterAction = {
+  pool: WeightedEvent[]
+  excludeIds?: string[]
 }
 
-export type EncounterBehaviorRequirements = Partial<Record<BehaviorType, number>>
-
-export type EncounterEffects = {
-  energy?: number
-  relationship?: number
-  trust?: number
-  stress?: number
-  suspicion?: number
-  hp?: number
-  resources?: Partial<Record<ResourceType, number>>
-}
-
-export type EncounterOption = {
-  text: string
-  result: string
-  hint?: string
-  setFlags?: string[]
-  behavior?: BehaviorType
-  effects: EncounterEffects
-}
-
-export type EncounterEvent = {
-  id: string
-  type: EventType
-  rarity: EventRarity
-  weight: number
-  text: string
-  distortionVariants?: {
-    normal?: string
-    distorted?: string
-  }
-  tags: EventTag[]
-  phase?: DayPhase[]
-  requires?: string[]
-  excludes?: string[]
-  conditions?: EncounterConditions
-  requiresBehavior?: EncounterBehaviorRequirements
-  unreliable?: boolean
-  misleadLevel?: 1 | 2 | 3
-  npcSuggestion?: string
-  npcIntent?: NpcIntent
-  options: EncounterOption[]
-}
-
-type BehaviorCounts = {
+type BehaviorSnapshot = {
   selfishCount: number
   honestCount: number
   cooperativeCount: number
   aggressiveCount: number
 }
 
-type EncounterAction = {
-  pool: WeightedEncounterEvent[]
-  excludeIds?: string[]
+const narrativeEvents = events as NarrativeEvent[]
+const RECENT_EVENT_LIMIT = 5
+
+const matchesDay = (event: NarrativeEvent, day: number) => {
+  if (event.days?.length) {
+    return event.days.includes(day)
+  }
+
+  if (event.dayRange) {
+    return day >= event.dayRange.min && day <= event.dayRange.max
+  }
+
+  return true
 }
 
-const encounterEvents = events as EncounterEvent[]
-const RECENT_EVENT_LIMIT = 3
-
-const isNightHour = (hour: number) => hour >= 23 || hour <= 5
-
 const matchesConditions = (
-  conditions: EncounterConditions | undefined,
-  day: number,
-  energy: number,
-  relationship: number,
-  suspicion: number,
-  food: number,
-  water: number,
+  conditions: NarrativeEventConditions | undefined,
+  {
+    day,
+    trust,
+    suspicion,
+    stress,
+    stamina,
+    resource,
+    oddities,
+  }: {
+    day: number
+    trust: number
+    suspicion: number
+    stress: number
+    stamina: number
+    resource: number
+    oddities: number
+  },
 ) => {
   if (!conditions) {
     return true
   }
 
-  if (conditions.minDay !== undefined && day < conditions.minDay) {
-    return false
-  }
-
-  if (conditions.maxDay !== undefined && day > conditions.maxDay) {
-    return false
-  }
-
-  if (conditions.minEnergy !== undefined && energy < conditions.minEnergy) {
-    return false
-  }
-
-  if (conditions.maxEnergy !== undefined && energy > conditions.maxEnergy) {
-    return false
-  }
-
-  if (conditions.minRelationship !== undefined && relationship < conditions.minRelationship) {
-    return false
-  }
-
-  if (conditions.maxRelationship !== undefined && relationship > conditions.maxRelationship) {
-    return false
-  }
-
-  if (conditions.minSuspicion !== undefined && suspicion < conditions.minSuspicion) {
-    return false
-  }
-
-  if (conditions.maxSuspicion !== undefined && suspicion > conditions.maxSuspicion) {
-    return false
-  }
-
-  if (conditions.minFood !== undefined && food < conditions.minFood) {
-    return false
-  }
-
-  if (conditions.maxFood !== undefined && food > conditions.maxFood) {
-    return false
-  }
-
-  if (conditions.minWater !== undefined && water < conditions.minWater) {
-    return false
-  }
-
-  if (conditions.maxWater !== undefined && water > conditions.maxWater) {
-    return false
-  }
+  if (conditions.minDay !== undefined && day < conditions.minDay) return false
+  if (conditions.maxDay !== undefined && day > conditions.maxDay) return false
+  if (conditions.minTrust !== undefined && trust < conditions.minTrust) return false
+  if (conditions.maxTrust !== undefined && trust > conditions.maxTrust) return false
+  if (conditions.minSuspicion !== undefined && suspicion < conditions.minSuspicion) return false
+  if (conditions.maxSuspicion !== undefined && suspicion > conditions.maxSuspicion) return false
+  if (conditions.minStress !== undefined && stress < conditions.minStress) return false
+  if (conditions.maxStress !== undefined && stress > conditions.maxStress) return false
+  if (conditions.minStamina !== undefined && stamina < conditions.minStamina) return false
+  if (conditions.maxStamina !== undefined && stamina > conditions.maxStamina) return false
+  if (conditions.minResource !== undefined && resource < conditions.minResource) return false
+  if (conditions.maxResource !== undefined && resource > conditions.maxResource) return false
+  if (conditions.minOddities !== undefined && oddities < conditions.minOddities) return false
+  if (conditions.maxOddities !== undefined && oddities > conditions.maxOddities) return false
 
   return true
 }
 
 const matchesBehaviorRequirements = (
-  requirements: EncounterBehaviorRequirements | undefined,
-  behaviorCounts: BehaviorCounts,
+  requirements: BehaviorRequirements | undefined,
+  snapshot: BehaviorSnapshot,
 ) => {
   if (!requirements) {
     return true
   }
 
-  if ((requirements.selfish ?? 0) > behaviorCounts.selfishCount) {
-    return false
-  }
-
-  if ((requirements.honest ?? 0) > behaviorCounts.honestCount) {
-    return false
-  }
-
-  if ((requirements.cooperative ?? 0) > behaviorCounts.cooperativeCount) {
-    return false
-  }
-
-  if ((requirements.aggressive ?? 0) > behaviorCounts.aggressiveCount) {
-    return false
-  }
-
-  return true
-}
-
-const isNegativeEvent = (event: EncounterEvent) => {
-  return event.options.some((option) => {
-    const { effects } = option
-    const hasNegativeResourceChange = Object.values(effects.resources ?? {}).some(
-      (amount) => (amount ?? 0) < 0,
-    )
-
-    return (
-      (effects.energy ?? 0) < 0 ||
-      (effects.hp ?? 0) < 0 ||
-      (effects.relationship ?? 0) < 0 ||
-      (effects.trust ?? 0) < 0 ||
-      (effects.stress ?? 0) > 0 ||
-      (effects.suspicion ?? 0) > 0 ||
-      hasNegativeResourceChange
-    )
-  })
-}
-
-const isSuspicionDrivenEvent = (event: EncounterEvent) => {
-  const requiresSuspicion = event.conditions?.minSuspicion !== undefined
-  const hasSuspicionEffect = event.options.some((option) => (option.effects.suspicion ?? 0) !== 0)
-  const negativeTrustEvent = event.options.some(
-    (option) => (option.effects.trust ?? 0) < 0 || (option.effects.relationship ?? 0) < 0,
+  return (
+    (requirements.selfish ?? 0) <= snapshot.selfishCount &&
+    (requirements.honest ?? 0) <= snapshot.honestCount &&
+    (requirements.cooperative ?? 0) <= snapshot.cooperativeCount &&
+    (requirements.aggressive ?? 0) <= snapshot.aggressiveCount
   )
+}
 
-  return requiresSuspicion || hasSuspicionEffect || negativeTrustEvent || event.type === 'companion'
+const isNegativeChoice = (choice: NarrativeChoice) => {
+  const effect = choice.effect
+
+  return (
+    (effect.trust ?? 0) < 0 ||
+    (effect.resource ?? 0) < 0 ||
+    (effect.stress ?? 0) > 0 ||
+    (effect.suspicion ?? 0) > 0 ||
+    (effect.stamina ?? 0) < 0 ||
+    (effect.hp ?? 0) < 0
+  )
+}
+
+const eventFeelsHostile = (event: NarrativeEvent) => {
+  return event.category === 'collapse' || event.choices.some(isNegativeChoice)
 }
 
 const getAdjustedPool = (
-  pool: EncounterEvent[],
-  stress: number,
-  suspicion: number,
-  food: number,
-  water: number,
-  behaviorCounts: BehaviorCounts,
-): WeightedEncounterEvent[] => {
-  const resourceCrisis = food <= 0 || water <= 0
-  const unreliableJudgment = stress > 60 || suspicion > 50
-  const prioritizedPool = resourceCrisis ? pool.filter((event) => event.type === 'danger') : pool
-  const basePool = prioritizedPool.length > 0 ? prioritizedPool : pool
+  pool: NarrativeEvent[],
+  {
+    suspicion,
+    stress,
+    flags,
+    behavior,
+    resource,
+  }: {
+    suspicion: number
+    stress: number
+    flags: string[]
+    behavior: BehaviorSnapshot
+    resource: number
+  },
+): WeightedEvent[] => {
+  const memoryOfStealing = flags.some((flag) => ['took_more_for_self', 'stole_rations', 'hid_water', 'lied_about_supplies', 'betrayed_them'].includes(flag))
+  const coldWar = flags.includes('cold_war_started') || flags.includes('cold_war_hardened')
 
-  return basePool.map((event) => {
-    let adjustedWeight = event.weight
+  return pool.map((event) => {
+    let adjustedWeight = event.weight ?? 10
 
-    if (stress > 70) {
-      if (event.type === 'danger') {
-        adjustedWeight *= 2
-      }
-
-      if (isNegativeEvent(event)) {
-        adjustedWeight *= 1.5
-      }
+    if (event.days?.length) {
+      adjustedWeight *= 2.4
     }
 
-    if (event.unreliable) {
-      const misleadLevel = event.misleadLevel ?? 1
-      adjustedWeight *= unreliableJudgment ? 1 + misleadLevel * 0.35 : 1 + misleadLevel * 0.08
+    if (suspicion > 70 && (event.tags?.includes('paranoia') || event.category === 'trust')) {
+      adjustedWeight *= 1.9
     }
 
-    if (suspicion > 55 && isSuspicionDrivenEvent(event)) {
-      adjustedWeight *= 1.6
+    if (stress > 80 && (event.tags?.includes('hallucination') || event.category === 'collapse')) {
+      adjustedWeight *= 1.95
     }
 
-    if (behaviorCounts.selfishCount >= 3 && event.type === 'companion' && isNegativeEvent(event)) {
-      adjustedWeight *= 1.2
+    if (resource <= 2 && event.category === 'resource') {
+      adjustedWeight *= 1.4
     }
 
-    if (behaviorCounts.cooperativeCount >= 3 && event.type === 'companion' && !isNegativeEvent(event)) {
-      adjustedWeight *= 1.15
+    if (memoryOfStealing && (event.category === 'trust' || event.category === 'collapse')) {
+      adjustedWeight *= 1.35
     }
 
-    if (behaviorCounts.honestCount >= 2 && event.npcIntent === 'helpful') {
+    if (coldWar && event.category === 'collapse') {
+      adjustedWeight *= 1.5
+    }
+
+    if (behavior.selfishCount >= 3 && (event.category === 'trust' || event.category === 'collapse')) {
+      adjustedWeight *= 1.18
+    }
+
+    if (behavior.cooperativeCount >= 3 && event.category === 'resource') {
       adjustedWeight *= 1.12
     }
 
-    if (behaviorCounts.aggressiveCount >= 3 && (event.type === 'danger' || isNegativeEvent(event))) {
-      adjustedWeight *= 1.25
+    if (behavior.aggressiveCount >= 2 && eventFeelsHostile(event)) {
+      adjustedWeight *= 1.16
     }
 
-    if (suspicion < 20 && event.type === 'companion' && !isNegativeEvent(event)) {
-      adjustedWeight *= 1.2
+    if (event.unreliable) {
+      adjustedWeight *= stress > 65 || suspicion > 55 ? 1.28 : 1.08
     }
 
     return {
@@ -275,64 +249,17 @@ const getAdjustedPool = (
   })
 }
 
-const getEventPool = (
-  hour: number,
-  day: number,
-  dayPhase: DayPhase,
-  flags: string[],
-  energy: number,
-  relationship: number,
-  suspicion: number,
-  food: number,
-  water: number,
-  stress: number,
-  behaviorCounts: BehaviorCounts,
-) => {
-  const timeFiltered = isNightHour(hour)
-    ? encounterEvents
-    : encounterEvents.filter((event) => !event.tags.includes('night'))
-
-  const filteredPool = timeFiltered.filter((event) => {
-    const requires = event.requires ?? []
-    const excludes = event.excludes ?? []
-    const hasRequirements = requires.every((flag) => flags.includes(flag))
-    const passesExcludes = excludes.every((flag) => !flags.includes(flag))
-    const matchesDayPhase = !event.phase || event.phase.includes(dayPhase)
-
-    return (
-      hasRequirements &&
-      passesExcludes &&
-      matchesDayPhase &&
-      matchesConditions(event.conditions, day, energy, relationship, suspicion, food, water) &&
-      matchesBehaviorRequirements(event.requiresBehavior, behaviorCounts)
-    )
-  })
-
-  const exactDayMilestones = filteredPool.filter(
-    (event) => event.conditions?.minDay === day && event.conditions?.maxDay === day,
-  )
-  const basePool = exactDayMilestones.length > 0 ? exactDayMilestones : filteredPool
-
-  return getAdjustedPool(basePool, stress, suspicion, food, water, behaviorCounts)
-}
-
-const pickWeightedEvent = (
-  pool: WeightedEncounterEvent[],
-  excludeIds: string[] = [],
-): EncounterEvent | null => {
+const pickWeightedEvent = (pool: WeightedEvent[], excludeIds: string[] = []): NarrativeEvent | null => {
   if (pool.length === 0) {
     return null
   }
 
-  const uniqueExcludeIds = Array.from(new Set(excludeIds))
-  const filteredCandidates =
-    pool.length > uniqueExcludeIds.length
-      ? pool.filter((event) => !uniqueExcludeIds.includes(event.id))
-      : pool
+  const filteredPool = pool.length > excludeIds.length
+    ? pool.filter((event) => !excludeIds.includes(event.id))
+    : pool
 
-  const candidatePool = filteredCandidates.length > 0 ? filteredCandidates : pool
+  const candidatePool = filteredPool.length > 0 ? filteredPool : pool
   const totalWeight = candidatePool.reduce((sum, event) => sum + event.adjustedWeight, 0)
-
   let roll = Math.random() * totalWeight
 
   for (const event of candidatePool) {
@@ -345,49 +272,52 @@ const pickWeightedEvent = (
   return candidatePool[candidatePool.length - 1]
 }
 
-const encounterReducer = (_currentEvent: EncounterEvent | null, action: EncounterAction) => {
+const encounterReducer = (_currentEvent: NarrativeEvent | null, action: EncounterAction) => {
   return pickWeightedEvent(action.pool, action.excludeIds)
 }
 
 export function useEncounter() {
-  const hour = useProjectStore((state) => state.metaVariables.hour)
   const day = useProjectStore((state) => state.day)
   const dayPhase = useProjectStore((state) => state.dayPhase)
-  const flags = useProjectStore((state) => state.flags)
-  const energy = useProjectStore((state) => state.energy)
-  const relationship = useProjectStore((state) => state.relationship)
+  const trust = useProjectStore((state) => state.trust)
   const suspicion = useProjectStore((state) => state.suspicion)
   const stress = useProjectStore((state) => state.stress)
-  const food = useProjectStore((state) => state.resources.food)
-  const water = useProjectStore((state) => state.resources.water)
+  const stamina = useProjectStore((state) => state.stamina)
+  const resource = useProjectStore((state) => state.resource)
+  const oddities = useProjectStore((state) => state.oddities)
+  const flags = useProjectStore((state) => state.flags)
   const selfishCount = useProjectStore((state) => state.selfishCount)
   const honestCount = useProjectStore((state) => state.honestCount)
   const cooperativeCount = useProjectStore((state) => state.cooperativeCount)
   const aggressiveCount = useProjectStore((state) => state.aggressiveCount)
   const recentEventIdsRef = useRef<string[]>([])
 
-  const behaviorCounts = useMemo(
+  const behavior = useMemo(
     () => ({ selfishCount, honestCount, cooperativeCount, aggressiveCount }),
     [selfishCount, honestCount, cooperativeCount, aggressiveCount],
   )
 
-  const pool = useMemo(
-    () =>
-      getEventPool(
-        hour,
-        day,
-        dayPhase,
-        flags,
-        energy,
-        relationship,
-        suspicion,
-        food,
-        water,
-        stress,
-        behaviorCounts,
-      ),
-    [hour, day, dayPhase, flags, energy, relationship, suspicion, food, water, stress, behaviorCounts],
-  )
+  const pool = useMemo(() => {
+    const phaseFiltered = narrativeEvents.filter((event) => !event.dayPhase || event.dayPhase.includes(dayPhase))
+
+    const basePool = phaseFiltered.filter((event) => {
+      const requiredFlags = event.requiredFlags ?? []
+      const excludedFlags = event.excludedFlags ?? []
+
+      return (
+        matchesDay(event, day) &&
+        requiredFlags.every((flag) => flags.includes(flag)) &&
+        excludedFlags.every((flag) => !flags.includes(flag)) &&
+        matchesConditions(event.conditions, { day, trust, suspicion, stress, stamina, resource, oddities }) &&
+        matchesBehaviorRequirements(event.requiresBehavior, behavior)
+      )
+    })
+
+    const exactDayEvents = basePool.filter((event) => event.days?.includes(day))
+    const priorityPool = exactDayEvents.length > 0 ? exactDayEvents : basePool
+
+    return getAdjustedPool(priorityPool, { suspicion, stress, flags, behavior, resource })
+  }, [behavior, day, dayPhase, flags, oddities, resource, stamina, stress, suspicion, trust])
 
   const [currentEvent, dispatchEvent] = useReducer(
     encounterReducer,

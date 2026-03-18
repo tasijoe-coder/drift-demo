@@ -2,6 +2,6 @@
 
 export function useProjectTitle() {
   useEffect(() => {
-    document.title = '漂流島生存實驗'
+    document.title = '漂流者：信任臨界'
   }, [])
 }
