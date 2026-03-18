@@ -1,0 +1,21 @@
+﻿{
+  "name": "你能相信他嗎",
+  "short_name": "你能相信他嗎",
+  "description": "30 天荒島生存敘事遊戲，聚焦信任、懷疑與資源分配。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
