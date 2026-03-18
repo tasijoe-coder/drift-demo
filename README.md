@@ -76,3 +76,4 @@ git push -u origin main
 - `/event_resource.jpg`
 
 在 Vercel 根網域部署時，這些路徑可直接從 `public/` 正常提供。
+
