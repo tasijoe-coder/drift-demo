@@ -1,27 +1,25 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAmbientAudio } from '../hooks/useAmbientAudio'
 import { useEncounter, type NarrativeChoice, type NarrativeEvent } from '../hooks/useEncounter'
 import { useMetaVariables } from '../hooks/useMetaVariables'
-import { useProjectStore, type Weather } from '../store/useProjectStore'
+import { useProjectStore, type AppliedEffectSummary, type Weather } from '../store/useProjectStore'
 import {
   buildDiaryEntry,
   buildShiftNarrative,
-  clampOddities,
-  clampResource,
-  clampZeroToHundred,
   distortChoiceText,
   distortFeeling,
   distortLine,
   endings,
   getAmbientLine,
-  getDailyConsequence,
   getDistortionLevel,
   getEndingState,
-  getResourceDescriptor,
+  getFoodDescriptor,
   getStaminaDescriptor,
   getStressDescriptor,
   getTrustDescriptor,
+  getWaterDescriptor,
+  inferSupplyFocus,
   mergeEffect,
   phaseBackgrounds,
   pickRandomOutcome,
@@ -44,10 +42,17 @@ type ChoiceButtonProps = {
   hoverHint?: string
   onClick: () => void
   disabled?: boolean
+  disabledReason?: string
   delayMs?: number
 }
 
-function ChoiceButton({ text, hoverHint, onClick, disabled = false, delayMs = 0 }: ChoiceButtonProps) {
+type HudStatProps = {
+  label: string
+  value: number
+  descriptor: string
+}
+
+function ChoiceButton({ text, hoverHint, onClick, disabled = false, disabledReason, delayMs = 0 }: ChoiceButtonProps) {
   return (
     <button
       type="button"
@@ -61,6 +66,7 @@ function ChoiceButton({ text, hoverHint, onClick, disabled = false, delayMs = 0 
       }`}
     >
       <div className="text-base font-semibold leading-7 tracking-[0.02em]">{text}</div>
+      {disabled && disabledReason && <div className="mt-2 text-sm leading-6 text-stone-500">{disabledReason}</div>}
       {hoverHint && !disabled && (
         <div className="mt-2 max-h-0 overflow-hidden text-sm leading-6 text-stone-300/58 opacity-0 transition-all duration-300 group-hover:max-h-20 group-hover:opacity-100 group-focus-visible:max-h-20 group-focus-visible:opacity-100">
           {hoverHint}
@@ -68,6 +74,26 @@ function ChoiceButton({ text, hoverHint, onClick, disabled = false, delayMs = 0 
       )}
     </button>
   )
+}
+
+function HudStat({ label, value, descriptor }: HudStatProps) {
+  return (
+    <div className="rounded-2xl border border-stone-800/80 bg-black/28 px-3 py-2">
+      <div className="text-[10px] uppercase tracking-[0.28em] text-stone-400/60">{label}</div>
+      <div className="mt-1 flex items-end justify-between gap-2">
+        <span className="text-sm font-semibold tracking-[0.03em] text-stone-100">{value}</span>
+        <span className="text-[11px] text-stone-300/72">{descriptor}</span>
+      </div>
+    </div>
+  )
+}
+
+const formatSignedValue = (value: number) => (value > 0 ? `+${value}` : `${value}`)
+
+const getEchoTone = (value: number, inverted = false): EchoTone => {
+  if (value === 0) return 'calm'
+  if (inverted) return value > 0 ? 'danger' : 'calm'
+  return value > 0 ? 'calm' : 'warning'
 }
 
 export function StarterShell() {
@@ -80,19 +106,27 @@ export function StarterShell() {
   const dayPhase = useProjectStore((state) => state.dayPhase)
   const phase = useProjectStore((state) => state.phase)
   const stamina = useProjectStore((state) => state.stamina)
+  const water = useProjectStore((state) => state.water)
+  const food = useProjectStore((state) => state.food)
   const trust = useProjectStore((state) => state.trust)
   const suspicion = useProjectStore((state) => state.suspicion)
   const stress = useProjectStore((state) => state.stress)
   const resource = useProjectStore((state) => state.resource)
+  const hp = useProjectStore((state) => state.hp)
   const oddities = useProjectStore((state) => state.oddities)
   const metaVariables = useProjectStore((state) => state.metaVariables)
   const nextDay = useProjectStore((state) => state.nextDay)
   const changePhase = useProjectStore((state) => state.changePhase)
   const setMetaVariables = useProjectStore((state) => state.setMetaVariables)
   const resetGame = useProjectStore((state) => state.resetGame)
+  const applyEffect = useProjectStore((state) => state.applyEffect)
+  const setFlag = useProjectStore((state) => state.setFlag)
+  const incrementBehavior = useProjectStore((state) => state.incrementBehavior)
+  const setOtherAlive = useProjectStore((state) => state.setOtherAlive)
 
   const [showCover, setShowCover] = useState(true)
   const [coverStage, setCoverStage] = useState(0)
+  const [resultTitle, setResultTitle] = useState('')
   const [resultLines, setResultLines] = useState<string[]>([])
   const [resultStamp, setResultStamp] = useState(0)
   const [journalEntries, setJournalEntries] = useState<string[]>([])
@@ -103,11 +137,11 @@ export function StarterShell() {
   const [currentEnding, setCurrentEnding] = useState<keyof typeof endings | null>(null)
   const echoIdRef = useRef(0)
 
-  const typedEllipsis = useTypewriterText('……', coverStage >= 1, 240)
-  const typedAlive = useTypewriterText('你還活著。', coverStage >= 2, 76)
-  const typedNotAlone = useTypewriterText('但不是只有你一個人。', coverStage >= 3, 72)
+  const typedEllipsis = useTypewriterText('??', coverStage >= 1, 240)
+  const typedAlive = useTypewriterText('?????', coverStage >= 2, 76)
+  const typedNotAlone = useTypewriterText('??????????', coverStage >= 3, 72)
   const distortionLevel = getDistortionLevel(stress, suspicion, oddities)
-  const ambientLine = getAmbientLine(day, metaVariables.weather, metaVariables.isNight, resource)
+  const ambientLine = getAmbientLine(day, metaVariables.weather, metaVariables.isNight, water, food)
 
   const distortedEventLines = useMemo(
     () => (currentEvent?.text ?? []).map((line, index) => distortLine(line, distortionLevel, currentEvent?.unreliable, index)),
@@ -139,15 +173,15 @@ export function StarterShell() {
       const timer = window.setTimeout(() => setCoverStage(1), 500)
       return () => window.clearTimeout(timer)
     }
-    if (coverStage === 1 && typedEllipsis.length === '……'.length) {
+    if (coverStage === 1 && typedEllipsis.length === '??'.length) {
       const timer = window.setTimeout(() => setCoverStage(2), 800)
       return () => window.clearTimeout(timer)
     }
-    if (coverStage === 2 && typedAlive.length === '你還活著。'.length) {
+    if (coverStage === 2 && typedAlive.length === '?????'.length) {
       const timer = window.setTimeout(() => setCoverStage(3), 1200)
       return () => window.clearTimeout(timer)
     }
-    if (coverStage === 3 && typedNotAlone.length === '但不是只有你一個人。'.length) {
+    if (coverStage === 3 && typedNotAlone.length === '??????????'.length) {
       const timer = window.setTimeout(() => setCoverStage(4), 180)
       return () => window.clearTimeout(timer)
     }
@@ -194,14 +228,45 @@ export function StarterShell() {
     }, 1800)
   }
 
+  const emitEffectSummary = (summary: AppliedEffectSummary['delta']) => {
+    const entries: Array<{ label: string; value: number; tone: EchoTone }> = []
+
+    if (summary.stamina !== 0) entries.push({ label: '??', value: summary.stamina, tone: getEchoTone(summary.stamina) })
+    if (summary.water !== 0) entries.push({ label: '??', value: summary.water, tone: getEchoTone(summary.water) })
+    if (summary.food !== 0) entries.push({ label: '??', value: summary.food, tone: getEchoTone(summary.food) })
+    if (summary.trust !== 0) entries.push({ label: '??', value: summary.trust, tone: getEchoTone(summary.trust) })
+    if (summary.suspicion !== 0) entries.push({ label: '??', value: summary.suspicion, tone: getEchoTone(summary.suspicion, true) })
+    if (summary.stress !== 0) entries.push({ label: '??', value: summary.stress, tone: getEchoTone(summary.stress, true) })
+
+    entries.slice(0, 4).forEach((entry) => {
+      pushFloatingEcho(`${entry.label} ${formatSignedValue(entry.value)}`, entry.tone)
+    })
+  }
+
+  const buildStatusSummary = (snapshot: ReturnType<typeof useProjectStore.getState>, extraLines: string[] = []) => {
+    const lines = [
+      `?????????? ${snapshot.water}?`,
+      `???? ${snapshot.food}?`,
+      snapshot.trust >= 50 ? '?????????????????????????????' : '????????????????',
+      snapshot.suspicion >= 60 ? '???????????????' : '?????????????????',
+      snapshot.stress >= 70 ? '????????????????????' : '???????????????????',
+      ...extraLines,
+    ]
+
+    return lines
+  }
+
   const refreshEnvironment = (night: boolean) => {
-    const weather = weatherPool[Math.floor(Math.random() * weatherPool.length)] as Weather
-    setMetaVariables({ weather, hour: night ? 23 : 8 + Math.floor(Math.random() * 9), isNight: night })
+    const state = useProjectStore.getState()
+    const weather = weatherPool[(state.day + state.suspicion + state.stress + (night ? 1 : 0)) % weatherPool.length] as Weather
+    const hour = night ? 23 : 8 + ((state.day + state.trust + state.water + state.food) % 9)
+    setMetaVariables({ weather, hour, isNight: night })
   }
 
   const restartGame = async () => {
     resetGame()
     setCurrentEnding(null)
+    setResultTitle('')
     setResultLines([])
     setResultStamp(0)
     setJournalEntries([])
@@ -218,70 +283,123 @@ export function StarterShell() {
     }
   }
 
-  const applyChoice = (event: NarrativeEvent, choice: NarrativeChoice) => {
-    const storeBefore = useProjectStore.getState()
-    const randomOutcome = pickRandomOutcome(choice.randomOutcomes)
-    const choiceEffect = mergeEffect(choice.effect, randomOutcome?.effect)
-    const dailyEffect = getDailyConsequence(storeBefore.day, storeBefore.metaVariables.weather, {
-      resource: clampResource(storeBefore.resource + (choiceEffect.resource ?? 0)),
-      stamina: clampZeroToHundred(storeBefore.stamina + (choiceEffect.stamina ?? 0)),
-      stress: clampZeroToHundred(storeBefore.stress + (choiceEffect.stress ?? 0)),
-      hp: clampZeroToHundred(storeBefore.hp + (choiceEffect.hp ?? 0)),
-    })
-    const totalEffect = mergeEffect(choiceEffect, dailyEffect)
-    const allFlags = [...(choice.setFlags ?? []), ...(randomOutcome?.setFlags ?? [])]
-
-    const nextState = {
-      stamina: clampZeroToHundred(storeBefore.stamina + (totalEffect.stamina ?? 0)),
-      hp: clampZeroToHundred(storeBefore.hp + (totalEffect.hp ?? 0)),
-      trust: clampZeroToHundred(storeBefore.trust + (totalEffect.trust ?? 0)),
-      suspicion: clampZeroToHundred(storeBefore.suspicion + (totalEffect.suspicion ?? 0)),
-      stress: clampZeroToHundred(storeBefore.stress + (totalEffect.stress ?? 0)),
-      resource: clampResource(storeBefore.resource + (totalEffect.resource ?? 0)),
-      oddities: clampOddities(storeBefore.oddities + (totalEffect.oddities ?? 0)),
-      flags: Array.from(new Set([...storeBefore.flags, ...allFlags])),
-      selfishCount: storeBefore.selfishCount + (choice.behavior === 'selfish' ? 1 : 0),
-      honestCount: storeBefore.honestCount + (choice.behavior === 'honest' ? 1 : 0),
-      cooperativeCount: storeBefore.cooperativeCount + (choice.behavior === 'cooperative' ? 1 : 0),
-      aggressiveCount: storeBefore.aggressiveCount + (choice.behavior === 'aggressive' ? 1 : 0),
-      otherAlive: !allFlags.some((flag) => ['killed_companion', 'accidental_killing', 'other_left_behind', 'they_walked_away'].includes(flag)),
-      phase: 'result' as const,
-      metaVariables: { ...storeBefore.metaVariables, isNight: true, hour: 23 },
+  const getChoiceAvailability = (choice: NarrativeChoice) => {
+    if ((choice.effect.stamina ?? 0) < 0 && stamina < Math.abs(choice.effect.stamina ?? 0)) {
+      return { disabled: true, reason: '???????' }
     }
 
-    useProjectStore.setState(nextState)
+    if ((choice.effect.water ?? 0) < 0 && water < Math.abs(choice.effect.water ?? 0)) {
+      return { disabled: true, reason: '????????????' }
+    }
 
+    if ((choice.effect.food ?? 0) < 0 && food < Math.abs(choice.effect.food ?? 0)) {
+      return { disabled: true, reason: '???????????????' }
+    }
+
+    if ((choice.effect.resource ?? 0) < 0 && resource < Math.abs(choice.effect.resource ?? 0)) {
+      return { disabled: true, reason: '???????' }
+    }
+
+    return { disabled: false, reason: undefined }
+  }
+
+  const applyChoice = (event: NarrativeEvent, choice: NarrativeChoice) => {
+    const availability = getChoiceAvailability(choice)
+    if (availability.disabled) {
+      pushFloatingEcho(availability.reason ?? '???????', 'warning')
+      return
+    }
+
+    const storeBefore = useProjectStore.getState()
+    const randomOutcome = pickRandomOutcome(choice.randomOutcomes)
+    const mergedEffect = mergeEffect(choice.effect, randomOutcome?.effect)
+    const effectSummary = applyEffect(mergedEffect, inferSupplyFocus(event, choice))
+    const allFlags = [...(choice.setFlags ?? []), ...(randomOutcome?.setFlags ?? [])]
+
+    allFlags.forEach((flag) => setFlag(flag))
+    incrementBehavior(choice.behavior)
+    setOtherAlive(!allFlags.some((flag) => ['killed_companion', 'accidental_killing', 'other_left_behind', 'they_walked_away'].includes(flag)))
+    changePhase('result')
+    setMetaVariables({ isNight: true, hour: 23 })
+    setCurrentEnding(null)
+
+    const storeAfter = useProjectStore.getState()
     const hiddenLines = buildShiftNarrative(
-      { trust: storeBefore.trust, suspicion: storeBefore.suspicion, stress: storeBefore.stress, resource: storeBefore.resource, stamina: storeBefore.stamina, hp: storeBefore.hp },
-      { trust: nextState.trust, suspicion: nextState.suspicion, stress: nextState.stress, resource: nextState.resource, stamina: nextState.stamina, hp: nextState.hp },
+      {
+        trust: storeBefore.trust,
+        suspicion: storeBefore.suspicion,
+        stress: storeBefore.stress,
+        stamina: storeBefore.stamina,
+        hp: storeBefore.hp,
+        water: storeBefore.water,
+        food: storeBefore.food,
+      },
+      {
+        trust: storeAfter.trust,
+        suspicion: storeAfter.suspicion,
+        stress: storeAfter.stress,
+        stamina: storeAfter.stamina,
+        hp: storeAfter.hp,
+        water: storeAfter.water,
+        food: storeAfter.food,
+      },
     )
     const feeling = distortFeeling(randomOutcome?.feeling ?? choice.feeling, distortionLevel, event.unreliable)
-    const closingLine = nextState.resource <= 2 ? '夜裡變得更長了，因為你知道明天不會比較仁慈。' : nextState.stress >= 80 ? '你以為自己只是在累，後來才發現那更像是在防著什麼。' : '夜又靠近了一點，而你不確定今天到底留下了什麼。'
+    const closingLine = storeAfter.water <= 1
+      ? '???????????????????????????????'
+      : storeAfter.food <= 1
+        ? '????????????????????????????'
+        : storeAfter.stress >= 80
+          ? '?????????????????????????'
+          : '???????????????????????'
     const nextResultLines = [feeling, ...hiddenLines, closingLine]
 
+    setResultTitle(event.title)
     setResultLines(nextResultLines)
     setResultStamp((stamp) => stamp + 1)
-    setCurrentEnding(getEndingState({ ...storeBefore, ...nextState }))
-    setJournalEntries((entries) => [buildDiaryEntry(day, event.title, nextResultLines), ...entries].slice(0, 30))
 
-    if ((totalEffect.trust ?? 0) <= -5) pushFloatingEcho('他把這件事記住了', 'warning')
-    if ((totalEffect.trust ?? 0) >= 5) pushFloatingEcho('那份防備鬆了一點', 'calm')
-    if ((totalEffect.resource ?? 0) > 0) pushFloatingEcho('今晚還不會立刻空掉', 'calm')
-    if ((totalEffect.resource ?? 0) < 0) pushFloatingEcho('補給又薄了一層', 'warning')
-    if ((totalEffect.stress ?? 0) >= 5) pushFloatingEcho('你的腦子變得更吵', 'danger')
-    if ((totalEffect.suspicion ?? 0) >= 4) pushFloatingEcho('懷疑正在靠近', 'warning')
+    emitEffectSummary(effectSummary.delta)
+
+    if (effectSummary.delta.trust <= -5) pushFloatingEcho('????????', 'warning')
+    if (effectSummary.delta.trust >= 5) pushFloatingEcho('????????', 'calm')
+    if (effectSummary.delta.suspicion >= 4) pushFloatingEcho('??????', 'warning')
+    if (effectSummary.delta.stress >= 5) pushFloatingEcho('????????', 'danger')
   }
 
   const continueFromResult = () => {
-    const state = useProjectStore.getState()
-    const shouldEnd = state.hp <= 0 || state.day >= 30 || !state.otherAlive || state.flags.includes('killed_companion') || state.flags.includes('accidental_killing') || state.flags.includes('mutual_ruin')
-    if (shouldEnd) {
-      setCurrentEnding(getEndingState(state))
+    const stateBefore = useProjectStore.getState()
+    const shouldEndNow = stateBefore.hp <= 0 || stateBefore.day >= 30 || !stateBefore.otherAlive || stateBefore.flags.includes('killed_companion') || stateBefore.flags.includes('accidental_killing') || stateBefore.flags.includes('mutual_ruin')
+
+    if (shouldEndNow) {
+      setJournalEntries((entries) => [
+        buildDiaryEntry(stateBefore.day, resultTitle || '??', resultLines, buildStatusSummary(stateBefore)),
+        ...entries,
+      ].slice(0, 30))
+      setCurrentEnding(getEndingState(stateBefore))
       changePhase('ending')
       return
     }
-    nextDay()
+
+    const daySummary = nextDay()
+    const stateAfter = useProjectStore.getState()
+
+    setJournalEntries((entries) => [
+      buildDiaryEntry(daySummary.previousDay, resultTitle || '??', resultLines, buildStatusSummary(stateAfter, daySummary.notes)),
+      ...entries,
+    ].slice(0, 30))
+
+    emitEffectSummary(daySummary.delta)
+    daySummary.notes.slice(0, 2).forEach((line) => pushFloatingEcho(line, line.includes('??') || line.includes('?') || line.includes('?') ? 'warning' : 'calm'))
+
+    if (stateAfter.hp <= 0 || !stateAfter.otherAlive || stateAfter.flags.includes('mutual_ruin')) {
+      setCurrentEnding(getEndingState(stateAfter))
+      changePhase('ending')
+      return
+    }
+
     refreshEnvironment(false)
+    setResultTitle('')
+    setCurrentEnding(null)
     changePhase('encounter')
     rollEvent()
   }
@@ -314,7 +432,7 @@ export function StarterShell() {
               }}
               className="mx-auto min-h-[56px] w-full max-w-[360px] rounded-[22px] border border-stone-600/80 bg-[linear-gradient(180deg,rgba(40,34,31,0.9),rgba(12,11,10,0.98))] px-6 py-4 text-base font-semibold tracking-[0.18em] text-stone-100 transition duration-300 hover:border-stone-400/85 hover:bg-[linear-gradient(180deg,rgba(52,45,42,0.94),rgba(16,14,13,0.98))]"
             >
-              我醒了。
+              ????
             </button>
           )}
         </div>
@@ -337,7 +455,7 @@ export function StarterShell() {
             <h1 className="mt-4 text-[2rem] font-semibold leading-tight tracking-[0.08em] text-stone-50">{endings[currentEnding].title}</h1>
             <div className="mt-5 space-y-5 text-[1.08rem] leading-[2.05] text-stone-100/90">{endings[currentEnding].text.map((line) => <p key={line} className="[animation:driftFadeUp_.7s_ease-out_both]">{line}</p>)}</div>
           </article>
-          <div className="mx-auto mt-4 w-full max-w-[360px]"><ChoiceButton text="重新開始" hoverHint="再活一次，看看這次你會先把什麼讓出去。" onClick={() => { void restartGame() }} /></div>
+          <div className="mx-auto mt-4 w-full max-w-[360px]"><ChoiceButton text="????" hoverHint="???????????????????" onClick={() => { void restartGame() }} /></div>
         </div>
       </main>
     )
@@ -351,49 +469,75 @@ export function StarterShell() {
       <div className={`absolute inset-0 ${distortionLevel >= 2 ? 'bg-gradient-to-b from-black/90 via-rose-950/30 to-black' : 'bg-gradient-to-b from-black/88 via-black/72 to-black'}`} />
       <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(rgba(255,255,255,0.07)_0.8px,transparent_0.8px)] [background-size:13px_13px] mix-blend-soft-light" />
       <div className="relative z-10 flex min-h-[100dvh] flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)]">
-        <header className="mx-auto w-full max-w-[360px]">
+        <header className="mx-auto w-full max-w-[360px] rounded-[24px] border border-stone-800/80 bg-black/26 px-3 py-3 backdrop-blur-md">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/82">Day {day}</div>
+              <div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/82">Day {day} / 30</div>
               <div className="mt-2 text-xs leading-6 text-stone-300/64">{ambientLine}</div>
             </div>
-            <button type="button" onClick={() => setShowJournal(true)} className="rounded-full border border-stone-700/70 bg-black/35 px-3 py-2 text-[11px] tracking-[0.28em] text-stone-200/74 transition hover:bg-black/55">日誌</button>
+            <button type="button" onClick={() => setShowJournal(true)} className="rounded-full border border-stone-700/70 bg-black/35 px-3 py-2 text-[11px] tracking-[0.28em] text-stone-200/74 transition hover:bg-black/55">??</button>
           </div>
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.28em] text-stone-300/62">
-            <span>信任：{getTrustDescriptor(trust)}</span>
-            <span>壓力：{getStressDescriptor(stress)}</span>
-            <span>體力：{getStaminaDescriptor(stamina)}</span>
-            <span>補給：{getResourceDescriptor(resource)}</span>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <HudStat label="??" value={stamina} descriptor={getStaminaDescriptor(stamina)} />
+            <HudStat label="??" value={water} descriptor={getWaterDescriptor(water)} />
+            <HudStat label="??" value={food} descriptor={getFoodDescriptor(food)} />
+            <HudStat label="??" value={trust} descriptor={getTrustDescriptor(trust)} />
+            <HudStat label="??" value={suspicion} descriptor={suspicion >= 70 ? '??' : suspicion >= 35 ? '??' : '?'} />
+            <HudStat label="??" value={stress} descriptor={getStressDescriptor(stress)} />
           </div>
         </header>
-        <div className="pointer-events-none absolute inset-x-4 top-[calc(env(safe-area-inset-top)+5.8rem)] z-20 space-y-2">{floatingEchoes.map((echo) => <div key={echo.id} className={`mx-auto max-w-[320px] rounded-full border px-3 py-2 text-center text-[11px] tracking-[0.22em] [animation:driftFadeUp_.4s_ease-out_both] ${echo.tone === 'danger' ? 'border-rose-500/28 bg-rose-500/18 text-rose-50' : echo.tone === 'warning' ? 'border-amber-500/28 bg-amber-500/14 text-amber-50' : 'border-emerald-500/24 bg-emerald-500/14 text-emerald-50'}`}>{echo.text}</div>)}</div>
+        <div className="pointer-events-none absolute inset-x-4 top-[calc(env(safe-area-inset-top)+10.25rem)] z-20 space-y-2">
+          {floatingEchoes.map((echo) => (
+            <div key={echo.id} className={`mx-auto max-w-[320px] rounded-full border px-3 py-2 text-center text-[11px] tracking-[0.22em] [animation:driftFadeUp_.4s_ease-out_both] ${echo.tone === 'danger' ? 'border-rose-500/28 bg-rose-500/18 text-rose-50' : echo.tone === 'warning' ? 'border-amber-500/28 bg-amber-500/14 text-amber-50' : 'border-emerald-500/24 bg-emerald-500/14 text-emerald-50'}`}>
+              {echo.text}
+            </div>
+          ))}
+        </div>
         <section className="flex flex-1 flex-col justify-center px-1 py-6">
           <article className={`mx-auto w-full max-w-[320px] rounded-[28px] border px-5 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl ${distortionLevel >= 2 ? 'border-rose-900/55 bg-[linear-gradient(180deg,rgba(26,14,14,0.92),rgba(7,5,5,0.98))]' : 'border-stone-700/75 bg-[linear-gradient(180deg,rgba(18,16,14,0.92),rgba(6,5,4,0.98))]'}`}>
             <div className="text-[11px] uppercase tracking-[0.48em] text-stone-400/64">{phase === 'encounter' ? 'Encounter' : 'Aftermath'}</div>
-            <h1 className="mt-4 text-[clamp(1.9rem,7vw,2.45rem)] font-semibold leading-tight tracking-[0.08em] text-stone-50">{phase === 'result' ? '事情已經發生了' : currentEvent?.title ?? '海風還沒有給你答案'}</h1>
+            <h1 className="mt-4 text-[clamp(1.9rem,7vw,2.45rem)] font-semibold leading-tight tracking-[0.08em] text-stone-50">{phase === 'result' ? resultTitle || '???????' : currentEvent?.title ?? '?????????'}</h1>
             <div className="mt-5 space-y-5 text-[1.08rem] leading-[2.05] tracking-[0.01em] text-stone-100/92">
               {phase === 'encounter' && visibleEventBlocks.map((line) => <p key={line} className="whitespace-pre-line [animation:driftFadeUp_.75s_ease-out_both]">{line}</p>)}
               {phase === 'result' && visibleResultBlocks.map((line) => <p key={line} className="whitespace-pre-line [animation:driftFadeUp_.75s_ease-out_both]">{line}</p>)}
-              {phase === 'encounter' && !eventReady && <p className="text-base leading-8 text-stone-300/70">你還在等自己先把第一句話說出口。</p>}
+              {phase === 'encounter' && !eventReady && <p className="text-base leading-8 text-stone-300/70">????????????????</p>}
             </div>
-            {phase === 'encounter' && currentEvent?.unreliable && distortionLevel >= 1 && <div className="mt-6 border-l border-stone-600/45 pl-4 text-sm leading-7 text-stone-300/60">你不確定眼前這一幕，是事情本來就這樣，還是你的腦子已經先把它往別的地方推了一點。</div>}
+            {phase === 'encounter' && currentEvent?.unreliable && distortionLevel >= 1 && <div className="mt-6 border-l border-stone-600/45 pl-4 text-sm leading-7 text-stone-300/60">????????????????????????????????????????</div>}
           </article>
         </section>
         <footer className="mx-auto w-full max-w-[360px] space-y-3">
-          {phase === 'encounter' && eventReady && currentEvent?.choices.slice(0, 3).map((choice, index) => <ChoiceButton key={`${currentEvent.id}-${choice.text}`} text={distortChoiceText(choice.text, distortionLevel, index)} hoverHint={choice.hoverHint} delayMs={index * 80} onClick={() => applyChoice(currentEvent, choice)} />)}
-          {phase === 'result' && resultReady && <ChoiceButton text={day >= 30 || currentEnding ? '把這段路看完' : '帶著這個結果進入明天'} hoverHint={day >= 30 || currentEnding ? '現在只剩你怎麼記住這三十天。' : '你不知道明天會更好，還是只是更難。'} onClick={continueFromResult} />}
+          {phase === 'encounter' && eventReady && currentEvent?.choices.slice(0, 3).map((choice, index) => {
+            const availability = getChoiceAvailability(choice)
+            return (
+              <ChoiceButton
+                key={`${currentEvent.id}-${choice.text}`}
+                text={distortChoiceText(choice.text, distortionLevel, index)}
+                hoverHint={choice.hoverHint}
+                disabled={availability.disabled}
+                disabledReason={availability.reason}
+                delayMs={index * 80}
+                onClick={() => applyChoice(currentEvent, choice)}
+              />
+            )
+          })}
+          {phase === 'result' && resultReady && (
+            <ChoiceButton
+              text={day >= 30 || hp <= 0 || currentEnding ? '??????' : '??????????'}
+              hoverHint={day >= 30 || hp <= 0 || currentEnding ? '??????????????' : '?????????????????'}
+              onClick={continueFromResult}
+            />
+          )}
         </footer>
       </div>
       {showJournal && (
         <>
-          <button type="button" aria-label="關閉日誌" onClick={() => setShowJournal(false)} className="absolute inset-0 z-30 bg-black/62" />
+          <button type="button" aria-label="????" onClick={() => setShowJournal(false)} className="absolute inset-0 z-30 bg-black/62" />
           <aside className="absolute right-0 top-0 z-40 flex h-full w-[86vw] max-w-sm flex-col border-l border-stone-700/70 bg-[linear-gradient(180deg,rgba(12,10,9,0.98),rgba(4,3,3,1))] px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)] shadow-2xl backdrop-blur-xl">
-            <div className="flex items-start justify-between gap-3"><div><div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/68">Journal</div><h2 className="mt-2 text-xl font-semibold tracking-[0.08em] text-stone-50">日誌</h2></div><button type="button" onClick={() => setShowJournal(false)} className="rounded-full border border-stone-700/70 px-3 py-2 text-[11px] tracking-[0.25em] text-stone-200/72">關閉</button></div>
-            <div className="mt-5 flex-1 space-y-4 overflow-y-auto pr-1">{(journalEntries.length > 0 ? journalEntries : ['Day 1\n你剛醒來。\n真正的問題現在才開始。']).map((entry) => <article key={entry} className="rounded-[22px] border border-stone-800/75 bg-black/35 px-4 py-4"><p className="whitespace-pre-line text-sm leading-7 text-stone-100/86">{entry}</p></article>)}</div>
+            <div className="flex items-start justify-between gap-3"><div><div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/68">Journal</div><h2 className="mt-2 text-xl font-semibold tracking-[0.08em] text-stone-50">??</h2></div><button type="button" onClick={() => setShowJournal(false)} className="rounded-full border border-stone-700/70 px-3 py-2 text-[11px] tracking-[0.25em] text-stone-200/72">??</button></div>
+            <div className="mt-5 flex-1 space-y-4 overflow-y-auto pr-1">{(journalEntries.length > 0 ? journalEntries : ['Day 1\n?????\n???????????']).map((entry) => <article key={entry} className="rounded-[22px] border border-stone-800/75 bg-black/35 px-4 py-4"><p className="whitespace-pre-line text-sm leading-7 text-stone-100/86">{entry}</p></article>)}</div>
           </aside>
         </>
       )}
     </main>
   )
 }
-

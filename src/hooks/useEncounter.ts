@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useReducer, useRef } from 'react'
+import { useEffect, useMemo, useReducer, useRef } from 'react'
 
 import events from '../data/events.json'
 import { useProjectStore, type BehaviorType, type DayPhase } from '../store/useProjectStore'
@@ -16,6 +16,10 @@ export type NarrativeEventConditions = {
   maxStress?: number
   minStamina?: number
   maxStamina?: number
+  minWater?: number
+  maxWater?: number
+  minFood?: number
+  maxFood?: number
   minResource?: number
   maxResource?: number
   minOddities?: number
@@ -27,6 +31,8 @@ export type BehaviorRequirements = Partial<Record<BehaviorType, number>>
 export type NarrativeEffect = {
   trust?: number
   resource?: number
+  water?: number
+  food?: number
   stress?: number
   suspicion?: number
   stamina?: number
@@ -113,6 +119,8 @@ const matchesConditions = (
     suspicion,
     stress,
     stamina,
+    water,
+    food,
     resource,
     oddities,
   }: {
@@ -121,6 +129,8 @@ const matchesConditions = (
     suspicion: number
     stress: number
     stamina: number
+    water: number
+    food: number
     resource: number
     oddities: number
   },
@@ -139,6 +149,10 @@ const matchesConditions = (
   if (conditions.maxStress !== undefined && stress > conditions.maxStress) return false
   if (conditions.minStamina !== undefined && stamina < conditions.minStamina) return false
   if (conditions.maxStamina !== undefined && stamina > conditions.maxStamina) return false
+  if (conditions.minWater !== undefined && water < conditions.minWater) return false
+  if (conditions.maxWater !== undefined && water > conditions.maxWater) return false
+  if (conditions.minFood !== undefined && food < conditions.minFood) return false
+  if (conditions.maxFood !== undefined && food > conditions.maxFood) return false
   if (conditions.minResource !== undefined && resource < conditions.minResource) return false
   if (conditions.maxResource !== undefined && resource > conditions.maxResource) return false
   if (conditions.minOddities !== undefined && oddities < conditions.minOddities) return false
@@ -169,6 +183,8 @@ const isNegativeChoice = (choice: NarrativeChoice) => {
   return (
     (effect.trust ?? 0) < 0 ||
     (effect.resource ?? 0) < 0 ||
+    (effect.water ?? 0) < 0 ||
+    (effect.food ?? 0) < 0 ||
     (effect.stress ?? 0) > 0 ||
     (effect.suspicion ?? 0) > 0 ||
     (effect.stamina ?? 0) < 0 ||
@@ -188,12 +204,16 @@ const getAdjustedPool = (
     flags,
     behavior,
     resource,
+    water,
+    food,
   }: {
     suspicion: number
     stress: number
     flags: string[]
     behavior: BehaviorSnapshot
     resource: number
+    water: number
+    food: number
   },
 ): WeightedEvent[] => {
   const memoryOfStealing = flags.some((flag) => ['took_more_for_self', 'stole_rations', 'hid_water', 'lied_about_supplies', 'betrayed_them'].includes(flag))
@@ -214,7 +234,7 @@ const getAdjustedPool = (
       adjustedWeight *= 1.95
     }
 
-    if (resource <= 2 && event.category === 'resource') {
+    if ((resource <= 2 || water <= 1 || food <= 1) && event.category === 'resource') {
       adjustedWeight *= 1.4
     }
 
@@ -283,6 +303,8 @@ export function useEncounter() {
   const suspicion = useProjectStore((state) => state.suspicion)
   const stress = useProjectStore((state) => state.stress)
   const stamina = useProjectStore((state) => state.stamina)
+  const water = useProjectStore((state) => state.water)
+  const food = useProjectStore((state) => state.food)
   const resource = useProjectStore((state) => state.resource)
   const oddities = useProjectStore((state) => state.oddities)
   const flags = useProjectStore((state) => state.flags)
@@ -308,7 +330,7 @@ export function useEncounter() {
         matchesDay(event, day) &&
         requiredFlags.every((flag) => flags.includes(flag)) &&
         excludedFlags.every((flag) => !flags.includes(flag)) &&
-        matchesConditions(event.conditions, { day, trust, suspicion, stress, stamina, resource, oddities }) &&
+        matchesConditions(event.conditions, { day, trust, suspicion, stress, stamina, water, food, resource, oddities }) &&
         matchesBehaviorRequirements(event.requiresBehavior, behavior)
       )
     })
@@ -316,8 +338,8 @@ export function useEncounter() {
     const exactDayEvents = basePool.filter((event) => event.days?.includes(day))
     const priorityPool = exactDayEvents.length > 0 ? exactDayEvents : basePool
 
-    return getAdjustedPool(priorityPool, { suspicion, stress, flags, behavior, resource })
-  }, [behavior, day, dayPhase, flags, oddities, resource, stamina, stress, suspicion, trust])
+    return getAdjustedPool(priorityPool, { suspicion, stress, flags, behavior, resource, water, food })
+  }, [behavior, day, dayPhase, flags, food, oddities, resource, stamina, stress, suspicion, trust, water])
 
   const [currentEvent, dispatchEvent] = useReducer(
     encounterReducer,
