@@ -1,28 +1,29 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAmbientAudio } from '../hooks/useAmbientAudio'
-import { useEncounter, type NarrativeChoice, type NarrativeEvent } from '../hooks/useEncounter'
+import { useEncounter } from '../hooks/useEncounter'
 import { useMetaVariables } from '../hooks/useMetaVariables'
-import { useProjectStore, type AppliedEffectSummary, type Weather } from '../store/useProjectStore'
+import { useProjectStore, type AppliedEffectSummary, type DailyGoalKey, type Weather } from '../store/useProjectStore'
 import {
   buildDiaryEntry,
   buildShiftNarrative,
-  distortChoiceText,
-  distortFeeling,
+  dayActions,
   distortLine,
   endings,
   getAmbientLine,
+  getDailyGoal,
   getDistortionLevel,
   getEndingState,
   getFoodDescriptor,
+  getGoalCompletionLine,
+  getGoalFailureLine,
   getStaminaDescriptor,
   getStressDescriptor,
   getTrustDescriptor,
   getWaterDescriptor,
-  inferSupplyFocus,
-  mergeEffect,
+  isGoalCompletedByAction,
   phaseBackgrounds,
-  pickRandomOutcome,
+  resolveDayAction,
   sceneStyles,
   useRevealBlocks,
   useTypewriterText,
@@ -39,6 +40,7 @@ type FloatingEcho = {
 
 type ChoiceButtonProps = {
   text: string
+  subtitle?: string
   hoverHint?: string
   onClick: () => void
   disabled?: boolean
@@ -52,7 +54,7 @@ type HudStatProps = {
   descriptor: string
 }
 
-function ChoiceButton({ text, hoverHint, onClick, disabled = false, disabledReason, delayMs = 0 }: ChoiceButtonProps) {
+function ChoiceButton({ text, subtitle, hoverHint, onClick, disabled = false, disabledReason, delayMs = 0 }: ChoiceButtonProps) {
   return (
     <button
       type="button"
@@ -66,6 +68,7 @@ function ChoiceButton({ text, hoverHint, onClick, disabled = false, disabledReas
       }`}
     >
       <div className="text-base font-semibold leading-7 tracking-[0.02em]">{text}</div>
+      {subtitle && <div className="mt-1 text-sm leading-6 text-stone-300/72">{subtitle}</div>}
       {disabled && disabledReason && <div className="mt-2 text-sm leading-6 text-stone-500">{disabledReason}</div>}
       {hoverHint && !disabled && (
         <div className="mt-2 max-h-0 overflow-hidden text-sm leading-6 text-stone-300/58 opacity-0 transition-all duration-300 group-hover:max-h-20 group-hover:opacity-100 group-focus-visible:max-h-20 group-focus-visible:opacity-100">
@@ -111,9 +114,10 @@ export function StarterShell() {
   const trust = useProjectStore((state) => state.trust)
   const suspicion = useProjectStore((state) => state.suspicion)
   const stress = useProjectStore((state) => state.stress)
-  const resource = useProjectStore((state) => state.resource)
-  const hp = useProjectStore((state) => state.hp)
   const oddities = useProjectStore((state) => state.oddities)
+  const remainingActions = useProjectStore((state) => state.remainingActions)
+  const dayGoalKey = useProjectStore((state) => state.dayGoalKey)
+  const goalCompleted = useProjectStore((state) => state.goalCompleted)
   const metaVariables = useProjectStore((state) => state.metaVariables)
   const nextDay = useProjectStore((state) => state.nextDay)
   const changePhase = useProjectStore((state) => state.changePhase)
@@ -123,6 +127,9 @@ export function StarterShell() {
   const setFlag = useProjectStore((state) => state.setFlag)
   const incrementBehavior = useProjectStore((state) => state.incrementBehavior)
   const setOtherAlive = useProjectStore((state) => state.setOtherAlive)
+  const consumeAction = useProjectStore((state) => state.consumeAction)
+  const setGoalCompleted = useProjectStore((state) => state.setGoalCompleted)
+  const setDayGoalKey = useProjectStore((state) => state.setDayGoalKey)
 
   const [showCover, setShowCover] = useState(true)
   const [coverStage, setCoverStage] = useState(0)
@@ -135,36 +142,62 @@ export function StarterShell() {
   const [backgroundSrc, setBackgroundSrc] = useState(phaseBackgrounds.phase1)
   const [backgroundVisible, setBackgroundVisible] = useState(true)
   const [currentEnding, setCurrentEnding] = useState<keyof typeof endings | null>(null)
+  const [endDayAfterResult, setEndDayAfterResult] = useState(false)
   const echoIdRef = useRef(0)
 
   const typedEllipsis = useTypewriterText('??', coverStage >= 1, 240)
   const typedAlive = useTypewriterText('?????', coverStage >= 2, 76)
   const typedNotAlone = useTypewriterText('??????????', coverStage >= 3, 72)
   const distortionLevel = getDistortionLevel(stress, suspicion, oddities)
+
+  const dailyGoal = useMemo(
+    () => getDailyGoal({ day, water, food, trust, suspicion, stress, resource: water + food }),
+    [day, food, stress, suspicion, trust, water],
+  )
+  const currentGoalKey = dailyGoal.key
+
   const ambientLine = getAmbientLine(day, metaVariables.weather, metaVariables.isNight, water, food)
 
-  const distortedEventLines = useMemo(
-    () => (currentEvent?.text ?? []).map((line, index) => distortLine(line, distortionLevel, currentEvent?.unreliable, index)),
-    [currentEvent, distortionLevel],
+  useEffect(() => {
+    if (currentGoalKey !== dayGoalKey) {
+      setDayGoalKey(currentGoalKey as DailyGoalKey)
+    }
+  }, [currentGoalKey, dayGoalKey, setDayGoalKey])
+
+  const promptLines = useMemo(() => {
+    if (currentEvent?.text?.length) {
+      return currentEvent.text
+    }
+
+    return [
+      '??????????????????',
+      '??????????????????',
+    ]
+  }, [currentEvent])
+
+  const distortedPromptLines = useMemo(
+    () => promptLines.map((line, index) => distortLine(line, distortionLevel, currentEvent?.unreliable, index)),
+    [currentEvent?.unreliable, distortionLevel, promptLines],
   )
+
   const distortedResultLines = useMemo(
     () => resultLines.map((line, index) => distortLine(line, distortionLevel >= 2 ? distortionLevel : 0, false, index)),
     [distortionLevel, resultLines],
   )
 
-  const { blocks: visibleEventBlocks, complete: eventReady } = useRevealBlocks(
-    distortedEventLines,
+  const { blocks: visiblePromptBlocks, complete: promptReady } = useRevealBlocks(
+    distortedPromptLines,
     currentEvent ? `${day}-${currentEvent.id}-${phase}` : `${day}-${phase}`,
-    !showCover && phase === 'encounter' && Boolean(currentEvent),
-    320,
-    1040,
+    !showCover && phase === 'encounter',
+    240,
+    860,
   )
   const { blocks: visibleResultBlocks, complete: resultReady } = useRevealBlocks(
     distortedResultLines,
     `${day}-${resultStamp}-result`,
     !showCover && phase === 'result',
     220,
-    780,
+    760,
   )
 
   useEffect(() => {
@@ -204,10 +237,7 @@ export function StarterShell() {
   useEffect(() => {
     if (sceneBackground === backgroundSrc) return
 
-    const fadeTimer = window.setTimeout(() => {
-      setBackgroundVisible(false)
-    }, 0)
-
+    const fadeTimer = window.setTimeout(() => setBackgroundVisible(false), 0)
     const swapTimer = window.setTimeout(() => {
       setBackgroundSrc(sceneBackground)
       setBackgroundVisible(true)
@@ -243,17 +273,15 @@ export function StarterShell() {
     })
   }
 
-  const buildStatusSummary = (snapshot: ReturnType<typeof useProjectStore.getState>, extraLines: string[] = []) => {
-    const lines = [
-      `?????????? ${snapshot.water}?`,
-      `???? ${snapshot.food}?`,
-      snapshot.trust >= 50 ? '?????????????????????????????' : '????????????????',
-      snapshot.suspicion >= 60 ? '???????????????' : '?????????????????',
-      snapshot.stress >= 70 ? '????????????????????' : '???????????????????',
+  const buildStatusSummary = (extraLines: string[] = []) => {
+    return [
+      `?????????? ${water}?`,
+      `???? ${food}?`,
+      trust >= 50 ? '???????????????????????????' : '????????????????',
+      suspicion >= 60 ? '???????????????' : '?????????????????',
+      stress >= 70 ? '????????????????????' : '???????????????????',
       ...extraLines,
     ]
-
-    return lines
   }
 
   const refreshEnvironment = (night: boolean) => {
@@ -271,6 +299,7 @@ export function StarterShell() {
     setResultStamp(0)
     setJournalEntries([])
     setShowJournal(false)
+    setEndDayAfterResult(false)
     refreshEnvironment(false)
     rollEvent()
     changePhase('encounter')
@@ -283,87 +312,78 @@ export function StarterShell() {
     }
   }
 
-  const getChoiceAvailability = (choice: NarrativeChoice) => {
-    if ((choice.effect.stamina ?? 0) < 0 && stamina < Math.abs(choice.effect.stamina ?? 0)) {
-      return { disabled: true, reason: '???????' }
+  const getActionAvailability = (actionId: string) => {
+    if (remainingActions <= 0) {
+      return { disabled: true, reason: '?????????????' }
     }
 
-    if ((choice.effect.water ?? 0) < 0 && water < Math.abs(choice.effect.water ?? 0)) {
-      return { disabled: true, reason: '????????????' }
-    }
-
-    if ((choice.effect.food ?? 0) < 0 && food < Math.abs(choice.effect.food ?? 0)) {
-      return { disabled: true, reason: '???????????????' }
-    }
-
-    if ((choice.effect.resource ?? 0) < 0 && resource < Math.abs(choice.effect.resource ?? 0)) {
+    if (actionId !== 'rest' && stamina <= 0) {
       return { disabled: true, reason: '???????' }
     }
 
     return { disabled: false, reason: undefined }
   }
 
-  const applyChoice = (event: NarrativeEvent, choice: NarrativeChoice) => {
-    const availability = getChoiceAvailability(choice)
+  const applyDayAction = (actionId: typeof dayActions[number]['id']) => {
+    const availability = getActionAvailability(actionId)
     if (availability.disabled) {
       pushFloatingEcho(availability.reason ?? '???????', 'warning')
       return
     }
 
-    const storeBefore = useProjectStore.getState()
-    const randomOutcome = pickRandomOutcome(choice.randomOutcomes)
-    const mergedEffect = mergeEffect(choice.effect, randomOutcome?.effect)
-    const effectSummary = applyEffect(mergedEffect, inferSupplyFocus(event, choice))
-    const allFlags = [...(choice.setFlags ?? []), ...(randomOutcome?.setFlags ?? [])]
+    const before = useProjectStore.getState()
+    const actionResult = resolveDayAction(actionId, before, dailyGoal, currentEvent)
 
-    allFlags.forEach((flag) => setFlag(flag))
-    incrementBehavior(choice.behavior)
-    setOtherAlive(!allFlags.some((flag) => ['killed_companion', 'accidental_killing', 'other_left_behind', 'they_walked_away'].includes(flag)))
-    changePhase('result')
-    setMetaVariables({ isNight: true, hour: 23 })
-    setCurrentEnding(null)
+    const summary = applyEffect(actionResult.effect, actionResult.supplyFocus)
+    consumeAction(1)
+    incrementBehavior(actionResult.behavior)
+    actionResult.flags?.forEach((flag) => setFlag(flag))
+    setOtherAlive(!(actionResult.flags ?? []).some((flag) => ['killed_companion', 'accidental_killing', 'other_left_behind', 'they_walked_away'].includes(flag)))
 
-    const storeAfter = useProjectStore.getState()
-    const hiddenLines = buildShiftNarrative(
+    const after = useProjectStore.getState()
+    const completedGoal = isGoalCompletedByAction(dailyGoal, actionResult)
+    if (completedGoal) {
+      setGoalCompleted(true)
+      pushFloatingEcho('????????', 'calm')
+    }
+
+    const shiftLines = buildShiftNarrative(
       {
-        trust: storeBefore.trust,
-        suspicion: storeBefore.suspicion,
-        stress: storeBefore.stress,
-        stamina: storeBefore.stamina,
-        hp: storeBefore.hp,
-        water: storeBefore.water,
-        food: storeBefore.food,
+        trust: before.trust,
+        suspicion: before.suspicion,
+        stress: before.stress,
+        stamina: before.stamina,
+        hp: before.hp,
+        water: before.water,
+        food: before.food,
       },
       {
-        trust: storeAfter.trust,
-        suspicion: storeAfter.suspicion,
-        stress: storeAfter.stress,
-        stamina: storeAfter.stamina,
-        hp: storeAfter.hp,
-        water: storeAfter.water,
-        food: storeAfter.food,
+        trust: after.trust,
+        suspicion: after.suspicion,
+        stress: after.stress,
+        stamina: after.stamina,
+        hp: after.hp,
+        water: after.water,
+        food: after.food,
       },
     )
-    const feeling = distortFeeling(randomOutcome?.feeling ?? choice.feeling, distortionLevel, event.unreliable)
-    const closingLine = storeAfter.water <= 1
-      ? '???????????????????????????????'
-      : storeAfter.food <= 1
-        ? '????????????????????????????'
-        : storeAfter.stress >= 80
-          ? '?????????????????????????'
-          : '???????????????????????'
-    const nextResultLines = [feeling, ...hiddenLines, closingLine]
 
-    setResultTitle(event.title)
-    setResultLines(nextResultLines)
+    const narrativeLines = [
+      ...actionResult.lines,
+      ...shiftLines,
+      completedGoal ? getGoalCompletionLine(dailyGoal) : '',
+    ].filter(Boolean)
+
+    setResultTitle(`${actionResult.title} ? ${actionResult.tier === 'success' ? '??' : actionResult.tier === 'normal' ? '????' : '??'}`)
+    setResultLines([actionResult.feeling, ...narrativeLines])
     setResultStamp((stamp) => stamp + 1)
+    setEndDayAfterResult(actionResult.endsDay || after.remainingActions <= 0)
+    changePhase('result')
+    emitEffectSummary(summary.delta)
 
-    emitEffectSummary(effectSummary.delta)
-
-    if (effectSummary.delta.trust <= -5) pushFloatingEcho('????????', 'warning')
-    if (effectSummary.delta.trust >= 5) pushFloatingEcho('????????', 'calm')
-    if (effectSummary.delta.suspicion >= 4) pushFloatingEcho('??????', 'warning')
-    if (effectSummary.delta.stress >= 5) pushFloatingEcho('????????', 'danger')
+    if (summary.delta.trust <= -5) pushFloatingEcho('????????', 'warning')
+    if (summary.delta.suspicion >= 4) pushFloatingEcho('??????', 'warning')
+    if (summary.delta.stress >= 5) pushFloatingEcho('????????', 'danger')
   }
 
   const continueFromResult = () => {
@@ -372,7 +392,7 @@ export function StarterShell() {
 
     if (shouldEndNow) {
       setJournalEntries((entries) => [
-        buildDiaryEntry(stateBefore.day, resultTitle || '??', resultLines, buildStatusSummary(stateBefore)),
+        buildDiaryEntry(stateBefore.day, resultTitle || '??', resultLines, buildStatusSummary()),
         ...entries,
       ].slice(0, 30))
       setCurrentEnding(getEndingState(stateBefore))
@@ -380,15 +400,26 @@ export function StarterShell() {
       return
     }
 
+    if (!endDayAfterResult) {
+      changePhase('encounter')
+      rollEvent()
+      return
+    }
+
+    const goalMissed = !stateBefore.goalCompleted
+    const missLines = goalMissed ? [getGoalFailureLine(dailyGoal)] : [getGoalCompletionLine(dailyGoal)]
     const daySummary = nextDay()
     const stateAfter = useProjectStore.getState()
 
     setJournalEntries((entries) => [
-      buildDiaryEntry(daySummary.previousDay, resultTitle || '??', resultLines, buildStatusSummary(stateAfter, daySummary.notes)),
+      buildDiaryEntry(daySummary.previousDay, `?????${dailyGoal.title}`, [...resultLines, ...missLines], buildStatusSummary(daySummary.notes)),
       ...entries,
     ].slice(0, 30))
 
     emitEffectSummary(daySummary.delta)
+    if (goalMissed) {
+      pushFloatingEcho('???????????', 'danger')
+    }
     daySummary.notes.slice(0, 2).forEach((line) => pushFloatingEcho(line, line.includes('??') || line.includes('?') || line.includes('?') ? 'warning' : 'calm'))
 
     if (stateAfter.hp <= 0 || !stateAfter.otherAlive || stateAfter.flags.includes('mutual_ruin')) {
@@ -400,6 +431,7 @@ export function StarterShell() {
     refreshEnvironment(false)
     setResultTitle('')
     setCurrentEnding(null)
+    setEndDayAfterResult(false)
     changePhase('encounter')
     rollEvent()
   }
@@ -455,7 +487,7 @@ export function StarterShell() {
             <h1 className="mt-4 text-[2rem] font-semibold leading-tight tracking-[0.08em] text-stone-50">{endings[currentEnding].title}</h1>
             <div className="mt-5 space-y-5 text-[1.08rem] leading-[2.05] text-stone-100/90">{endings[currentEnding].text.map((line) => <p key={line} className="[animation:driftFadeUp_.7s_ease-out_both]">{line}</p>)}</div>
           </article>
-          <div className="mx-auto mt-4 w-full max-w-[360px]"><ChoiceButton text="????" hoverHint="???????????????????" onClick={() => { void restartGame() }} /></div>
+          <div className="mx-auto mt-4 w-full max-w-[360px]"><ChoiceButton text="????" hoverHint="?????????????????????" onClick={() => { void restartGame() }} /></div>
         </div>
       </main>
     )
@@ -485,56 +517,87 @@ export function StarterShell() {
             <HudStat label="??" value={suspicion} descriptor={suspicion >= 70 ? '??' : suspicion >= 35 ? '??' : '?'} />
             <HudStat label="??" value={stress} descriptor={getStressDescriptor(stress)} />
           </div>
+          <div className="mt-3 flex items-start justify-between gap-3 rounded-2xl border border-stone-800/70 bg-black/25 px-3 py-3">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.28em] text-stone-400/60">????</div>
+              <div className="mt-1 text-sm font-semibold text-stone-100">{dailyGoal.title}</div>
+              <div className="mt-1 text-xs leading-6 text-stone-300/70">{dailyGoal.summary}</div>
+            </div>
+            <div className="shrink-0 text-right">
+              <div className="text-[10px] uppercase tracking-[0.28em] text-stone-400/60">????</div>
+              <div className="mt-1 text-lg font-semibold text-stone-50">{remainingActions}</div>
+              <div className="mt-1 text-[11px] text-stone-300/62">{goalCompleted ? '?????' : '??????'}</div>
+            </div>
+          </div>
         </header>
-        <div className="pointer-events-none absolute inset-x-4 top-[calc(env(safe-area-inset-top)+10.25rem)] z-20 space-y-2">
+
+        <div className="pointer-events-none absolute inset-x-4 top-[calc(env(safe-area-inset-top)+13.5rem)] z-20 space-y-2">
           {floatingEchoes.map((echo) => (
             <div key={echo.id} className={`mx-auto max-w-[320px] rounded-full border px-3 py-2 text-center text-[11px] tracking-[0.22em] [animation:driftFadeUp_.4s_ease-out_both] ${echo.tone === 'danger' ? 'border-rose-500/28 bg-rose-500/18 text-rose-50' : echo.tone === 'warning' ? 'border-amber-500/28 bg-amber-500/14 text-amber-50' : 'border-emerald-500/24 bg-emerald-500/14 text-emerald-50'}`}>
               {echo.text}
             </div>
           ))}
         </div>
+
         <section className="flex flex-1 flex-col justify-center px-1 py-6">
           <article className={`mx-auto w-full max-w-[320px] rounded-[28px] border px-5 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl ${distortionLevel >= 2 ? 'border-rose-900/55 bg-[linear-gradient(180deg,rgba(26,14,14,0.92),rgba(7,5,5,0.98))]' : 'border-stone-700/75 bg-[linear-gradient(180deg,rgba(18,16,14,0.92),rgba(6,5,4,0.98))]'}`}>
-            <div className="text-[11px] uppercase tracking-[0.48em] text-stone-400/64">{phase === 'encounter' ? 'Encounter' : 'Aftermath'}</div>
-            <h1 className="mt-4 text-[clamp(1.9rem,7vw,2.45rem)] font-semibold leading-tight tracking-[0.08em] text-stone-50">{phase === 'result' ? resultTitle || '???????' : currentEvent?.title ?? '?????????'}</h1>
-            <div className="mt-5 space-y-5 text-[1.08rem] leading-[2.05] tracking-[0.01em] text-stone-100/92">
-              {phase === 'encounter' && visibleEventBlocks.map((line) => <p key={line} className="whitespace-pre-line [animation:driftFadeUp_.75s_ease-out_both]">{line}</p>)}
+            <div className="text-[11px] uppercase tracking-[0.48em] text-stone-400/64">{phase === 'encounter' ? 'Today' : 'Aftermath'}</div>
+            <h1 className="mt-4 text-[clamp(1.8rem,6.8vw,2.3rem)] font-semibold leading-tight tracking-[0.08em] text-stone-50">
+              {phase === 'result' ? resultTitle || '???????' : currentEvent?.title ?? dailyGoal.title}
+            </h1>
+            <div className="mt-5 space-y-5 text-[1.04rem] leading-[2.0] tracking-[0.01em] text-stone-100/92">
+              {phase === 'encounter' && visiblePromptBlocks.map((line) => <p key={line} className="whitespace-pre-line [animation:driftFadeUp_.75s_ease-out_both]">{line}</p>)}
               {phase === 'result' && visibleResultBlocks.map((line) => <p key={line} className="whitespace-pre-line [animation:driftFadeUp_.75s_ease-out_both]">{line}</p>)}
-              {phase === 'encounter' && !eventReady && <p className="text-base leading-8 text-stone-300/70">????????????????</p>}
+              {phase === 'encounter' && !promptReady && <p className="text-base leading-8 text-stone-300/70">???????????????????????????????</p>}
             </div>
-            {phase === 'encounter' && currentEvent?.unreliable && distortionLevel >= 1 && <div className="mt-6 border-l border-stone-600/45 pl-4 text-sm leading-7 text-stone-300/60">????????????????????????????????????????</div>}
           </article>
         </section>
+
         <footer className="mx-auto w-full max-w-[360px] space-y-3">
-          {phase === 'encounter' && eventReady && currentEvent?.choices.slice(0, 3).map((choice, index) => {
-            const availability = getChoiceAvailability(choice)
+          {phase === 'encounter' && promptReady && dayActions.map((action, index) => {
+            const availability = getActionAvailability(action.id)
             return (
               <ChoiceButton
-                key={`${currentEvent.id}-${choice.text}`}
-                text={distortChoiceText(choice.text, distortionLevel, index)}
-                hoverHint={choice.hoverHint}
+                key={action.id}
+                text={action.title}
+                subtitle={action.summary}
+                hoverHint={action.hoverHint}
                 disabled={availability.disabled}
                 disabledReason={availability.reason}
-                delayMs={index * 80}
-                onClick={() => applyChoice(currentEvent, choice)}
+                delayMs={index * 50}
+                onClick={() => applyDayAction(action.id)}
               />
             )
           })}
           {phase === 'result' && resultReady && (
             <ChoiceButton
-              text={day >= 30 || hp <= 0 || currentEnding ? '??????' : '??????????'}
-              hoverHint={day >= 30 || hp <= 0 || currentEnding ? '??????????????' : '?????????????????'}
+              text={endDayAfterResult ? '?????' : '??????????'}
+              subtitle={endDayAfterResult ? '????????????????' : '?????????????????????'}
+              hoverHint={endDayAfterResult ? '??????????????????????' : '?????????????????'}
               onClick={continueFromResult}
             />
           )}
         </footer>
       </div>
+
       {showJournal && (
         <>
           <button type="button" aria-label="????" onClick={() => setShowJournal(false)} className="absolute inset-0 z-30 bg-black/62" />
           <aside className="absolute right-0 top-0 z-40 flex h-full w-[86vw] max-w-sm flex-col border-l border-stone-700/70 bg-[linear-gradient(180deg,rgba(12,10,9,0.98),rgba(4,3,3,1))] px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)] shadow-2xl backdrop-blur-xl">
-            <div className="flex items-start justify-between gap-3"><div><div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/68">Journal</div><h2 className="mt-2 text-xl font-semibold tracking-[0.08em] text-stone-50">??</h2></div><button type="button" onClick={() => setShowJournal(false)} className="rounded-full border border-stone-700/70 px-3 py-2 text-[11px] tracking-[0.25em] text-stone-200/72">??</button></div>
-            <div className="mt-5 flex-1 space-y-4 overflow-y-auto pr-1">{(journalEntries.length > 0 ? journalEntries : ['Day 1\n?????\n???????????']).map((entry) => <article key={entry} className="rounded-[22px] border border-stone-800/75 bg-black/35 px-4 py-4"><p className="whitespace-pre-line text-sm leading-7 text-stone-100/86">{entry}</p></article>)}</div>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/68">Journal</div>
+                <h2 className="mt-2 text-xl font-semibold tracking-[0.08em] text-stone-50">??</h2>
+              </div>
+              <button type="button" onClick={() => setShowJournal(false)} className="rounded-full border border-stone-700/70 px-3 py-2 text-[11px] tracking-[0.25em] text-stone-200/72">??</button>
+            </div>
+            <div className="mt-5 flex-1 space-y-4 overflow-y-auto pr-1">
+              {(journalEntries.length > 0 ? journalEntries : ['Day 1\n????????\n????????????????']).map((entry) => (
+                <article key={entry} className="rounded-[22px] border border-stone-800/75 bg-black/35 px-4 py-4">
+                  <p className="whitespace-pre-line text-sm leading-7 text-stone-100/86">{entry}</p>
+                </article>
+              ))}
+            </div>
           </aside>
         </>
       )}

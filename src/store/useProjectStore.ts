@@ -10,6 +10,8 @@ export type BehaviorType = 'selfish' | 'honest' | 'cooperative' | 'aggressive'
 
 export type SupplyFocus = 'food' | 'water' | 'mixed'
 
+export type DailyGoalKey = 'find_water' | 'find_food' | 'ease_tension' | 'search_wreck' | 'hold_together'
+
 export type MetaVariables = {
   hour: number
   weather: Weather
@@ -52,6 +54,9 @@ type GameStore = {
   stress: number
   resource: number
   oddities: number
+  remainingActions: number
+  dayGoalKey: DailyGoalKey
+  goalCompleted: boolean
   otherAlive: boolean
   flags: string[]
   selfishCount: number
@@ -62,6 +67,10 @@ type GameStore = {
   nextDay: () => DayTransitionSummary
   setDay: (day: number) => void
   changePhase: (phase: GamePhase) => void
+  setDayGoalKey: (goalKey: DailyGoalKey) => void
+  setGoalCompleted: (value: boolean) => void
+  consumeAction: (amount?: number) => void
+  resetDailyActions: () => void
   setStamina: (value: number) => void
   modifyStamina: (value: number) => void
   setWater: (value: number) => void
@@ -89,6 +98,7 @@ type GameStore = {
 
 const clampZeroToHundred = (value: number) => Math.max(0, Math.min(100, value))
 const clampSupply = (value: number) => Math.max(0, value)
+const clampActions = (value: number) => Math.max(0, Math.min(2, value))
 const syncResource = (water: number, food: number) => Math.max(0, water + food)
 
 const distributeSupplyDelta = (water: number, food: number, delta: number, focus: SupplyFocus = 'mixed') => {
@@ -192,75 +202,6 @@ const applyEffectToSnapshot = (
   }
 }
 
-const buildDayTransition = (
-  current: Pick<GameStore, 'day' | 'stamina' | 'hp' | 'water' | 'food' | 'trust' | 'suspicion' | 'stress' | 'resource' | 'oddities' | 'metaVariables'>,
-): DayTransitionSummary & {
-  nextState: Pick<GameStore, 'day' | 'dayPhase' | 'stamina' | 'hp' | 'water' | 'food' | 'trust' | 'suspicion' | 'stress' | 'resource' | 'oddities'>
-} => {
-  const nextDayValue = Math.min(30, current.day + 1)
-  const hadWater = current.water > 0
-  const hadFood = current.food > 0
-  const baseEffect: GameStateEffect = {
-    water: hadWater ? -1 : 0,
-    food: hadFood ? -1 : 0,
-    stamina: hadWater && hadFood ? (current.day <= 10 ? 8 : current.day <= 20 ? 6 : 4) : 0,
-    stress: hadWater && hadFood ? (current.day <= 10 ? -2 : -1) : 0,
-  }
-
-  const notes: string[] = []
-
-  if (current.metaVariables.weather === 'rain') {
-    baseEffect.stress = (baseEffect.stress ?? 0) + 1
-    notes.push('???????????????????')
-  }
-
-  if (!hadWater) {
-    baseEffect.stress = (baseEffect.stress ?? 0) + (current.day <= 10 ? 8 : current.day <= 20 ? 10 : 14)
-    baseEffect.stamina = (baseEffect.stamina ?? 0) - (current.day <= 10 ? 8 : current.day <= 20 ? 10 : 14)
-    baseEffect.suspicion = (baseEffect.suspicion ?? 0) + (current.day <= 12 ? 1 : 2)
-    baseEffect.hp = (baseEffect.hp ?? 0) - (current.day <= 10 ? 2 : current.day <= 20 ? 4 : 6)
-    notes.push('?????????????????????????')
-  }
-
-  if (!hadFood) {
-    baseEffect.stress = (baseEffect.stress ?? 0) + (current.day <= 10 ? 6 : current.day <= 20 ? 8 : 12)
-    baseEffect.stamina = (baseEffect.stamina ?? 0) - (current.day <= 10 ? 6 : current.day <= 20 ? 8 : 12)
-    baseEffect.hp = (baseEffect.hp ?? 0) - (current.day <= 10 ? 1 : current.day <= 20 ? 3 : 5)
-    notes.push('?????????????????????')
-  }
-
-  if (hadWater && hadFood) {
-    notes.push('???????????????????????????????')
-  }
-
-  if (!hadWater && !hadFood) {
-    baseEffect.trust = (baseEffect.trust ?? 0) - 2
-    notes.push('??????????????????????')
-  }
-
-  const applied = applyEffectToSnapshot(current, baseEffect, 'mixed')
-
-  return {
-    previousDay: current.day,
-    nextDay: nextDayValue,
-    delta: applied.delta,
-    notes,
-    nextState: {
-      day: nextDayValue,
-      dayPhase: getDayPhase(nextDayValue),
-      stamina: applied.nextState.stamina,
-      hp: applied.nextState.hp,
-      water: applied.nextState.water,
-      food: applied.nextState.food,
-      trust: applied.nextState.trust,
-      suspicion: applied.nextState.suspicion,
-      stress: applied.nextState.stress,
-      resource: applied.nextState.resource,
-      oddities: applied.nextState.oddities,
-    },
-  }
-}
-
 export const getDayPhase = (day: number): DayPhase => {
   if (day <= 5) {
     return 'phase1'
@@ -291,6 +232,79 @@ const getInitialMeta = (): MetaVariables => {
   }
 }
 
+const buildDayTransition = (
+  current: Pick<GameStore, 'day' | 'stamina' | 'hp' | 'water' | 'food' | 'trust' | 'suspicion' | 'stress' | 'resource' | 'oddities' | 'metaVariables' | 'dayGoalKey' | 'goalCompleted'>,
+): DayTransitionSummary & {
+  nextState: Pick<GameStore, 'day' | 'dayPhase' | 'stamina' | 'hp' | 'water' | 'food' | 'trust' | 'suspicion' | 'stress' | 'resource' | 'oddities' | 'remainingActions' | 'goalCompleted'>
+} => {
+  const nextDayValue = Math.min(30, current.day + 1)
+  const hadWater = current.water > 0
+  const hadFood = current.food > 0
+  const baseEffect: GameStateEffect = {
+    water: hadWater ? -1 : 0,
+    food: hadFood ? -1 : 0,
+    stamina: hadWater && hadFood ? (current.day <= 10 ? 8 : current.day <= 20 ? 6 : 4) : 0,
+    stress: hadWater && hadFood ? (current.day <= 10 ? -2 : -1) : 0,
+  }
+
+  const notes: string[] = []
+
+  if (current.metaVariables.weather === 'rain') {
+    baseEffect.stress = (baseEffect.stress ?? 0) + 1
+    notes.push('????????????????????')
+  }
+
+  if (!hadWater) {
+    baseEffect.stress = (baseEffect.stress ?? 0) + (current.day <= 10 ? 8 : current.day <= 20 ? 10 : 14)
+    baseEffect.stamina = (baseEffect.stamina ?? 0) - (current.day <= 10 ? 8 : current.day <= 20 ? 10 : 14)
+    baseEffect.suspicion = (baseEffect.suspicion ?? 0) + (current.day <= 12 ? 1 : 2)
+    baseEffect.hp = (baseEffect.hp ?? 0) - (current.day <= 10 ? 2 : current.day <= 20 ? 4 : 6)
+    notes.push('?????????????????????????')
+  }
+
+  if (!hadFood) {
+    baseEffect.stress = (baseEffect.stress ?? 0) + (current.day <= 10 ? 6 : current.day <= 20 ? 8 : 12)
+    baseEffect.stamina = (baseEffect.stamina ?? 0) - (current.day <= 10 ? 6 : current.day <= 20 ? 8 : 12)
+    baseEffect.hp = (baseEffect.hp ?? 0) - (current.day <= 10 ? 1 : current.day <= 20 ? 3 : 5)
+    notes.push('?????????????????????')
+  }
+
+  if (hadWater && hadFood) {
+    notes.push('??????????????????????????????')
+  }
+
+  if (!current.goalCompleted) {
+    baseEffect.stress = (baseEffect.stress ?? 0) + 6
+    baseEffect.trust = (baseEffect.trust ?? 0) - 3
+    baseEffect.suspicion = (baseEffect.suspicion ?? 0) + 2
+    notes.push('???????????????????????????')
+  }
+
+  const applied = applyEffectToSnapshot(current, baseEffect, 'mixed')
+
+  return {
+    previousDay: current.day,
+    nextDay: nextDayValue,
+    delta: applied.delta,
+    notes,
+    nextState: {
+      day: nextDayValue,
+      dayPhase: getDayPhase(nextDayValue),
+      stamina: applied.nextState.stamina,
+      hp: applied.nextState.hp,
+      water: applied.nextState.water,
+      food: applied.nextState.food,
+      trust: applied.nextState.trust,
+      suspicion: applied.nextState.suspicion,
+      stress: applied.nextState.stress,
+      resource: applied.nextState.resource,
+      oddities: applied.nextState.oddities,
+      remainingActions: 2,
+      goalCompleted: false,
+    },
+  }
+}
+
 const getInitialState = () => {
   const water = 3
   const food = 2
@@ -308,6 +322,9 @@ const getInitialState = () => {
     stress: 15,
     resource: syncResource(water, food),
     oddities: 0,
+    remainingActions: 2,
+    dayGoalKey: 'find_water' as DailyGoalKey,
+    goalCompleted: false,
     otherAlive: true,
     flags: [] as string[],
     selfishCount: 0,
@@ -322,7 +339,6 @@ export const useProjectStore = create<GameStore>((set, get) => ({
   ...getInitialState(),
   nextDay: () => {
     const transition = buildDayTransition(get())
-
     set(transition.nextState)
 
     return {
@@ -342,6 +358,18 @@ export const useProjectStore = create<GameStore>((set, get) => ({
   },
   changePhase: (phase) => {
     set({ phase })
+  },
+  setDayGoalKey: (goalKey) => {
+    set({ dayGoalKey: goalKey })
+  },
+  setGoalCompleted: (value) => {
+    set({ goalCompleted: value })
+  },
+  consumeAction: (amount = 1) => {
+    set((state) => ({ remainingActions: clampActions(state.remainingActions - amount) }))
+  },
+  resetDailyActions: () => {
+    set({ remainingActions: 2, goalCompleted: false })
   },
   setStamina: (value) => {
     set({ stamina: clampZeroToHundred(value) })
@@ -421,7 +449,6 @@ export const useProjectStore = create<GameStore>((set, get) => ({
   },
   applyEffect: (effect = {}, supplyFocus = 'mixed') => {
     const applied = applyEffectToSnapshot(get(), effect, supplyFocus)
-
     set(applied.nextState)
 
     return {
