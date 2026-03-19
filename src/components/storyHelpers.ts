@@ -875,6 +875,7 @@ export function getEndingState(state: ReturnType<typeof useProjectStore.getState
     water,
     food,
     otherAlive,
+    visitedNodes,
     flags,
     selfishCount,
     honestCount,
@@ -884,20 +885,23 @@ export function getEndingState(state: ReturnType<typeof useProjectStore.getState
 
   const totalSupply = water + food
 
+  const visitedSet = new Set(visitedNodes)
+
   if (flags.includes('mutual_ruin') || (hp <= 0 && !otherAlive)) return 'annihilation'
   if (flags.includes('killed_by_companion')) return 'murdered'
   if (flags.includes('killed_companion')) return 'murderer'
   if (flags.includes('accidental_killing')) return 'accidental_killing'
-  if (flags.includes('escaped_together_window') && hp > 0 && trust >= 55) return 'escape'
+  if ((flags.includes('escaped_together_window') || visitedSet.has('endgame_together_on_signal_rock')) && hp > 0 && trust >= 55) return 'escape'
   if (hp <= 0 && (totalSupply <= 0 || flags.includes('resource_crack'))) return 'starved'
-  if (hp <= 0 && flags.includes('cold_war_started')) return 'cold_war_death'
-  if (stress >= 95 || (stress >= 88 && (selfishCount >= 3 || aggressiveCount >= 2))) return 'mental_break'
-  if (!otherAlive || flags.includes('other_left_behind') || flags.includes('they_walked_away')) {
+  if (hp <= 0 && (flags.includes('cold_war_started') || visitedSet.has('chain_cold_war_night'))) return 'cold_war_death'
+  if (stress >= 95 || ((stress >= 88 && (selfishCount >= 3 || aggressiveCount >= 2)) || visitedSet.has('hallucination_second_you'))) return 'mental_break'
+  if (!otherAlive || flags.includes('other_left_behind') || flags.includes('they_walked_away') || visitedSet.has('endgame_returned_to_empty_fire')) {
     return flags.includes('betrayed_them') || suspicion >= 75 ? 'betrayed' : 'lone_survivor'
   }
-  if (flags.includes('betrayed_them') || flags.includes('escape_window_selfish') || (selfishCount >= 4 && trust < 35 && suspicion > 60)) return 'betrayed'
+  if (flags.includes('betrayed_them') || flags.includes('escape_window_selfish') || visitedSet.has('chain_betrayal_edge') || (selfishCount >= 4 && trust < 35 && suspicion > 60)) return 'betrayed'
   if (flags.includes('false_peace_chosen') || flags.includes('false_peace_mask') || (trust >= 32 && trust <= 62 && suspicion >= 35 && suspicion <= 72)) return 'false_peace'
   if (trust >= 72 && suspicion < 35 && stress < 60 && cooperativeCount >= 3 && honestCount >= 2) return 'mutual_trust'
   return 'lone_survivor'
 }
+
 
