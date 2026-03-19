@@ -311,11 +311,18 @@ export function StarterShell() {
 
   useEffect(() => {
     if (!showCover) return undefined
-    if (coverStage === 0) return () => void window.setTimeout(() => setCoverStage(1), 500)
-    if (coverStage === 1 && typedEllipsis.length === '……'.length) return () => void window.setTimeout(() => setCoverStage(2), 800)
-    if (coverStage === 2 && typedAlive.length === '你還活著。'.length) return () => void window.setTimeout(() => setCoverStage(3), 1200)
-    if (coverStage === 3 && typedNotAlone.length === '但不是只有你一個人。'.length) return () => void window.setTimeout(() => setCoverStage(4), 200)
-    return undefined
+
+    let delay: number | null = null
+
+    if (coverStage === 0) delay = 500
+    if (coverStage === 1 && typedEllipsis.length === 2) delay = 800
+    if (coverStage === 2 && typedAlive.length === 5) delay = 1200
+    if (coverStage === 3 && typedNotAlone.length === 10) delay = 200
+
+    if (delay === null) return undefined
+
+    const timer = window.setTimeout(() => setCoverStage((stage) => Math.min(stage + 1, 4)), delay)
+    return () => window.clearTimeout(timer)
   }, [coverStage, showCover, typedAlive.length, typedEllipsis.length, typedNotAlone.length])
 
   useEffect(() => {
