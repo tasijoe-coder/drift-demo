@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
 
 import { useAmbientAudio } from '../hooks/useAmbientAudio'
 import { startAreaEndings, startAreaNodes, type StartAreaChoice, type StartAreaEffect, type StartAreaEnding } from '../data/startAreaNodes'
@@ -6,19 +6,16 @@ import { useEncounter, type NarrativeChoice, type NarrativeEffect, type RandomOu
 import { useMetaVariables } from '../hooks/useMetaVariables'
 import { useProjectStore, type AppliedEffectSummary, type DailyGoalKey, type SupplyFocus, type Weather } from '../store/useProjectStore'
 import {
-  addRiskHints,
   buildDiaryEntry,
   buildEncounterFrame,
   buildShiftNarrative,
   distortLine,
   endings,
-  getAmbientLine,
   getDailyGoal,
   getDistortionLevel,
   getEndingState,
   getGoalCompletionLine,
   getGoalFailureLine,
-  getRiskHintLine,
   phaseBackgrounds,
   sceneStyles,
   useRevealBlocks,
@@ -26,10 +23,6 @@ import {
   weatherPool,
 } from './storyHelpers'
 
-type EchoTone = 'calm' | 'warning' | 'danger'
-type StatKind = 'stamina' | 'water' | 'food' | 'trust' | 'suspicion' | 'stress'
-
-type FloatingEcho = { id: number; text: string; tone: EchoTone }
 type ButtonProps = { text: string; subtitle?: string; hoverHint?: string; onClick: () => void; disabled?: boolean; disabledReason?: string }
 
 type ChoiceResult = {
@@ -40,25 +33,17 @@ type ChoiceResult = {
   supplyFocus: SupplyFocus
 }
 
-const formatSigned = (value: number) => (value > 0 ? '+' + value : '' + value)
-
-const getEchoTone = (value: number, inverted = false): EchoTone => {
-  if (value === 0) return 'calm'
-  if (inverted) return value > 0 ? 'danger' : 'calm'
-  return value > 0 ? 'calm' : 'warning'
-}
-
-const getStatTone = (stat: StatKind, value: number): EchoTone => {
-  if (stat === 'suspicion' || stat === 'stress') {
-    if (value >= 85) return 'danger'
-    if (value >= 70) return 'warning'
-    return 'calm'
-  }
-  const ratio = (stat === 'water' || stat === 'food') ? Math.min(value / 5, 1) : Math.min(value / 100, 1)
-  if (ratio <= 0.15) return 'danger'
-  if (ratio <= 0.3) return 'warning'
-  return 'calm'
-}
+type TransitionFeedback =
+  | {
+      title: string
+      lines: string[]
+      action:
+        | { kind: 'start-node'; nodeId: string }
+        | { kind: 'start-ending-check' }
+        | { kind: 'start-ending'; endingId: StartAreaEnding['id'] }
+        | { kind: 'route'; eventId: string }
+    }
+  | null
 
 const pickRandomOutcome = (outcomes?: RandomOutcome[]) => {
   if (!outcomes?.length) return null
@@ -113,39 +98,6 @@ const getChoiceAvailability = (choice: NarrativeChoice, snapshot: { stamina: num
   return { disabled: false, reason: undefined }
 }
 
-const startAreaTitles: Record<string, string> = {
-  start_beach: '海灘',
-  meet_stranger: '第一個醒來的人',
-  wreck_search: '殘骸',
-  talk_start: '第一句話',
-  distrust_start: '距離',
-  took_resources: '收起來的東西',
-  leave_trace: '留下的痕跡',
-  info_exchange: '對不上的地方',
-  team_up: '暫時同行',
-  sneak_check: '偷看的行李',
-  solo_route: '單獨前進',
-  share_resources: '分出的那一份',
-  hide_intent: '裝作沒事',
-  meet_again: '回去找他',
-  doubt_rise: '追問',
-  uneasy_silence: '留白',
-  village_entry: '村落入口',
-  house_search: '民宅',
-  shrine_path: '神社入口',
-  deeper_house: '地下室',
-  shrine_inside: '鏡子',
-  confrontation: '質問',
-  hidden_truth: '沒說出口的事',
-  truth_flag: '碎掉的鏡面',
-  bad_end_trap: '地下室',
-  madness_end: '映照',
-  bad_end_kill: '夜裡',
-  solo_bad_end: '分開之後',
-  unstable_route: '不穩的同行',
-  night_fall: '天黑了',
-}
-
 const getStartAreaSupplyFocus = (effect?: StartAreaEffect): SupplyFocus => {
   if (!effect) return 'mixed'
   if ((effect.water ?? 0) !== 0 && (effect.food ?? 0) === 0) return 'water'
@@ -167,50 +119,78 @@ const normalizeStartAreaEffect = (effect?: StartAreaEffect): NarrativeEffect | u
 }
 
 const getStartAreaChoiceCopy = (choice: StartAreaChoice) => {
-  if (choice.to === 'ending_check') {
+  const fallbackHint = choice.feedback[choice.feedback.length - 1] ?? '這一步會把今天推向另一個不好收拾的地方。'
+
+  if (choice.next === 'ending_check') {
     return {
-      subtitle: '天黑之後，今天做過的事會自己排出輕重。',
-      hoverHint: '走到這裡就不能再補一句解釋，今天留下的東西會直接變成答案。',
+      subtitle: choice.description,
+      hoverHint: fallbackHint,
     }
   }
 
-  if (choice.to in startAreaEndings) {
-    const ending = startAreaEndings[choice.to as StartAreaEnding['id']]
+  if (choice.next in startAreaEndings) {
+    const ending = startAreaEndings[choice.next as StartAreaEnding['id']]
     return {
-      subtitle: ending.text[0],
-      hoverHint: ending.text[ending.text.length - 1] ?? '有些路走到這裡，就只剩下一種說法。',
+      subtitle: choice.description,
+      hoverHint: ending.text[0] ?? fallbackHint,
     }
   }
 
-  const targetNode = startAreaNodes[choice.to]
-  if (!targetNode) {
-    return {
-      subtitle: '這一步會把你帶到別的地方。',
-      hoverHint: '你還不知道那裡等著的是什麼，只知道已經不能回頭。',
-    }
-  }
-
+  const targetNode = startAreaNodes[choice.next]
   return {
-    subtitle: targetNode.text[0],
-    hoverHint: targetNode.text[targetNode.text.length - 1] ?? '這一步一旦走下去，就會留下痕跡。',
+    subtitle: choice.description,
+    hoverHint: targetNode?.description[targetNode.description.length - 1] ?? fallbackHint,
   }
 }
 
-const getStartAreaEndingId = (snapshot: { trust: number; suspicion: number; stress: number }): StartAreaEnding['id'] => {
-  const sanity = Math.max(0, 100 - snapshot.stress)
-  if (snapshot.trust > 60 && sanity > 30) return 'ending_escape'
-  if (snapshot.suspicion > 40) return 'ending_betrayal'
-  if (sanity <= 0) return 'ending_madness'
-  return 'ending_ambiguous'
+const getStartAreaFeedback = (currentNodeId: string, choice: StartAreaChoice) => ({
+  title: choice.text,
+  lines: choice.feedback.length ? choice.feedback : [startAreaNodes[currentNodeId]?.description[0] ?? '你沒有真的退路。'],
+})
+
+const isStartAreaChoiceVisible = (
+  choice: StartAreaChoice,
+  snapshot: { trust: number; suspicion: number; stress: number; flags: string[] },
+) => {
+  const requires = choice.requires
+  if (!requires) return true
+  if (requires.minTrust !== undefined && snapshot.trust < requires.minTrust) return false
+  if (requires.maxTrust !== undefined && snapshot.trust > requires.maxTrust) return false
+  if (requires.minSuspicion !== undefined && snapshot.suspicion < requires.minSuspicion) return false
+  if (requires.maxSuspicion !== undefined && snapshot.suspicion > requires.maxSuspicion) return false
+  if (requires.minStress !== undefined && snapshot.stress < requires.minStress) return false
+  if (requires.maxStress !== undefined && snapshot.stress > requires.maxStress) return false
+  if (requires.hasFlag && !snapshot.flags.includes(requires.hasFlag)) return false
+  if (requires.lacksFlag && snapshot.flags.includes(requires.lacksFlag)) return false
+  return true
+}
+
+const getStartAreaEndingId = (snapshot: { trust: number; suspicion: number; stress: number; flags: string[] }): StartAreaEnding['id'] => {
+  const steadyFlags = ['shared_supplies', 'shared_water', 'shared_backroom', 'entered_clinic_together', 'shared_watch']
+  const fractureFlags = ['hid_bottle', 'searched_his_bag', 'lied_at_night', 'turned_question_back', 'drank_first', 'kept_knife_close']
+  const steadyCount = steadyFlags.filter((flag) => snapshot.flags.includes(flag)).length
+  const fractureCount = fractureFlags.filter((flag) => snapshot.flags.includes(flag)).length
+
+  if (snapshot.trust >= 50 && snapshot.suspicion <= 35 && snapshot.stress < 68 && steadyCount >= 2 && fractureCount === 0) {
+    return 'ending_safe'
+  }
+
+  return 'ending_unstable'
 }
 
 const getStartAreaBackground = (nodeId: string | null) => {
   if (!nodeId) return null
-  if (['village_entry', 'house_search', 'deeper_house', 'bad_end_trap', 'night_fall', 'solo_bad_end', 'unstable_route'].includes(nodeId)) return '/bg_phase2.jpg'
-  if (['shrine_path', 'shrine_inside', 'truth_flag', 'madness_end'].includes(nodeId)) return '/bg_phase3.jpg'
-  if (['confrontation', 'bad_end_kill', 'hidden_truth'].includes(nodeId)) return '/bg_phase4.jpg'
-  return '/cover_mobile.jpg'
+  return startAreaNodes[nodeId]?.background ?? '/cover_mobile.jpg'
 }
+
+const getRouteFeedback = (option: RouteOption) => ({
+  title: option.event.title,
+  lines: [
+    option.event.text[0] ?? '你往那條路看了一眼。',
+    option.event.text[1] ?? '一旦踏進去，今天就會少一條能回頭的路。',
+  ],
+})
+
 
 function ChoiceButton({ text, subtitle, hoverHint, onClick, disabled, disabledReason }: ButtonProps) {
   return (
@@ -233,17 +213,6 @@ function ChoiceButton({ text, subtitle, hoverHint, onClick, disabled, disabledRe
   )
 }
 
-function HudStat({ label, value, stat }: { label: string; value: number; stat: StatKind }) {
-  const tone = getStatTone(stat, value)
-  const classes = tone === 'danger' ? 'border-rose-500/35 bg-black/50 text-rose-200' : tone === 'warning' ? 'border-amber-400/35 bg-black/46 text-amber-100' : 'border-stone-700/80 bg-black/42 text-stone-50'
-  return (
-    <div className={'rounded-2xl border px-3 py-2.5 ' + classes}>
-      <div className="text-[10px] uppercase tracking-[0.26em] text-stone-300/85">{label}</div>
-      <div className="mt-1 text-base font-semibold tracking-[0.04em]">{value}</div>
-    </div>
-  )
-}
-
 export function StarterShell() {
   useMetaVariables()
 
@@ -261,9 +230,9 @@ export function StarterShell() {
   const stress = useProjectStore((state) => state.stress)
   const oddities = useProjectStore((state) => state.oddities)
   const resource = useProjectStore((state) => state.resource)
+  const flags = useProjectStore((state) => state.flags)
   const remainingActions = useProjectStore((state) => state.remainingActions)
   const dayGoalKey = useProjectStore((state) => state.dayGoalKey)
-  const goalCompleted = useProjectStore((state) => state.goalCompleted)
   const metaVariables = useProjectStore((state) => state.metaVariables)
   const nextDay = useProjectStore((state) => state.nextDay)
   const changePhase = useProjectStore((state) => state.changePhase)
@@ -283,9 +252,7 @@ export function StarterShell() {
   const [resultTitle, setResultTitle] = useState('')
   const [resultLines, setResultLines] = useState<string[]>([])
   const [resultStamp, setResultStamp] = useState(0)
-  const [journalEntries, setJournalEntries] = useState<string[]>([])
-  const [showJournal, setShowJournal] = useState(false)
-  const [floatingEchoes, setFloatingEchoes] = useState<FloatingEcho[]>([])
+  const [, setJournalEntries] = useState<string[]>([])
   const [backgroundSrc, setBackgroundSrc] = useState(phaseBackgrounds.phase1)
   const [backgroundVisible, setBackgroundVisible] = useState(true)
   const [currentEnding, setCurrentEnding] = useState<keyof typeof endings | null>(null)
@@ -293,7 +260,7 @@ export function StarterShell() {
   const [appliedStartNodeIds, setAppliedStartNodeIds] = useState<string[]>([])
   const [startAreaEndingId, setStartAreaEndingId] = useState<StartAreaEnding['id'] | null>(null)
   const [endDayAfterResult, setEndDayAfterResult] = useState(false)
-  const echoIdRef = useRef(0)
+  const [transitionFeedback, setTransitionFeedback] = useState<TransitionFeedback>(null)
 
   const typedEllipsis = useTypewriterText('……', coverStage >= 1, 240)
   const typedAlive = useTypewriterText('你還活著。', coverStage >= 2, 72)
@@ -303,7 +270,6 @@ export function StarterShell() {
   const resolvedEnding = startAreaEndingId ? startAreaEndings[startAreaEndingId] : currentEnding ? endings[currentEnding] : null
   const distortionLevel = getDistortionLevel(stress, suspicion, oddities)
   const dailyGoal = useMemo(() => getDailyGoal({ day, water, food, trust, suspicion, stress, resource: water + food }), [day, food, stress, suspicion, trust, water])
-  const ambientLine = getAmbientLine(day, metaVariables.weather, metaVariables.isNight, water, food)
 
   useEffect(() => {
     if (dailyGoal.key !== dayGoalKey) setDayGoalKey(dailyGoal.key as DailyGoalKey)
@@ -332,9 +298,13 @@ export function StarterShell() {
   }, [audioReady, metaVariables.isNight, setHeartbeatLevel, setWindLevel, showCover, stress])
 
   const encounterFrame = useMemo(() => buildEncounterFrame({ day, dailyGoal, currentEvent, stamina, water, food, trust, suspicion, stress, oddities }), [currentEvent, dailyGoal, day, food, oddities, stamina, stress, suspicion, trust, water])
-  const promptSourceLines = activeStartNode ? activeStartNode.text : currentEvent ? currentEvent.text : encounterFrame.lines
-  const promptLines = useMemo(() => addRiskHints(promptSourceLines, { stamina, water, food, trust, suspicion, stress }), [food, promptSourceLines, stamina, stress, suspicion, trust, water])
-  const resultDisplayLines = useMemo(() => addRiskHints(resultLines, { stamina, water, food, trust, suspicion, stress }).map((line, index) => distortLine(line, distortionLevel >= 2 ? distortionLevel : 0, false, index)), [distortionLevel, food, resultLines, stamina, stress, suspicion, trust, water])
+  const promptSourceLines = activeStartNode ? activeStartNode.description : currentEvent ? currentEvent.text : encounterFrame.lines
+  const promptLines = useMemo(() => promptSourceLines.filter(Boolean), [promptSourceLines])
+  const resultDisplayLines = useMemo(() => resultLines.filter(Boolean).map((line, index) => distortLine(line, distortionLevel >= 2 ? distortionLevel : 0, false, index)), [distortionLevel, resultLines])
+  const transitionDisplayLines = useMemo(() => {
+    const softenedLevel: 0 | 1 | 2 = distortionLevel <= 1 ? 0 : distortionLevel === 2 ? 1 : 2
+    return transitionFeedback ? transitionFeedback.lines.map((line, index) => distortLine(line, softenedLevel, false, index)) : []
+  }, [distortionLevel, transitionFeedback])
   const promptDisplayLines = useMemo(() => promptLines.map((line, index) => distortLine(line, distortionLevel, activeStartNode ? false : currentEvent?.unreliable, index)), [activeStartNode, currentEvent?.unreliable, distortionLevel, promptLines])
   const promptKey = activeStartNode ? day + '-start-' + activeStartNode.id : currentEvent ? day + '-' + currentEvent.id : day + '-routes-' + remainingActions
   const { blocks: visiblePromptBlocks, complete: promptReady } = useRevealBlocks(promptDisplayLines, promptKey, !showCover && phase === 'encounter', 240, 850)
@@ -356,29 +326,59 @@ export function StarterShell() {
     return () => { window.clearTimeout(fadeTimer); window.clearTimeout(swapTimer) }
   }, [backgroundSrc, sceneBackground])
 
-  const pushEcho = (text: string, tone: EchoTone) => {
-    echoIdRef.current += 1
-    const id = echoIdRef.current
-    setFloatingEchoes((current) => [...current, { id, text, tone }])
-    window.setTimeout(() => setFloatingEchoes((current) => current.filter((echo) => echo.id !== id)), 1900)
-  }
+  useEffect(() => {
+    if (!transitionFeedback) return undefined
 
-  const emitSummary = (summary: AppliedEffectSummary['delta']) => {
-    const entries: Array<{ label: string; value: number; tone: EchoTone }> = []
-    if (summary.stamina) entries.push({ label: '體力', value: summary.stamina, tone: getEchoTone(summary.stamina) })
-    if (summary.water) entries.push({ label: '淡水', value: summary.water, tone: getEchoTone(summary.water) })
-    if (summary.food) entries.push({ label: '食物', value: summary.food, tone: getEchoTone(summary.food) })
-    if (summary.trust) entries.push({ label: '信任', value: summary.trust, tone: getEchoTone(summary.trust) })
-    if (summary.suspicion) entries.push({ label: '懷疑', value: summary.suspicion, tone: getEchoTone(summary.suspicion, true) })
-    if (summary.stress) entries.push({ label: '壓力', value: summary.stress, tone: getEchoTone(summary.stress, true) })
-    entries.slice(0, 4).forEach((entry) => pushEcho(entry.label + ' ' + formatSigned(entry.value), entry.tone))
-  }
+    const timer = window.setTimeout(() => {
+      const action = transitionFeedback.action
+      setTransitionFeedback(null)
+
+      if (action.kind === 'start-node') {
+        const node = startAreaNodes[action.nodeId]
+        if (!node) return
+
+        visitNode(action.nodeId)
+        setActiveStartNodeId(action.nodeId)
+
+        if (!appliedStartNodeIds.includes(action.nodeId)) {
+          const normalizedEffect = normalizeStartAreaEffect(node.effect)
+          if (normalizedEffect) {
+            applyEffect(normalizedEffect, getStartAreaSupplyFocus(node.effect))
+          }
+          node.setFlags?.forEach((flag) => setFlag(flag))
+          setAppliedStartNodeIds((current) => [...current, action.nodeId])
+        }
+
+        changePhase('encounter')
+        return
+      }
+
+      if (action.kind === 'start-ending-check') {
+        setStartAreaEndingId(getStartAreaEndingId(useProjectStore.getState()))
+        changePhase('ending')
+        return
+      }
+
+      if (action.kind === 'start-ending') {
+        setStartAreaEndingId(action.endingId)
+        changePhase('ending')
+        return
+      }
+
+      enterRoute(action.eventId)
+    }, 980)
+
+    return () => window.clearTimeout(timer)
+  }, [appliedStartNodeIds, applyEffect, changePhase, enterRoute, setFlag, transitionFeedback, visitNode])
+
+  const pushEcho = (...args: [string, ('calm' | 'warning' | 'danger')?]) => { void args }
+
+  const emitSummary = (...args: [AppliedEffectSummary['delta']]) => { void args }
 
   const buildStatusSummary = (snapshot = useProjectStore.getState(), extra: string[] = []) => [
     '今天結束時，體力剩 ' + snapshot.stamina + '。',
     '淡水剩 ' + snapshot.water + '，食物剩 ' + snapshot.food + '。',
     snapshot.trust <= 35 ? '他看你的方式更像在防備。' : snapshot.suspicion >= 60 ? '猜疑沒有消失，只是暫時沒說出口。' : '你們暫時還站在同一邊。',
-    getRiskHintLine(snapshot),
     ...extra,
   ]
 
@@ -396,11 +396,11 @@ export function StarterShell() {
     setStartAreaEndingId(null)
     setActiveStartNodeId(null)
     setAppliedStartNodeIds([])
+    setTransitionFeedback(null)
     setResultTitle('')
     setResultLines([])
     setResultStamp(0)
     setJournalEntries([])
-    setShowJournal(false)
     setEndDayAfterResult(false)
     refreshEnvironment(false)
     rollRoutes()
@@ -410,7 +410,7 @@ export function StarterShell() {
     if (audioReady) { setSeaLevel(0); setWindLevel(0); setHeartbeatLevel(0) }
   }
 
-  const enterStartAreaNode = (nodeId: string) => {
+  function enterStartAreaNode(nodeId: string) {
     const node = startAreaNodes[nodeId]
     if (!node) return
 
@@ -431,19 +431,37 @@ export function StarterShell() {
   }
 
   const resolveStartAreaChoice = (choice: StartAreaChoice) => {
-    if (choice.to === 'ending_check') {
-      setStartAreaEndingId(getStartAreaEndingId(useProjectStore.getState()))
-      changePhase('ending')
+    if (!activeStartNodeId) return
+
+    const normalizedEffect = normalizeStartAreaEffect(choice.effect)
+    if (normalizedEffect) {
+      const summary = applyEffect(normalizedEffect, getStartAreaSupplyFocus(choice.effect))
+      emitSummary(summary.delta)
+    }
+    choice.setFlags?.forEach((flag) => setFlag(flag))
+
+    const feedback = getStartAreaFeedback(activeStartNodeId, choice)
+
+    if (choice.next === 'ending_check') {
+      setTransitionFeedback({
+        ...feedback,
+        action: { kind: 'start-ending-check' },
+      })
       return
     }
 
-    if (choice.to in startAreaEndings) {
-      setStartAreaEndingId(choice.to as StartAreaEnding['id'])
-      changePhase('ending')
+    if (choice.next in startAreaEndings) {
+      setTransitionFeedback({
+        ...feedback,
+        action: { kind: 'start-ending', endingId: choice.next as StartAreaEnding['id'] },
+      })
       return
     }
 
-    enterStartAreaNode(choice.to)
+    setTransitionFeedback({
+      ...feedback,
+      action: { kind: 'start-node', nodeId: choice.next },
+    })
   }
 
   const makeChoiceResult = (choice: NarrativeChoice): ChoiceResult => {
@@ -458,14 +476,18 @@ export function StarterShell() {
   }
 
   const handleRouteEnter = (option: RouteOption) => {
-    if (remainingActions <= 0) return pushEcho('今天的行動已經用完了。', 'warning')
-    if (option.locked) return pushEcho(option.reason ?? '現在還去不了。', 'warning')
-    enterRoute(option.event.id)
+    if (remainingActions <= 0) return pushEcho('\u4eca\u5929\u7684\u884c\u52d5\u5df2\u7d93\u7528\u5b8c\u4e86\u3002', 'warning')
+    if (option.locked) return pushEcho(option.reason ?? '\u73fe\u5728\u9084\u53bb\u4e0d\u4e86\u3002', 'warning')
+    const feedback = getRouteFeedback(option)
+    setTransitionFeedback({
+      ...feedback,
+      action: { kind: 'route', eventId: option.event.id },
+    })
   }
 
   const handleNoRoutes = () => {
     setResultTitle('今天沒有別的路了')
-    setResultLines(addRiskHints(['能走的地方不是關著，就是代價比今天還重。', '收手不是安全，只是暫時不再往壞的地方多走一步。'], useProjectStore.getState()))
+    setResultLines(['能走的地方不是關著，就是代價比今天還重。', '收手不是安全，只是暫時不再往壞的地方多走一步。'])
     setResultStamp((stamp) => stamp + 1)
     setEndDayAfterResult(true)
     changePhase('result')
@@ -506,7 +528,7 @@ export function StarterShell() {
             : '你帶回來的不是答案，只是今晚暫時能撐的東西。'
 
     setResultTitle(currentEvent.title)
-    setResultLines(addRiskHints([resolved.feeling, nodeAftermath, ...shift, getRiskHintLine(after)], after))
+    setResultLines([resolved.feeling, nodeAftermath, ...shift].filter(Boolean))
     setResultStamp((stamp) => stamp + 1)
     setEndDayAfterResult(after.remainingActions <= 0)
     changePhase('result')
@@ -560,22 +582,41 @@ export function StarterShell() {
     rollRoutes()
   }
 
+
   if (showCover) {
     return (
-      <main className="relative min-h-[100dvh] overflow-hidden bg-black text-stone-100">
+      <main className="relative h-[100dvh] overflow-hidden bg-black text-stone-100">
         <style>{sceneStyles}</style>
         {coverStage >= 3 && <div className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100" style={{ backgroundImage: "url('/cover_mobile.jpg')" }} />}
-        <div className="absolute inset-0 bg-black/72" />
+        <div className="absolute inset-0 bg-black/74" />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/92 to-black/96" />
-        <div className="relative z-10 flex min-h-[100dvh] flex-col px-6 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] pt-[calc(env(safe-area-inset-top)+1.5rem)]">
+        <div className="relative z-10 flex h-[100dvh] flex-col px-6 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] pt-[calc(env(safe-area-inset-top)+1.2rem)]">
           <div className="flex-1" />
-          <div className="mx-auto w-full max-w-[320px] space-y-5 text-center">
+          <div className="mx-auto flex w-full max-w-[340px] flex-col items-center justify-center text-center">
             <div className="min-h-[2rem] text-lg tracking-[0.2em] text-stone-300/84">{typedEllipsis}</div>
-            <div className="min-h-[2rem] text-[1.55rem] font-semibold leading-tight tracking-[0.08em] text-stone-50">{typedAlive}</div>
-            <div className="min-h-[3rem] text-[1.12rem] leading-8 text-stone-200/80">{typedNotAlone}</div>
+            <div className="mt-3 min-h-[2rem] text-[1.55rem] font-semibold leading-tight tracking-[0.08em] text-stone-50">{typedAlive}</div>
+            <div className="mt-4 min-h-[3rem] text-[1.08rem] leading-8 text-stone-200/80">{typedNotAlone}</div>
           </div>
           <div className="flex-1" />
-          {coverStage >= 4 && <button type="button" onClick={async () => { const ok = await unlock(); if (ok) { setSeaLevel(0.4); refreshEnvironment(false); setCurrentEnding(null); setStartAreaEndingId(null); setActiveStartNodeId(null); setAppliedStartNodeIds([]); setShowCover(false); enterStartAreaNode('start_beach') } }} className="mx-auto min-h-[56px] w-full max-w-[360px] rounded-[24px] border border-stone-600/80 bg-[linear-gradient(180deg,rgba(30,25,24,0.92),rgba(10,9,9,0.98))] px-6 py-4 text-base font-semibold tracking-[0.16em] text-stone-100 transition duration-300 hover:border-stone-400/85 hover:bg-[linear-gradient(180deg,rgba(42,35,33,0.95),rgba(13,11,11,0.99))]">我醒了</button>}
+          {coverStage >= 4 && (
+            <button
+              type="button"
+              onClick={async () => {
+                const ok = await unlock()
+                if (ok) {
+                  setSeaLevel(0.4)
+                  refreshEnvironment(false)
+                  setCurrentEnding(null)
+                  setStartAreaEndingId(null)
+                  setActiveStartNodeId(null)
+                  setAppliedStartNodeIds([])
+                  setShowCover(false)
+                  enterStartAreaNode('start_beach')
+                }
+              }}
+              className="mx-auto min-h-[56px] w-full max-w-[360px] rounded-[24px] border border-stone-600/80 bg-[linear-gradient(180deg,rgba(30,25,24,0.92),rgba(10,9,9,0.98))] px-6 py-4 text-base font-semibold tracking-[0.16em] text-stone-100 transition duration-300 hover:border-stone-400/85 hover:bg-[linear-gradient(180deg,rgba(42,35,33,0.95),rgba(13,11,11,0.99))]"
+            >{'我醒了'}</button>
+          )}
         </div>
       </main>
     )
@@ -583,100 +624,78 @@ export function StarterShell() {
 
   if (phase === 'ending' && resolvedEnding) {
     return (
-      <main className="relative min-h-[100dvh] overflow-hidden bg-black text-stone-100">
+      <main className="relative h-[100dvh] overflow-hidden bg-black text-stone-100">
         <style>{sceneStyles}</style>
         <div className={(backgroundVisible ? 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100' : 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0')} style={{ backgroundImage: "url('" + backgroundSrc + "')" }} />
-        <div className="absolute inset-0 bg-black/68" />
+        <div className="absolute inset-0 bg-black/72" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/92 via-black/78 to-black" />
-        <div className="relative z-10 flex min-h-[100dvh] flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)]">
-          <header className="mx-auto w-full max-w-[360px] rounded-[22px] border border-stone-700/70 bg-black/48 px-4 py-3 backdrop-blur-xl"><div className="text-[11px] uppercase tracking-[0.42em] text-stone-300/78">Day {day}</div></header>
-          <div className="flex-1" />
-          <article className="mx-auto w-full max-w-[320px] rounded-[28px] border border-stone-700/75 bg-[linear-gradient(180deg,rgba(18,16,14,0.94),rgba(6,5,5,0.98))] px-5 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.46)] backdrop-blur-xl">
-            <div className="text-[11px] uppercase tracking-[0.46em] text-stone-400/68">Ending</div>
-            <h1 className="mt-4 text-[2rem] font-semibold leading-tight tracking-[0.08em] text-stone-50">{resolvedEnding.title}</h1>
-            <div className="mt-5 space-y-5 text-[1.05rem] leading-[2.0] text-stone-100/90">{resolvedEnding.text.map((line) => <p key={line}>{line}</p>)}</div>
-          </article>
-          <div className="mx-auto mt-4 w-full max-w-[360px]"><ChoiceButton text="重新開始" subtitle="回到第 1 天，走另一條路。" hoverHint="這次你會記得哪些地方曾經出事，但島不會因此變得寬容。" onClick={() => { void restartCurrentGame() }} /></div>
+        <div className="relative z-10 flex h-[100dvh] flex-col overflow-hidden px-4 pb-[calc(env(safe-area-inset-bottom)+0.8rem)] pt-[calc(env(safe-area-inset-top)+0.6rem)]">
+          <header className="mx-auto flex w-full max-w-[380px] flex-none items-center justify-between gap-3 px-1 py-2">
+            <div className="rounded-full border border-stone-700/70 bg-black/46 px-3 py-2 text-[11px] uppercase tracking-[0.34em] text-stone-200/82 backdrop-blur-md">Day {day} / 30</div>
+            <div className="rounded-full border border-stone-800/80 bg-black/42 px-3 py-2 text-[11px] tracking-[0.2em] text-stone-300/78 backdrop-blur-md">Ending</div>
+          </header>
+          <section className="flex min-h-0 flex-1 flex-col justify-end pb-3 pt-2">
+            <article className="mx-auto flex w-full max-w-[380px] min-h-[34dvh] max-h-[48dvh] flex-col overflow-hidden rounded-[28px] border border-stone-700/75 bg-[linear-gradient(180deg,rgba(18,16,14,0.94),rgba(6,5,5,0.98))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.46)] backdrop-blur-xl">
+              <div className="text-[10px] uppercase tracking-[0.42em] text-stone-400/64">Ending</div>
+              <h1 className="mt-3 text-[clamp(1.5rem,6vw,2rem)] font-semibold leading-[1.18] tracking-[0.08em] text-stone-50">{resolvedEnding.title}</h1>
+              <div className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pr-1 text-[1rem] leading-[1.95] tracking-[0.01em] text-stone-100/92 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {resolvedEnding.text.map((line) => <p key={line}>{line}</p>)}
+              </div>
+            </article>
+          </section>
+          <footer className="mx-auto flex w-full max-w-[380px] flex-none flex-col gap-2 pb-[calc(env(safe-area-inset-bottom)+0.65rem)]">
+            <ChoiceButton text="重新開始" subtitle="回到第 1 天，走另一條路。" hoverHint="這次你會記得哪些地方曾經出事，但島不會因此變得寬容。" onClick={() => { void restartCurrentGame() }} />
+          </footer>
         </div>
       </main>
     )
   }
 
   return (
-    <main className="relative min-h-[100dvh] overflow-hidden bg-black text-stone-100">
+    <main className="relative h-[100dvh] overflow-hidden bg-black text-stone-100">
       <style>{sceneStyles}</style>
       <div className={(backgroundVisible ? 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100' : 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0')} style={{ backgroundImage: "url('" + sceneBackground + "')" }} />
-      <div className="absolute inset-0 bg-black/66" />
-      <div className={distortionLevel >= 2 ? 'absolute inset-0 bg-gradient-to-b from-black/90 via-rose-950/30 to-black' : 'absolute inset-0 bg-gradient-to-b from-black/88 via-black/72 to-black'} />
-      <div className="relative z-10 flex min-h-[100dvh] flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+0.5rem)]">
-        <header className="sticky top-[calc(env(safe-area-inset-top)+0.5rem)] z-20 mx-auto w-full max-w-[360px] rounded-[24px] border border-stone-700/75 bg-black/48 px-3 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.34)] backdrop-blur-xl">
-          <div className="flex items-start justify-between gap-3 rounded-2xl bg-black/40 px-3 py-3">
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.42em] text-stone-300/82">Day {day} / 30</div>
-              <div className="mt-2 text-xs leading-6 text-stone-200/80">{ambientLine}</div>
-            </div>
-            <button type="button" onClick={() => setShowJournal(true)} className="rounded-full border border-stone-600/80 bg-black/45 px-3 py-2 text-[11px] tracking-[0.24em] text-stone-100/80 transition hover:bg-black/60">日誌</button>
-          </div>
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            <HudStat label="體力" value={stamina} stat="stamina" />
-            <HudStat label="淡水" value={water} stat="water" />
-            <HudStat label="食物" value={food} stat="food" />
-            <HudStat label="信任" value={trust} stat="trust" />
-            <HudStat label="懷疑" value={suspicion} stat="suspicion" />
-            <HudStat label="壓力" value={stress} stat="stress" />
-          </div>
-          <div className="mt-3 grid grid-cols-[1fr_auto] gap-3 rounded-2xl bg-black/40 px-3 py-3">
-            <div>
-              <div className="text-[10px] uppercase tracking-[0.26em] text-stone-300/76">今日目標</div>
-              <div className="mt-1 text-sm font-semibold tracking-[0.03em] text-stone-50">{dailyGoal.title}</div>
-              <div className="mt-1 text-xs leading-6 text-stone-200/75">{dailyGoal.summary}</div>
-            </div>
-            <div className="rounded-2xl bg-black/45 px-3 py-2 text-right">
-              <div className="text-[10px] uppercase tracking-[0.26em] text-stone-300/76">剩餘行動</div>
-              <div className="mt-1 text-xl font-semibold text-stone-50">{remainingActions}</div>
-              <div className="mt-1 text-[11px] text-stone-300/70">{goalCompleted ? '目標已有進展' : '還沒做完今天'}</div>
-            </div>
-          </div>
+      <div className="absolute inset-0 bg-black/68" />
+      <div className={distortionLevel >= 2 ? 'absolute inset-0 bg-gradient-to-b from-black/92 via-rose-950/28 to-black' : 'absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black'} />
+      <div className="relative z-10 flex h-[100dvh] flex-col overflow-hidden px-4 pt-[calc(env(safe-area-inset-top)+0.5rem)]">
+        <header className="mx-auto flex w-full max-w-[380px] flex-none items-center justify-between gap-3 px-1 py-2">
+          <div className="rounded-full border border-stone-700/70 bg-black/46 px-3 py-2 text-[11px] uppercase tracking-[0.34em] text-stone-200/82 backdrop-blur-md">Day {day} / 30</div>
+          <div className="rounded-full border border-stone-800/80 bg-black/42 px-3 py-2 text-[11px] tracking-[0.2em] text-stone-300/78 backdrop-blur-md">剩餘行動 {remainingActions}</div>
         </header>
 
-        <div className="pointer-events-none absolute inset-x-4 top-[calc(env(safe-area-inset-top)+14.5rem)] z-20 space-y-2">{floatingEchoes.map((echo) => <div key={echo.id} className={(echo.tone === 'danger' ? 'mx-auto max-w-[320px] rounded-full border border-rose-500/28 bg-black/70 px-3 py-2 text-center text-[11px] tracking-[0.18em] text-rose-100' : echo.tone === 'warning' ? 'mx-auto max-w-[320px] rounded-full border border-amber-500/28 bg-black/70 px-3 py-2 text-center text-[11px] tracking-[0.18em] text-amber-100' : 'mx-auto max-w-[320px] rounded-full border border-emerald-500/24 bg-black/70 px-3 py-2 text-center text-[11px] tracking-[0.18em] text-emerald-100')}>{echo.text}</div>)}</div>
-
-        <section className="flex flex-1 flex-col justify-center px-1 py-6">
-          <article className={distortionLevel >= 2 ? 'mx-auto w-full max-w-[320px] rounded-[28px] border border-rose-900/55 bg-[linear-gradient(180deg,rgba(28,14,14,0.94),rgba(8,6,6,0.98))] px-5 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl' : 'mx-auto w-full max-w-[320px] rounded-[28px] border border-stone-700/75 bg-[linear-gradient(180deg,rgba(18,16,14,0.94),rgba(6,5,5,0.98))] px-5 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl'}>
-            <div className="text-[11px] uppercase tracking-[0.46em] text-stone-400/66">{phase === 'result' ? 'Aftermath' : activeStartNode ? 'Origin Node' : currentEvent ? 'Node' : 'Route'}</div>
-            <h1 className="mt-4 text-[clamp(1.8rem,6.8vw,2.3rem)] font-semibold leading-tight tracking-[0.08em] text-stone-50">{phase === 'result' ? resultTitle || '今天留下的東西' : activeStartNode ? (startAreaTitles[activeStartNode.id] ?? '起始區') : currentEvent ? currentEvent.title : encounterFrame.title}</h1>
-            <div className="mt-5 space-y-5 text-[1.05rem] leading-[2.0] tracking-[0.01em] text-stone-100/92">
-              {phase === 'encounter' && visiblePromptBlocks.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
-              {phase === 'result' && visibleResultBlocks.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
-              {phase === 'encounter' && !promptReady && <p className="text-base leading-8 text-stone-300/72">你還在判斷今天能往哪裡走。可很多路，一旦走進去就不會再回來。</p>}
+        <section className="flex min-h-0 flex-1 flex-col justify-end pb-3 pt-2">
+          <article className={distortionLevel >= 2 ? 'mx-auto flex w-full max-w-[380px] min-h-[34dvh] max-h-[45dvh] flex-col overflow-hidden rounded-[28px] border border-rose-900/55 bg-[linear-gradient(180deg,rgba(24,12,12,0.9),rgba(6,5,5,0.97))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl' : 'mx-auto flex w-full max-w-[380px] min-h-[34dvh] max-h-[45dvh] flex-col overflow-hidden rounded-[28px] border border-stone-700/75 bg-[linear-gradient(180deg,rgba(16,14,13,0.9),rgba(5,4,4,0.97))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl'}>
+            <div className="text-[10px] uppercase tracking-[0.42em] text-stone-400/64">{transitionFeedback ? 'Reaction' : phase === 'result' ? 'Aftermath' : activeStartNode ? 'Day 1' : currentEvent ? 'Node' : 'Route'}</div>
+            <h1 className="mt-3 text-[clamp(1.5rem,6vw,2rem)] font-semibold leading-[1.18] tracking-[0.08em] text-stone-50">{transitionFeedback ? transitionFeedback.title : phase === 'result' ? resultTitle || '今天留下的東西' : activeStartNode ? activeStartNode.title : currentEvent ? currentEvent.title : encounterFrame.title}</h1>
+            <div className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pr-1 text-[1rem] leading-[1.95] tracking-[0.01em] text-stone-100/92 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {transitionFeedback && transitionDisplayLines.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
+              {!transitionFeedback && phase === 'encounter' && visiblePromptBlocks.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
+              {!transitionFeedback && phase === 'result' && visibleResultBlocks.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
+              {!transitionFeedback && phase === 'encounter' && !promptReady && <p className="whitespace-pre-line text-base leading-8 text-stone-300/72">你還在判斷今天能往哪裡走。很多路，一旦走進去就不會再回來。</p>}
             </div>
           </article>
         </section>
 
-        <footer className="mx-auto w-full max-w-[360px] space-y-3">
-          {phase === 'encounter' && promptReady && activeStartNode && (activeStartNode.choices ?? []).map((choice) => {
+        <footer className="mx-auto flex w-full max-w-[380px] flex-none flex-col gap-2 pb-[calc(env(safe-area-inset-bottom)+0.65rem)]">
+          {!transitionFeedback && phase === 'encounter' && promptReady && activeStartNode && (activeStartNode.choices ?? []).filter((choice) => isStartAreaChoiceVisible(choice, { trust, suspicion, stress, flags })).map((choice) => {
             const copy = getStartAreaChoiceCopy(choice)
             return <ChoiceButton key={activeStartNode.id + '-' + choice.text} text={choice.text} subtitle={copy.subtitle} hoverHint={copy.hoverHint} onClick={() => resolveStartAreaChoice(choice)} />
           })}
-          {phase === 'encounter' && promptReady && !activeStartNode && !currentEvent && routeOptions.map((option) => <ChoiceButton key={option.event.id} text={option.event.title} subtitle={option.event.text[0]} hoverHint={option.locked ? option.reason ?? '這條路暫時走不通。' : '進去之後就不能回頭重選。 ' + (option.event.text[1] || '')} disabled={option.locked || remainingActions <= 0} disabledReason={remainingActions <= 0 ? '今天的行動已經用完了。' : option.reason} onClick={() => handleRouteEnter(option)} />)}
-          {phase === 'encounter' && promptReady && !activeStartNode && !currentEvent && routeOptions.length === 0 && <ChoiceButton text="今天沒有別的路了" subtitle="能走的地方不是關著，就是代價比今天還重。" hoverHint="把今天收掉，也是一種選擇。只是明天不會因此變輕。" onClick={handleNoRoutes} />}
-          {phase === 'encounter' && promptReady && !activeStartNode && currentEvent && currentEvent.choices.map((choice) => {
+          {!transitionFeedback && phase === 'encounter' && promptReady && !activeStartNode && !currentEvent && routeOptions.map((option) => <ChoiceButton key={option.event.id} text={option.event.title} subtitle={option.event.text[0]} hoverHint={option.locked ? option.reason ?? '這條路暫時走不通。' : '進去之後就不能回頭重選。 ' + (option.event.text[1] || '')} disabled={option.locked || remainingActions <= 0} disabledReason={remainingActions <= 0 ? '今天的行動已經用完了。' : option.reason} onClick={() => handleRouteEnter(option)} />)}
+          {!transitionFeedback && phase === 'encounter' && promptReady && !activeStartNode && !currentEvent && routeOptions.length === 0 && <ChoiceButton text="今天沒有別的路了" subtitle="能走的地方不是關著，就是代價比今天還重。" hoverHint="把今天收掉，也是一種選擇。只是明天不會因此變輕。" onClick={handleNoRoutes} />}
+          {!transitionFeedback && phase === 'encounter' && promptReady && !activeStartNode && currentEvent && currentEvent.choices.map((choice) => {
             const availability = getChoiceAvailability(choice, { stamina, water, food, resource })
             return <ChoiceButton key={currentEvent.id + '-' + choice.text} text={choice.text} subtitle={choice.feeling} hoverHint={choice.hoverHint || '這一步不會只留在這裡，它會在之後的話和沉默裡再出現。'} disabled={availability.disabled} disabledReason={availability.reason} onClick={() => resolveNodeChoice(choice)} />
           })}
-          {phase === 'result' && resultReady && <ChoiceButton text={endDayAfterResult ? '讓今天結束' : '回到分岔口'} subtitle={endDayAfterResult ? '進入下一天前，時間會先拿走一點補給。' : '你還有一次行動，但下一條路不一定比較好走。'} hoverHint={endDayAfterResult ? '今天會過去，但沒處理完的事不會。' : '你還能再做一次選擇，只是錯過的節點已經回不去了。'} onClick={continueFromResult} />}
+          {!transitionFeedback && phase === 'result' && resultReady && <ChoiceButton text={endDayAfterResult ? '讓今天結束' : '回到分岔口'} subtitle={endDayAfterResult ? '進入下一天前，時間會先拿走一點補給。' : '你還有一次行動，但下一條路不一定比較好走。'} hoverHint={endDayAfterResult ? '今天會過去，但沒處理完的事不會。' : '你還能再做一次選擇，只是錯過的節點已經回不去了。'} onClick={continueFromResult} />}
         </footer>
       </div>
-
-      {showJournal && (
-        <>
-          <button type="button" aria-label="關閉日誌" onClick={() => setShowJournal(false)} className="absolute inset-0 z-30 bg-black/62" />
-          <aside className="absolute right-0 top-0 z-40 flex h-full w-[86vw] max-w-sm flex-col border-l border-stone-700/70 bg-[linear-gradient(180deg,rgba(12,10,9,0.98),rgba(4,3,3,1))] px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)] shadow-2xl backdrop-blur-xl">
-            <div className="flex items-start justify-between gap-3"><div><div className="text-[11px] uppercase tracking-[0.42em] text-stone-400/68">Journal</div><h2 className="mt-2 text-xl font-semibold tracking-[0.08em] text-stone-50">日誌</h2></div><button type="button" onClick={() => setShowJournal(false)} className="rounded-full border border-stone-700/70 px-3 py-2 text-[11px] tracking-[0.25em] text-stone-200/72">關閉</button></div>
-            <div className="mt-5 flex-1 space-y-4 overflow-y-auto pr-1">{(journalEntries.length > 0 ? journalEntries : ['Day 1\n今天還沒有走到真正危險的地方。\n但那不代表危險不存在。']).map((entry) => <article key={entry} className="rounded-[22px] border border-stone-800/75 bg-black/35 px-4 py-4"><p className="whitespace-pre-line text-sm leading-7 text-stone-100/88">{entry}</p></article>)}</div>
-          </aside>
-        </>
-      )}
     </main>
   )
 }
+
+
+
+
+
+

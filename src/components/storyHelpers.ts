@@ -273,13 +273,13 @@ export function getDistortionLevel(stress: number, suspicion: number, oddities: 
 }
 
 export function getRiskHintLine(state: { stamina: number; water: number; food: number; trust: number; suspicion: number; stress: number }) {
-  if (state.water <= 1) return '但再拖一天，真正先亂掉的會是判斷。'
-  if (state.food <= 1) return '但明天醒來時，食物可能只剩下爭執。'
-  if (state.stamina <= 25) return '但你現在的力氣，已經不夠再犯一次錯。'
-  if (state.suspicion >= 60) return '但這份沉默沒有過去，它只是在等下一次被提起。'
-  if (state.trust <= 30) return '但他看你的方式，已經不像在看同伴。'
-  if (state.stress >= 70) return '但你知道，再多一個壞結果，今天就會整個傾下去。'
-  return '但只要再錯一次，今天就會往壞的方向滑下去。'
+  if (state.water <= 1) return '但如果今天還找不到水，明早先垮掉的會是你。'
+  if (state.food <= 1) return '但等到明天，桌上能分的只會剩更難看的那一點。'
+  if (state.stamina <= 25) return '但你現在連再摔一次，都未必撐得住。'
+  if (state.suspicion >= 60) return '但這份懷疑沒有散，只是還沒被誰先說出口。'
+  if (state.trust <= 30) return '但他看你的眼神，已經像在防一個遲早會出手的人。'
+  if (state.stress >= 70) return '但你心裡那根線已經繃得很緊，再推一下就會斷。'
+  return '但今天留下來的每一步，明天都可能反過來咬你。'
 }
 
 export function addRiskHints(
@@ -903,5 +903,6 @@ export function getEndingState(state: ReturnType<typeof useProjectStore.getState
   if (trust >= 72 && suspicion < 35 && stress < 60 && cooperativeCount >= 3 && honestCount >= 2) return 'mutual_trust'
   return 'lone_survivor'
 }
+
 
 
