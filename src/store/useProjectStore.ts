@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+﻿import { create } from 'zustand'
 
 export type GamePhase = 'encounter' | 'result' | 'log' | 'ending'
 
@@ -58,6 +58,7 @@ type GameStore = {
   dayGoalKey: DailyGoalKey
   goalCompleted: boolean
   otherAlive: boolean
+  visitedNodes: string[]
   flags: string[]
   selfishCount: number
   honestCount: number
@@ -88,6 +89,8 @@ type GameStore = {
   modifyOddities: (value: number) => void
   applyEffect: (effect?: GameStateEffect, supplyFocus?: SupplyFocus) => AppliedEffectSummary
   setOtherAlive: (value: boolean) => void
+  visitNode: (nodeId: string) => void
+  hasVisitedNode: (nodeId: string) => boolean
   setFlag: (flag: string) => void
   clearFlag: (flag: string) => void
   hasFlag: (flag: string) => boolean
@@ -326,6 +329,7 @@ const getInitialState = () => {
     dayGoalKey: 'find_water' as DailyGoalKey,
     goalCompleted: false,
     otherAlive: true,
+    visitedNodes: [] as string[],
     flags: [] as string[],
     selfishCount: 0,
     honestCount: 0,
@@ -458,6 +462,12 @@ export const useProjectStore = create<GameStore>((set, get) => ({
   setOtherAlive: (value) => {
     set({ otherAlive: value })
   },
+  visitNode: (nodeId) => {
+    set((state) => ({
+      visitedNodes: state.visitedNodes.includes(nodeId) ? state.visitedNodes : [...state.visitedNodes, nodeId],
+    }))
+  },
+  hasVisitedNode: (nodeId) => get().visitedNodes.includes(nodeId),
   setFlag: (flag) => {
     set((state) => ({
       flags: state.flags.includes(flag) ? state.flags : [...state.flags, flag],
@@ -493,3 +503,4 @@ export const useProjectStore = create<GameStore>((set, get) => ({
     set(getInitialState())
   },
 }))
+

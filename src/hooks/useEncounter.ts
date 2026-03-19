@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react'
+﻿import { useMemo, useState } from 'react'
 
 import events from '../data/events.json'
 import { useProjectStore, type BehaviorType, type DayPhase } from '../store/useProjectStore'
@@ -80,13 +80,14 @@ export type NarrativeEvent = {
   requiresBehavior?: BehaviorRequirements
 }
 
-type WeightedEvent = NarrativeEvent & {
-  adjustedWeight: number
+export type RouteOption = {
+  event: NarrativeEvent
+  locked: boolean
+  reason?: string
 }
 
-type EncounterAction = {
-  pool: WeightedEvent[]
-  excludeIds?: string[]
+type WeightedEvent = NarrativeEvent & {
+  adjustedWeight: number
 }
 
 type BehaviorSnapshot = {
@@ -97,7 +98,8 @@ type BehaviorSnapshot = {
 }
 
 const narrativeEvents = events as NarrativeEvent[]
-const RECENT_EVENT_LIMIT = 5
+const RECENT_NODE_LIMIT = 6
+const DAILY_ROUTE_COUNT = 2
 
 const matchesDay = (event: NarrativeEvent, day: number) => {
   if (event.days?.length) {
@@ -161,10 +163,7 @@ const matchesConditions = (
   return true
 }
 
-const matchesBehaviorRequirements = (
-  requirements: BehaviorRequirements | undefined,
-  snapshot: BehaviorSnapshot,
-) => {
+const matchesBehaviorRequirements = (requirements: BehaviorRequirements | undefined, snapshot: BehaviorSnapshot) => {
   if (!requirements) {
     return true
   }
@@ -179,7 +178,6 @@ const matchesBehaviorRequirements = (
 
 const isNegativeChoice = (choice: NarrativeChoice) => {
   const effect = choice.effect
-
   return (
     (effect.trust ?? 0) < 0 ||
     (effect.resource ?? 0) < 0 ||
@@ -192,9 +190,7 @@ const isNegativeChoice = (choice: NarrativeChoice) => {
   )
 }
 
-const eventFeelsHostile = (event: NarrativeEvent) => {
-  return event.category === 'collapse' || event.choices.some(isNegativeChoice)
-}
+const eventFeelsHostile = (event: NarrativeEvent) => event.category === 'collapse' || event.choices.some(isNegativeChoice)
 
 const getAdjustedPool = (
   pool: NarrativeEvent[],
@@ -222,45 +218,16 @@ const getAdjustedPool = (
   return pool.map((event) => {
     let adjustedWeight = event.weight ?? 10
 
-    if (event.days?.length) {
-      adjustedWeight *= 2.4
-    }
-
-    if (suspicion > 70 && (event.tags?.includes('paranoia') || event.category === 'trust')) {
-      adjustedWeight *= 1.9
-    }
-
-    if (stress > 80 && (event.tags?.includes('hallucination') || event.category === 'collapse')) {
-      adjustedWeight *= 1.95
-    }
-
-    if ((resource <= 2 || water <= 1 || food <= 1) && event.category === 'resource') {
-      adjustedWeight *= 1.4
-    }
-
-    if (memoryOfStealing && (event.category === 'trust' || event.category === 'collapse')) {
-      adjustedWeight *= 1.35
-    }
-
-    if (coldWar && event.category === 'collapse') {
-      adjustedWeight *= 1.5
-    }
-
-    if (behavior.selfishCount >= 3 && (event.category === 'trust' || event.category === 'collapse')) {
-      adjustedWeight *= 1.18
-    }
-
-    if (behavior.cooperativeCount >= 3 && event.category === 'resource') {
-      adjustedWeight *= 1.12
-    }
-
-    if (behavior.aggressiveCount >= 2 && eventFeelsHostile(event)) {
-      adjustedWeight *= 1.16
-    }
-
-    if (event.unreliable) {
-      adjustedWeight *= stress > 65 || suspicion > 55 ? 1.28 : 1.08
-    }
+    if (event.days?.length) adjustedWeight *= 2.4
+    if (suspicion > 70 && (event.tags?.includes('paranoia') || event.category === 'trust')) adjustedWeight *= 1.9
+    if (stress > 80 && (event.tags?.includes('hallucination') || event.category === 'collapse')) adjustedWeight *= 1.95
+    if ((resource <= 2 || water <= 1 || food <= 1) && event.category === 'resource') adjustedWeight *= 1.4
+    if (memoryOfStealing && (event.category === 'trust' || event.category === 'collapse')) adjustedWeight *= 1.35
+    if (coldWar && event.category === 'collapse') adjustedWeight *= 1.5
+    if (behavior.selfishCount >= 3 && (event.category === 'trust' || event.category === 'collapse')) adjustedWeight *= 1.18
+    if (behavior.cooperativeCount >= 3 && event.category === 'resource') adjustedWeight *= 1.12
+    if (behavior.aggressiveCount >= 2 && eventFeelsHostile(event)) adjustedWeight *= 1.16
+    if (event.unreliable) adjustedWeight *= stress > 65 || suspicion > 55 ? 1.28 : 1.08
 
     return {
       ...event,
@@ -270,30 +237,72 @@ const getAdjustedPool = (
 }
 
 const pickWeightedEvent = (pool: WeightedEvent[], excludeIds: string[] = []): NarrativeEvent | null => {
-  if (pool.length === 0) {
-    return null
-  }
+  if (pool.length === 0) return null
 
-  const filteredPool = pool.length > excludeIds.length
-    ? pool.filter((event) => !excludeIds.includes(event.id))
-    : pool
-
+  const filteredPool = pool.length > excludeIds.length ? pool.filter((event) => !excludeIds.includes(event.id)) : pool
   const candidatePool = filteredPool.length > 0 ? filteredPool : pool
   const totalWeight = candidatePool.reduce((sum, event) => sum + event.adjustedWeight, 0)
   let roll = Math.random() * totalWeight
 
   for (const event of candidatePool) {
     roll -= event.adjustedWeight
-    if (roll <= 0) {
-      return event
-    }
+    if (roll <= 0) return event
   }
 
   return candidatePool[candidatePool.length - 1]
 }
 
-const encounterReducer = (_currentEvent: NarrativeEvent | null, action: EncounterAction) => {
-  return pickWeightedEvent(action.pool, action.excludeIds)
+const determineLockReason = (
+  event: NarrativeEvent,
+  snapshot: {
+    trust: number
+    suspicion: number
+    stress: number
+    stamina: number
+    water: number
+    food: number
+    resource: number
+    oddities: number
+    flags: string[]
+  },
+) => {
+  const conditions = event.conditions
+
+  if (conditions?.maxStress !== undefined && snapshot.stress > conditions.maxStress) {
+    return '壓力太高，你現在看不清那裡到底是什麼。'
+  }
+  if (conditions?.minTrust !== undefined && snapshot.trust < conditions.minTrust) {
+    return '他不願意跟你一起進去。'
+  }
+  if (conditions?.maxSuspicion !== undefined && snapshot.suspicion > conditions.maxSuspicion) {
+    return '你現在只會把那裡看成陷阱。'
+  }
+  if (conditions?.minStamina !== undefined && snapshot.stamina < conditions.minStamina) {
+    return '你現在沒有力氣走進去。'
+  }
+  if (conditions?.minWater !== undefined && snapshot.water < conditions.minWater) {
+    return '你得先處理眼前的缺水。'
+  }
+  if (conditions?.minFood !== undefined && snapshot.food < conditions.minFood) {
+    return '空腹讓你沒辦法賭這一步。'
+  }
+  if (conditions?.minResource !== undefined && snapshot.resource < conditions.minResource) {
+    return '你現在拿不出這一步需要的東西。'
+  }
+  if (conditions?.maxOddities !== undefined && snapshot.oddities > conditions.maxOddities) {
+    return '你一靠近就覺得不對，暫時進不去。'
+  }
+  if ((event.requiredFlags ?? []).some((flag) => !snapshot.flags.includes(flag))) {
+    return '現在還缺一個前提，這條路暫時打不開。'
+  }
+
+  return '現在還去不了。'
+}
+
+const pickLockedOptions = (lockedPool: NarrativeEvent[], count: number) => {
+  if (count <= 0) return []
+  const sorted = [...lockedPool].sort((a, b) => (b.weight ?? 10) - (a.weight ?? 10))
+  return sorted.slice(0, count)
 }
 
 export function useEncounter() {
@@ -308,21 +317,31 @@ export function useEncounter() {
   const resource = useProjectStore((state) => state.resource)
   const oddities = useProjectStore((state) => state.oddities)
   const flags = useProjectStore((state) => state.flags)
+  const visitedNodes = useProjectStore((state) => state.visitedNodes)
   const selfishCount = useProjectStore((state) => state.selfishCount)
   const honestCount = useProjectStore((state) => state.honestCount)
   const cooperativeCount = useProjectStore((state) => state.cooperativeCount)
   const aggressiveCount = useProjectStore((state) => state.aggressiveCount)
-  const recentEventIdsRef = useRef<string[]>([])
+  const visitNode = useProjectStore((state) => state.visitNode)
+
+  const [currentEvent, setCurrentEvent] = useState<NarrativeEvent | null>(null)
+  const [routeNonce, setRouteNonce] = useState(0)
+  const [recentRouteIds, setRecentRouteIds] = useState<string[]>([])
 
   const behavior = useMemo(
     () => ({ selfishCount, honestCount, cooperativeCount, aggressiveCount }),
     [selfishCount, honestCount, cooperativeCount, aggressiveCount],
   )
 
-  const pool = useMemo(() => {
+  const routeSnapshot = useMemo(
+    () => ({ day, trust, suspicion, stress, stamina, water, food, resource, oddities, flags }),
+    [day, trust, suspicion, stress, stamina, water, food, resource, oddities, flags],
+  )
+
+  const baseCandidates = useMemo(() => {
     const phaseFiltered = narrativeEvents.filter((event) => !event.dayPhase || event.dayPhase.includes(dayPhase))
 
-    const basePool = phaseFiltered.filter((event) => {
+    const filtered = phaseFiltered.filter((event) => {
       const requiredFlags = event.requiredFlags ?? []
       const excludedFlags = event.excludedFlags ?? []
 
@@ -330,50 +349,95 @@ export function useEncounter() {
         matchesDay(event, day) &&
         requiredFlags.every((flag) => flags.includes(flag)) &&
         excludedFlags.every((flag) => !flags.includes(flag)) &&
-        matchesConditions(event.conditions, { day, trust, suspicion, stress, stamina, water, food, resource, oddities }) &&
-        matchesBehaviorRequirements(event.requiresBehavior, behavior)
+        matchesBehaviorRequirements(event.requiresBehavior, behavior) &&
+        !visitedNodes.includes(event.id)
       )
     })
 
-    const exactDayEvents = basePool.filter((event) => event.days?.includes(day))
-    const priorityPool = exactDayEvents.length > 0 ? exactDayEvents : basePool
+    const exactDayEvents = filtered.filter((event) => event.days?.includes(day))
+    return exactDayEvents.length > 0 ? exactDayEvents : filtered
+  }, [behavior, day, dayPhase, flags, visitedNodes])
 
-    return getAdjustedPool(priorityPool, { suspicion, stress, flags, behavior, resource, water, food })
-  }, [behavior, day, dayPhase, flags, food, oddities, resource, stamina, stress, suspicion, trust, water])
-
-  const [currentEvent, dispatchEvent] = useReducer(
-    encounterReducer,
-    pool,
-    (initialPool) => pickWeightedEvent(initialPool),
+  const availablePool = useMemo(
+    () => getAdjustedPool(baseCandidates.filter((event) => matchesConditions(event.conditions, routeSnapshot)), {
+      suspicion,
+      stress,
+      flags,
+      behavior,
+      resource,
+      water,
+      food,
+    }),
+    [baseCandidates, behavior, flags, food, resource, routeSnapshot, stress, suspicion, water],
   )
 
-  const rollEvent = () => {
-    dispatchEvent({
-      pool,
-      excludeIds: recentEventIdsRef.current,
-    })
-  }
+  const lockedPool = useMemo(
+    () => baseCandidates.filter((event) => !matchesConditions(event.conditions, routeSnapshot)),
+    [baseCandidates, routeSnapshot],
+  )
 
-  useEffect(() => {
-    dispatchEvent({
-      pool,
-      excludeIds: recentEventIdsRef.current,
-    })
-  }, [pool])
+  const routeOptions = useMemo(() => {
+    const nextOptions: RouteOption[] = []
+    const usedIds = new Set<string>()
+    const recentSeed = routeNonce % 2 === 0 ? recentRouteIds : [...recentRouteIds].reverse()
 
-  useEffect(() => {
-    if (!currentEvent) {
-      return
+    while (nextOptions.length < DAILY_ROUTE_COUNT) {
+      const nextEvent = pickWeightedEvent(availablePool, [...recentSeed, ...Array.from(usedIds)])
+      if (!nextEvent) break
+      usedIds.add(nextEvent.id)
+      nextOptions.push({ event: nextEvent, locked: false })
+      if (usedIds.size >= availablePool.length) break
     }
 
-    recentEventIdsRef.current = [
-      currentEvent.id,
-      ...recentEventIdsRef.current.filter((id) => id !== currentEvent.id),
-    ].slice(0, RECENT_EVENT_LIMIT)
-  }, [currentEvent])
+    if (nextOptions.length < DAILY_ROUTE_COUNT) {
+      const fillers = pickLockedOptions(
+        lockedPool.filter((event) => !usedIds.has(event.id)),
+        DAILY_ROUTE_COUNT - nextOptions.length,
+      )
+      fillers.forEach((event) => {
+        nextOptions.push({
+          event,
+          locked: true,
+          reason: determineLockReason(event, routeSnapshot),
+        })
+      })
+    }
+
+    return nextOptions
+  }, [availablePool, lockedPool, recentRouteIds, routeNonce, routeSnapshot])
+
+  const rollRoutes = () => {
+    setCurrentEvent(null)
+    setRouteNonce((value) => value + 1)
+  }
+
+  const enterRoute = (eventId: string) => {
+    const selected = routeOptions.find((option) => option.event.id === eventId)
+    if (!selected || selected.locked) {
+      return selected ?? null
+    }
+
+    visitNode(selected.event.id)
+    setRecentRouteIds((current) => [selected.event.id, ...current.filter((id) => id !== selected.event.id)].slice(0, RECENT_NODE_LIMIT))
+    setCurrentEvent(selected.event)
+    return selected
+  }
+
+  const leaveRoute = () => {
+    setCurrentEvent(null)
+  }
+
 
   return {
     currentEvent,
-    rollEvent,
+    routeOptions,
+    rollRoutes,
+    enterRoute,
+    leaveRoute,
   }
 }
+
+
+
+
+
