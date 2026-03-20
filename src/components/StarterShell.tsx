@@ -1,12 +1,12 @@
 ﻿import { useEffect, useMemo, useState } from 'react'
 
+import { useDynamicDayOne } from '../hooks/useDynamicDayOne'
 import { useAmbientAudio } from '../hooks/useAmbientAudio'
-import { startAreaEndings, startAreaNodes, type StartAreaChoice, type StartAreaEffect, type StartAreaEnding } from '../data/startAreaNodes'
 import { useEncounter, type NarrativeChoice, type NarrativeEffect, type RandomOutcome, type RouteOption } from '../hooks/useEncounter'
 import { useMetaVariables } from '../hooks/useMetaVariables'
+import { getOpeningOutcome, type OpeningChoice, type OpeningContext, type OpeningOutcomeId, type OpeningSceneId } from '../systems/events'
 import { useProjectStore, type AppliedEffectSummary, type DailyGoalKey, type SupplyFocus, type Weather } from '../store/useProjectStore'
 import {
-  buildDiaryEntry,
   buildEncounterFrame,
   buildShiftNarrative,
   distortLine,
@@ -23,7 +23,14 @@ import {
   weatherPool,
 } from './storyHelpers'
 
-type ButtonProps = { text: string; subtitle?: string; hoverHint?: string; onClick: () => void; disabled?: boolean; disabledReason?: string }
+type ButtonProps = {
+  text: string
+  subtitle?: string
+  hoverHint?: string
+  onClick: () => void
+  disabled?: boolean
+  disabledReason?: string
+}
 
 type ChoiceResult = {
   effect: NarrativeEffect
@@ -38,9 +45,8 @@ type TransitionFeedback =
       title: string
       lines: string[]
       action:
-        | { kind: 'start-node'; nodeId: string }
-        | { kind: 'start-ending-check' }
-        | { kind: 'start-ending'; endingId: StartAreaEnding['id'] }
+        | { kind: 'opening-scene'; sceneId: OpeningSceneId }
+        | { kind: 'opening-outcome'; outcomeId: OpeningOutcomeId }
         | { kind: 'route'; eventId: string }
     }
   | null
@@ -98,91 +104,6 @@ const getChoiceAvailability = (choice: NarrativeChoice, snapshot: { stamina: num
   return { disabled: false, reason: undefined }
 }
 
-const getStartAreaSupplyFocus = (effect?: StartAreaEffect): SupplyFocus => {
-  if (!effect) return 'mixed'
-  if ((effect.water ?? 0) !== 0 && (effect.food ?? 0) === 0) return 'water'
-  if ((effect.food ?? 0) !== 0 && (effect.water ?? 0) === 0) return 'food'
-  return 'mixed'
-}
-
-const normalizeStartAreaEffect = (effect?: StartAreaEffect): NarrativeEffect | undefined => {
-  if (!effect) return undefined
-
-  return {
-    trust: effect.trust ?? 0,
-    suspicion: effect.suspicion ?? 0,
-    stress: (effect.stress ?? 0) + (effect.sanity ? -effect.sanity : 0),
-    stamina: effect.stamina ?? 0,
-    water: effect.water ?? 0,
-    food: effect.food ?? 0,
-  }
-}
-
-const getStartAreaChoiceCopy = (choice: StartAreaChoice) => {
-  const fallbackHint = choice.feedback[choice.feedback.length - 1] ?? '這一步會把今天推向另一個不好收拾的地方。'
-
-  if (choice.next === 'ending_check') {
-    return {
-      subtitle: choice.description,
-      hoverHint: fallbackHint,
-    }
-  }
-
-  if (choice.next in startAreaEndings) {
-    const ending = startAreaEndings[choice.next as StartAreaEnding['id']]
-    return {
-      subtitle: choice.description,
-      hoverHint: ending.text[0] ?? fallbackHint,
-    }
-  }
-
-  const targetNode = startAreaNodes[choice.next]
-  return {
-    subtitle: choice.description,
-    hoverHint: targetNode?.description[targetNode.description.length - 1] ?? fallbackHint,
-  }
-}
-
-const getStartAreaFeedback = (currentNodeId: string, choice: StartAreaChoice) => ({
-  title: choice.text,
-  lines: choice.feedback.length ? choice.feedback : [startAreaNodes[currentNodeId]?.description[0] ?? '你沒有真的退路。'],
-})
-
-const isStartAreaChoiceVisible = (
-  choice: StartAreaChoice,
-  snapshot: { trust: number; suspicion: number; stress: number; flags: string[] },
-) => {
-  const requires = choice.requires
-  if (!requires) return true
-  if (requires.minTrust !== undefined && snapshot.trust < requires.minTrust) return false
-  if (requires.maxTrust !== undefined && snapshot.trust > requires.maxTrust) return false
-  if (requires.minSuspicion !== undefined && snapshot.suspicion < requires.minSuspicion) return false
-  if (requires.maxSuspicion !== undefined && snapshot.suspicion > requires.maxSuspicion) return false
-  if (requires.minStress !== undefined && snapshot.stress < requires.minStress) return false
-  if (requires.maxStress !== undefined && snapshot.stress > requires.maxStress) return false
-  if (requires.hasFlag && !snapshot.flags.includes(requires.hasFlag)) return false
-  if (requires.lacksFlag && snapshot.flags.includes(requires.lacksFlag)) return false
-  return true
-}
-
-const getStartAreaEndingId = (snapshot: { trust: number; suspicion: number; stress: number; flags: string[] }): StartAreaEnding['id'] => {
-  const steadyFlags = ['shared_supplies', 'shared_water', 'shared_backroom', 'entered_clinic_together', 'shared_watch']
-  const fractureFlags = ['hid_bottle', 'searched_his_bag', 'lied_at_night', 'turned_question_back', 'drank_first', 'kept_knife_close']
-  const steadyCount = steadyFlags.filter((flag) => snapshot.flags.includes(flag)).length
-  const fractureCount = fractureFlags.filter((flag) => snapshot.flags.includes(flag)).length
-
-  if (snapshot.trust >= 50 && snapshot.suspicion <= 35 && snapshot.stress < 68 && steadyCount >= 2 && fractureCount === 0) {
-    return 'ending_safe'
-  }
-
-  return 'ending_unstable'
-}
-
-const getStartAreaBackground = (nodeId: string | null) => {
-  if (!nodeId) return null
-  return startAreaNodes[nodeId]?.background ?? '/cover_mobile.jpg'
-}
-
 const getRouteFeedback = (option: RouteOption) => ({
   title: option.event.title,
   lines: [
@@ -191,6 +112,25 @@ const getRouteFeedback = (option: RouteOption) => ({
   ],
 })
 
+const buildOpeningContextFromStore = (): OpeningContext | null => {
+  const state = useProjectStore.getState()
+  if (!state.runSetup) return null
+
+  return {
+    player: {
+      day: state.day,
+      trust: state.trust,
+      suspicion: state.suspicion,
+      stress: state.stress,
+      stamina: state.stamina,
+      water: state.water,
+      food: state.food,
+      flags: state.flags,
+    },
+    run: state.runSetup,
+    npcs: state.npcs,
+  }
+}
 
 function ChoiceButton({ text, subtitle, hoverHint, onClick, disabled, disabledReason }: ButtonProps) {
   return (
@@ -216,6 +156,7 @@ function ChoiceButton({ text, subtitle, hoverHint, onClick, disabled, disabledRe
 export function StarterShell() {
   useMetaVariables()
 
+  const dayOneOpening = useDynamicDayOne()
   const { ready: audioReady, unlock, setSeaLevel, setWindLevel, setHeartbeatLevel } = useAmbientAudio()
   const { currentEvent, routeOptions, rollRoutes, enterRoute, leaveRoute } = useEncounter()
 
@@ -230,7 +171,6 @@ export function StarterShell() {
   const stress = useProjectStore((state) => state.stress)
   const oddities = useProjectStore((state) => state.oddities)
   const resource = useProjectStore((state) => state.resource)
-  const flags = useProjectStore((state) => state.flags)
   const remainingActions = useProjectStore((state) => state.remainingActions)
   const dayGoalKey = useProjectStore((state) => state.dayGoalKey)
   const metaVariables = useProjectStore((state) => state.metaVariables)
@@ -242,7 +182,6 @@ export function StarterShell() {
   const setFlag = useProjectStore((state) => state.setFlag)
   const incrementBehavior = useProjectStore((state) => state.incrementBehavior)
   const setOtherAlive = useProjectStore((state) => state.setOtherAlive)
-  const visitNode = useProjectStore((state) => state.visitNode)
   const consumeAction = useProjectStore((state) => state.consumeAction)
   const setGoalCompleted = useProjectStore((state) => state.setGoalCompleted)
   const setDayGoalKey = useProjectStore((state) => state.setDayGoalKey)
@@ -252,27 +191,22 @@ export function StarterShell() {
   const [resultTitle, setResultTitle] = useState('')
   const [resultLines, setResultLines] = useState<string[]>([])
   const [resultStamp, setResultStamp] = useState(0)
-  const [, setJournalEntries] = useState<string[]>([])
   const [backgroundSrc, setBackgroundSrc] = useState(phaseBackgrounds.phase1)
   const [backgroundVisible, setBackgroundVisible] = useState(true)
   const [currentEnding, setCurrentEnding] = useState<keyof typeof endings | null>(null)
-  const [activeStartNodeId, setActiveStartNodeId] = useState<string | null>(null)
-  const [appliedStartNodeIds, setAppliedStartNodeIds] = useState<string[]>([])
-  const [startAreaEndingId, setStartAreaEndingId] = useState<StartAreaEnding['id'] | null>(null)
   const [endDayAfterResult, setEndDayAfterResult] = useState(false)
   const [transitionFeedback, setTransitionFeedback] = useState<TransitionFeedback>(null)
 
   const typedEllipsis = useTypewriterText('……', coverStage >= 1, 240)
   const typedAlive = useTypewriterText('你還活著。', coverStage >= 2, 72)
   const typedNotAlone = useTypewriterText('但不是只有你一個人。', coverStage >= 3, 68)
-  const activeStartNode = useMemo(() => (activeStartNodeId ? startAreaNodes[activeStartNodeId] ?? null : null), [activeStartNodeId])
-  const startAreaBackground = useMemo(() => getStartAreaBackground(activeStartNodeId), [activeStartNodeId])
-  const resolvedEnding = startAreaEndingId ? startAreaEndings[startAreaEndingId] : currentEnding ? endings[currentEnding] : null
   const distortionLevel = getDistortionLevel(stress, suspicion, oddities)
   const dailyGoal = useMemo(() => getDailyGoal({ day, water, food, trust, suspicion, stress, resource: water + food }), [day, food, stress, suspicion, trust, water])
 
   useEffect(() => {
-    if (dailyGoal.key !== dayGoalKey) setDayGoalKey(dailyGoal.key as DailyGoalKey)
+    if (dailyGoal.key !== dayGoalKey) {
+      setDayGoalKey(dailyGoal.key as DailyGoalKey)
+    }
   }, [dailyGoal.key, dayGoalKey, setDayGoalKey])
 
   useEffect(() => {
@@ -298,26 +232,26 @@ export function StarterShell() {
   }, [audioReady, metaVariables.isNight, setHeartbeatLevel, setWindLevel, showCover, stress])
 
   const encounterFrame = useMemo(() => buildEncounterFrame({ day, dailyGoal, currentEvent, stamina, water, food, trust, suspicion, stress, oddities }), [currentEvent, dailyGoal, day, food, oddities, stamina, stress, suspicion, trust, water])
-  const promptSourceLines = activeStartNode ? activeStartNode.description : currentEvent ? currentEvent.text : encounterFrame.lines
+  const promptSourceLines = dayOneOpening.scene ? dayOneOpening.scene.description : currentEvent ? currentEvent.text : encounterFrame.lines
   const promptLines = useMemo(() => promptSourceLines.filter(Boolean), [promptSourceLines])
   const resultDisplayLines = useMemo(() => resultLines.filter(Boolean).map((line, index) => distortLine(line, distortionLevel >= 2 ? distortionLevel : 0, false, index)), [distortionLevel, resultLines])
   const transitionDisplayLines = useMemo(() => {
     const softenedLevel: 0 | 1 | 2 = distortionLevel <= 1 ? 0 : distortionLevel === 2 ? 1 : 2
     return transitionFeedback ? transitionFeedback.lines.map((line, index) => distortLine(line, softenedLevel, false, index)) : []
   }, [distortionLevel, transitionFeedback])
-  const promptDisplayLines = useMemo(() => promptLines.map((line, index) => distortLine(line, distortionLevel, activeStartNode ? false : currentEvent?.unreliable, index)), [activeStartNode, currentEvent?.unreliable, distortionLevel, promptLines])
-  const promptKey = activeStartNode ? day + '-start-' + activeStartNode.id : currentEvent ? day + '-' + currentEvent.id : day + '-routes-' + remainingActions
+  const promptDisplayLines = useMemo(() => promptLines.map((line, index) => distortLine(line, distortionLevel, dayOneOpening.scene ? false : currentEvent?.unreliable, index)), [currentEvent?.unreliable, dayOneOpening.scene, distortionLevel, promptLines])
+  const promptKey = dayOneOpening.scene ? 'opening-' + day + '-' + dayOneOpening.scene.id : currentEvent ? day + '-' + currentEvent.id : day + '-routes-' + remainingActions
   const { blocks: visiblePromptBlocks, complete: promptReady } = useRevealBlocks(promptDisplayLines, promptKey, !showCover && phase === 'encounter', 240, 850)
   const { blocks: visibleResultBlocks, complete: resultReady } = useRevealBlocks(resultDisplayLines, day + '-' + resultStamp, !showCover && phase === 'result', 220, 740)
 
   const sceneBackground = useMemo(() => {
     if (showCover) return '/cover_mobile.jpg'
-    if (phase === 'ending' && startAreaEndingId) return startAreaBackground ?? '/bg_phase5.jpg'
-    if (activeStartNode) return startAreaBackground ?? phaseBackgrounds[dayPhase]
     if (phase === 'ending') return '/bg_phase5.jpg'
+    if (dayOneOpening.scene) return dayOneOpening.scene.background
+    if (day === 1 && phase === 'result' && dayOneOpening.hasStarted) return '/bg_phase4.jpg'
     if (currentEvent?.background && phase === 'encounter') return '/' + currentEvent.background
     return phaseBackgrounds[dayPhase]
-  }, [activeStartNode, currentEvent, dayPhase, phase, showCover, startAreaBackground, startAreaEndingId])
+  }, [currentEvent, day, dayOneOpening.hasStarted, dayOneOpening.scene, dayPhase, phase, showCover])
 
   useEffect(() => {
     if (sceneBackground === backgroundSrc) return
@@ -333,35 +267,22 @@ export function StarterShell() {
       const action = transitionFeedback.action
       setTransitionFeedback(null)
 
-      if (action.kind === 'start-node') {
-        const node = startAreaNodes[action.nodeId]
-        if (!node) return
-
-        visitNode(action.nodeId)
-        setActiveStartNodeId(action.nodeId)
-
-        if (!appliedStartNodeIds.includes(action.nodeId)) {
-          const normalizedEffect = normalizeStartAreaEffect(node.effect)
-          if (normalizedEffect) {
-            applyEffect(normalizedEffect, getStartAreaSupplyFocus(node.effect))
-          }
-          node.setFlags?.forEach((flag) => setFlag(flag))
-          setAppliedStartNodeIds((current) => [...current, action.nodeId])
-        }
-
+      if (action.kind === 'opening-scene') {
+        dayOneOpening.advanceToScene(action.sceneId)
         changePhase('encounter')
         return
       }
 
-      if (action.kind === 'start-ending-check') {
-        setStartAreaEndingId(getStartAreaEndingId(useProjectStore.getState()))
-        changePhase('ending')
-        return
-      }
-
-      if (action.kind === 'start-ending') {
-        setStartAreaEndingId(action.endingId)
-        changePhase('ending')
+      if (action.kind === 'opening-outcome') {
+        const context = buildOpeningContextFromStore()
+        if (!context) return
+        const outcome = getOpeningOutcome(action.outcomeId, context)
+        dayOneOpening.openOutcome(action.outcomeId)
+        setResultTitle(outcome.title)
+        setResultLines(outcome.text)
+        setResultStamp((stamp) => stamp + 1)
+        setEndDayAfterResult(true)
+        changePhase('result')
         return
       }
 
@@ -369,10 +290,9 @@ export function StarterShell() {
     }, 980)
 
     return () => window.clearTimeout(timer)
-  }, [appliedStartNodeIds, applyEffect, changePhase, enterRoute, setFlag, transitionFeedback, visitNode])
+  }, [changePhase, dayOneOpening, enterRoute, transitionFeedback])
 
   const pushEcho = (...args: [string, ('calm' | 'warning' | 'danger')?]) => { void args }
-
   const emitSummary = (...args: [AppliedEffectSummary['delta']]) => { void args }
 
   const buildStatusSummary = (snapshot = useProjectStore.getState(), extra: string[] = []) => [
@@ -392,76 +312,23 @@ export function StarterShell() {
   const restartCurrentGame = async () => {
     resetGame()
     leaveRoute()
+    dayOneOpening.clear()
     setCurrentEnding(null)
-    setStartAreaEndingId(null)
-    setActiveStartNodeId(null)
-    setAppliedStartNodeIds([])
     setTransitionFeedback(null)
     setResultTitle('')
     setResultLines([])
     setResultStamp(0)
-    setJournalEntries([])
     setEndDayAfterResult(false)
     refreshEnvironment(false)
     rollRoutes()
     changePhase('encounter')
     setShowCover(true)
     setCoverStage(0)
-    if (audioReady) { setSeaLevel(0); setWindLevel(0); setHeartbeatLevel(0) }
-  }
-
-  function enterStartAreaNode(nodeId: string) {
-    const node = startAreaNodes[nodeId]
-    if (!node) return
-
-    visitNode(nodeId)
-    setActiveStartNodeId(nodeId)
-
-    if (!appliedStartNodeIds.includes(nodeId)) {
-      const normalizedEffect = normalizeStartAreaEffect(node.effect)
-      if (normalizedEffect) {
-        const summary = applyEffect(normalizedEffect, getStartAreaSupplyFocus(node.effect))
-        emitSummary(summary.delta)
-      }
-      node.setFlags?.forEach((flag) => setFlag(flag))
-      setAppliedStartNodeIds((current) => [...current, nodeId])
+    if (audioReady) {
+      setSeaLevel(0)
+      setWindLevel(0)
+      setHeartbeatLevel(0)
     }
-
-    changePhase('encounter')
-  }
-
-  const resolveStartAreaChoice = (choice: StartAreaChoice) => {
-    if (!activeStartNodeId) return
-
-    const normalizedEffect = normalizeStartAreaEffect(choice.effect)
-    if (normalizedEffect) {
-      const summary = applyEffect(normalizedEffect, getStartAreaSupplyFocus(choice.effect))
-      emitSummary(summary.delta)
-    }
-    choice.setFlags?.forEach((flag) => setFlag(flag))
-
-    const feedback = getStartAreaFeedback(activeStartNodeId, choice)
-
-    if (choice.next === 'ending_check') {
-      setTransitionFeedback({
-        ...feedback,
-        action: { kind: 'start-ending-check' },
-      })
-      return
-    }
-
-    if (choice.next in startAreaEndings) {
-      setTransitionFeedback({
-        ...feedback,
-        action: { kind: 'start-ending', endingId: choice.next as StartAreaEnding['id'] },
-      })
-      return
-    }
-
-    setTransitionFeedback({
-      ...feedback,
-      action: { kind: 'start-node', nodeId: choice.next },
-    })
   }
 
   const makeChoiceResult = (choice: NarrativeChoice): ChoiceResult => {
@@ -475,9 +342,20 @@ export function StarterShell() {
     }
   }
 
+  const handleOpeningChoice = (choice: OpeningChoice) => {
+    const resolved = dayOneOpening.resolveChoice(choice)
+    if (!resolved) return
+
+    setTransitionFeedback({
+      title: choice.text,
+      lines: resolved.feedback,
+      action: resolved.outcomeId ? { kind: 'opening-outcome', outcomeId: resolved.outcomeId } : { kind: 'opening-scene', sceneId: resolved.nextSceneId as OpeningSceneId },
+    })
+  }
+
   const handleRouteEnter = (option: RouteOption) => {
-    if (remainingActions <= 0) return pushEcho('\u4eca\u5929\u7684\u884c\u52d5\u5df2\u7d93\u7528\u5b8c\u4e86\u3002', 'warning')
-    if (option.locked) return pushEcho(option.reason ?? '\u73fe\u5728\u9084\u53bb\u4e0d\u4e86\u3002', 'warning')
+    if (remainingActions <= 0) return pushEcho('今天的行動已經用完了。', 'warning')
+    if (option.locked) return pushEcho(option.reason ?? '現在還去不了。', 'warning')
     const feedback = getRouteFeedback(option)
     setTransitionFeedback({
       ...feedback,
@@ -536,11 +414,31 @@ export function StarterShell() {
   }
 
   const continueFromResult = () => {
+    if (day === 1 && dayOneOpening.hasStarted && !dayOneOpening.scene) {
+      const daySummary = nextDay()
+      const stateAfter = useProjectStore.getState()
+      dayOneOpening.clear()
+      emitSummary(daySummary.delta)
+      setResultTitle('')
+      setResultLines([])
+      setResultStamp((stamp) => stamp + 1)
+      setEndDayAfterResult(false)
+      refreshEnvironment(false)
+      leaveRoute()
+      changePhase('encounter')
+      rollRoutes()
+
+      if (stateAfter.hp <= 0 || !stateAfter.otherAlive || stateAfter.flags.includes('mutual_ruin')) {
+        setCurrentEnding(getEndingState(stateAfter))
+        changePhase('ending')
+      }
+      return
+    }
+
     const stateBefore = useProjectStore.getState()
     const shouldEndNow = stateBefore.hp <= 0 || stateBefore.day >= 30 || !stateBefore.otherAlive || stateBefore.flags.includes('killed_companion') || stateBefore.flags.includes('accidental_killing') || stateBefore.flags.includes('mutual_ruin')
 
     if (shouldEndNow) {
-      setJournalEntries((entries) => [buildDiaryEntry(stateBefore.day, resultTitle || '今天留下的東西', resultLines, buildStatusSummary(stateBefore)), ...entries].slice(0, 30))
       setCurrentEnding(getEndingState(stateBefore))
       changePhase('ending')
       return
@@ -558,11 +456,6 @@ export function StarterShell() {
     const daySummary = nextDay()
     const stateAfter = useProjectStore.getState()
 
-    setJournalEntries((entries) => [
-      buildDiaryEntry(daySummary.previousDay, '今天留下的東西', [...resultLines, goalLine], buildStatusSummary(stateAfter, [goalMissed ? '今天的目標沒有完成。' : '今天的目標勉強完成了。'])),
-      ...entries,
-    ].slice(0, 30))
-
     emitSummary(daySummary.delta)
     pushEcho(goalMissed ? '今天沒有把事情收好。' : '今天至少先撐過去了。', goalMissed ? 'danger' : 'calm')
 
@@ -572,16 +465,15 @@ export function StarterShell() {
       return
     }
 
+    setResultTitle(goalLine)
+    setResultLines(buildStatusSummary(stateAfter, [goalMissed ? '今天的目標沒有完成。' : '今天的目標勉強完成了。']))
     leaveRoute()
     refreshEnvironment(false)
-    setResultTitle('')
-    setResultLines([])
     setCurrentEnding(null)
     setEndDayAfterResult(false)
     changePhase('encounter')
     rollRoutes()
   }
-
 
   if (showCover) {
     return (
@@ -602,31 +494,37 @@ export function StarterShell() {
             <button
               type="button"
               onClick={async () => {
+                resetGame()
+                dayOneOpening.clear()
                 const ok = await unlock()
                 if (ok) {
                   setSeaLevel(0.4)
                   refreshEnvironment(false)
                   setCurrentEnding(null)
-                  setStartAreaEndingId(null)
-                  setActiveStartNodeId(null)
-                  setAppliedStartNodeIds([])
+                  setResultTitle('')
+                  setResultLines([])
+                  setResultStamp(0)
                   setShowCover(false)
-                  enterStartAreaNode('start_beach')
+                  dayOneOpening.start()
+                  changePhase('encounter')
                 }
               }}
               className="mx-auto min-h-[56px] w-full max-w-[360px] rounded-[24px] border border-stone-600/80 bg-[linear-gradient(180deg,rgba(30,25,24,0.92),rgba(10,9,9,0.98))] px-6 py-4 text-base font-semibold tracking-[0.16em] text-stone-100 transition duration-300 hover:border-stone-400/85 hover:bg-[linear-gradient(180deg,rgba(42,35,33,0.95),rgba(13,11,11,0.99))]"
-            >{'我醒了'}</button>
+            >
+              我醒了
+            </button>
           )}
         </div>
       </main>
     )
   }
 
-  if (phase === 'ending' && resolvedEnding) {
+  if (phase === 'ending' && currentEnding) {
+    const resolvedEnding = endings[currentEnding]
     return (
       <main className="relative h-[100dvh] overflow-hidden bg-black text-stone-100">
         <style>{sceneStyles}</style>
-        <div className={(backgroundVisible ? 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100' : 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0')} style={{ backgroundImage: "url('" + backgroundSrc + "')" }} />
+        <div className={backgroundVisible ? 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100' : 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0'} style={{ backgroundImage: "url('" + backgroundSrc + "')" }} />
         <div className="absolute inset-0 bg-black/72" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/92 via-black/78 to-black" />
         <div className="relative z-10 flex h-[100dvh] flex-col overflow-hidden px-4 pb-[calc(env(safe-area-inset-bottom)+0.8rem)] pt-[calc(env(safe-area-inset-top)+0.6rem)]">
@@ -654,7 +552,7 @@ export function StarterShell() {
   return (
     <main className="relative h-[100dvh] overflow-hidden bg-black text-stone-100">
       <style>{sceneStyles}</style>
-      <div className={(backgroundVisible ? 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100' : 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0')} style={{ backgroundImage: "url('" + sceneBackground + "')" }} />
+      <div className={backgroundVisible ? 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100' : 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0'} style={{ backgroundImage: "url('" + sceneBackground + "')" }} />
       <div className="absolute inset-0 bg-black/68" />
       <div className={distortionLevel >= 2 ? 'absolute inset-0 bg-gradient-to-b from-black/92 via-rose-950/28 to-black' : 'absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black'} />
       <div className="relative z-10 flex h-[100dvh] flex-col overflow-hidden px-4 pt-[calc(env(safe-area-inset-top)+0.5rem)]">
@@ -665,8 +563,8 @@ export function StarterShell() {
 
         <section className="flex min-h-0 flex-1 flex-col justify-end pb-3 pt-2">
           <article className={distortionLevel >= 2 ? 'mx-auto flex w-full max-w-[380px] min-h-[34dvh] max-h-[45dvh] flex-col overflow-hidden rounded-[28px] border border-rose-900/55 bg-[linear-gradient(180deg,rgba(24,12,12,0.9),rgba(6,5,5,0.97))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl' : 'mx-auto flex w-full max-w-[380px] min-h-[34dvh] max-h-[45dvh] flex-col overflow-hidden rounded-[28px] border border-stone-700/75 bg-[linear-gradient(180deg,rgba(16,14,13,0.9),rgba(5,4,4,0.97))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl'}>
-            <div className="text-[10px] uppercase tracking-[0.42em] text-stone-400/64">{transitionFeedback ? 'Reaction' : phase === 'result' ? 'Aftermath' : activeStartNode ? 'Day 1' : currentEvent ? 'Node' : 'Route'}</div>
-            <h1 className="mt-3 text-[clamp(1.5rem,6vw,2rem)] font-semibold leading-[1.18] tracking-[0.08em] text-stone-50">{transitionFeedback ? transitionFeedback.title : phase === 'result' ? resultTitle || '今天留下的東西' : activeStartNode ? activeStartNode.title : currentEvent ? currentEvent.title : encounterFrame.title}</h1>
+            <div className="text-[10px] uppercase tracking-[0.42em] text-stone-400/64">{transitionFeedback ? 'Reaction' : phase === 'result' ? 'Aftermath' : dayOneOpening.scene ? 'Day 1' : currentEvent ? 'Node' : 'Route'}</div>
+            <h1 className="mt-3 text-[clamp(1.5rem,6vw,2rem)] font-semibold leading-[1.18] tracking-[0.08em] text-stone-50">{transitionFeedback ? transitionFeedback.title : phase === 'result' ? resultTitle || '今天留下的東西' : dayOneOpening.scene ? dayOneOpening.scene.title : currentEvent ? currentEvent.title : encounterFrame.title}</h1>
             <div className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pr-1 text-[1rem] leading-[1.95] tracking-[0.01em] text-stone-100/92 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {transitionFeedback && transitionDisplayLines.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
               {!transitionFeedback && phase === 'encounter' && visiblePromptBlocks.map((line) => <p key={line} className="whitespace-pre-line">{line}</p>)}
@@ -677,25 +575,66 @@ export function StarterShell() {
         </section>
 
         <footer className="mx-auto flex w-full max-w-[380px] flex-none flex-col gap-2 pb-[calc(env(safe-area-inset-bottom)+0.65rem)]">
-          {!transitionFeedback && phase === 'encounter' && promptReady && activeStartNode && (activeStartNode.choices ?? []).filter((choice) => isStartAreaChoiceVisible(choice, { trust, suspicion, stress, flags })).map((choice) => {
-            const copy = getStartAreaChoiceCopy(choice)
-            return <ChoiceButton key={activeStartNode.id + '-' + choice.text} text={choice.text} subtitle={copy.subtitle} hoverHint={copy.hoverHint} onClick={() => resolveStartAreaChoice(choice)} />
-          })}
-          {!transitionFeedback && phase === 'encounter' && promptReady && !activeStartNode && !currentEvent && routeOptions.map((option) => <ChoiceButton key={option.event.id} text={option.event.title} subtitle={option.event.text[0]} hoverHint={option.locked ? option.reason ?? '這條路暫時走不通。' : '進去之後就不能回頭重選。 ' + (option.event.text[1] || '')} disabled={option.locked || remainingActions <= 0} disabledReason={remainingActions <= 0 ? '今天的行動已經用完了。' : option.reason} onClick={() => handleRouteEnter(option)} />)}
-          {!transitionFeedback && phase === 'encounter' && promptReady && !activeStartNode && !currentEvent && routeOptions.length === 0 && <ChoiceButton text="今天沒有別的路了" subtitle="能走的地方不是關著，就是代價比今天還重。" hoverHint="把今天收掉，也是一種選擇。只是明天不會因此變輕。" onClick={handleNoRoutes} />}
-          {!transitionFeedback && phase === 'encounter' && promptReady && !activeStartNode && currentEvent && currentEvent.choices.map((choice) => {
+          {!transitionFeedback && phase === 'encounter' && promptReady && dayOneOpening.scene && dayOneOpening.scene.choices.map((choice) => (
+            <ChoiceButton
+              key={dayOneOpening.scene!.id + '-' + choice.id}
+              text={choice.text}
+              subtitle={choice.description}
+              hoverHint={choice.hoverHint}
+              disabled={choice.disabled}
+              disabledReason={choice.disabledReason}
+              onClick={() => handleOpeningChoice(choice)}
+            />
+          ))}
+
+          {!transitionFeedback && phase === 'encounter' && promptReady && !dayOneOpening.scene && !currentEvent && routeOptions.map((option) => (
+            <ChoiceButton
+              key={option.event.id}
+              text={option.event.title}
+              subtitle={option.event.text[0]}
+              hoverHint={option.locked ? option.reason ?? '這條路暫時走不通。' : '進去之後就不能回頭重選。 ' + (option.event.text[1] || '')}
+              disabled={option.locked || remainingActions <= 0}
+              disabledReason={remainingActions <= 0 ? '今天的行動已經用完了。' : option.reason}
+              onClick={() => handleRouteEnter(option)}
+            />
+          ))}
+
+          {!transitionFeedback && phase === 'encounter' && promptReady && !dayOneOpening.scene && !currentEvent && routeOptions.length === 0 && (
+            <ChoiceButton
+              text="今天沒有別的路了"
+              subtitle="能走的地方不是關著，就是代價比今天還重。"
+              hoverHint="把今天收掉，也是一種選擇。只是明天不會因此變輕。"
+              onClick={handleNoRoutes}
+            />
+          )}
+
+          {!transitionFeedback && phase === 'encounter' && promptReady && !dayOneOpening.scene && currentEvent && currentEvent.choices.map((choice) => {
             const availability = getChoiceAvailability(choice, { stamina, water, food, resource })
-            return <ChoiceButton key={currentEvent.id + '-' + choice.text} text={choice.text} subtitle={choice.feeling} hoverHint={choice.hoverHint || '這一步不會只留在這裡，它會在之後的話和沉默裡再出現。'} disabled={availability.disabled} disabledReason={availability.reason} onClick={() => resolveNodeChoice(choice)} />
+            return (
+              <ChoiceButton
+                key={currentEvent.id + '-' + choice.text}
+                text={choice.text}
+                subtitle={choice.feeling}
+                hoverHint={choice.hoverHint || '這一步不會只留在這裡，它會在之後的話和沉默裡再出現。'}
+                disabled={availability.disabled}
+                disabledReason={availability.reason}
+                onClick={() => resolveNodeChoice(choice)}
+              />
+            )
           })}
-          {!transitionFeedback && phase === 'result' && resultReady && <ChoiceButton text={endDayAfterResult ? '讓今天結束' : '回到分岔口'} subtitle={endDayAfterResult ? '進入下一天前，時間會先拿走一點補給。' : '你還有一次行動，但下一條路不一定比較好走。'} hoverHint={endDayAfterResult ? '今天會過去，但沒處理完的事不會。' : '你還能再做一次選擇，只是錯過的節點已經回不去了。'} onClick={continueFromResult} />}
+
+          {!transitionFeedback && phase === 'result' && resultReady && (
+            <ChoiceButton
+              text={endDayAfterResult ? '讓今天結束' : '回到分岔口'}
+              subtitle={endDayAfterResult ? '進入下一天前，時間會先拿走一點補給。' : '你還有一次行動，但下一條路不一定比較好走。'}
+              hoverHint={endDayAfterResult ? '今天會過去，但沒處理完的事不會。' : '你還能再做一次選擇，只是錯過的節點已經回不去了。'}
+              onClick={continueFromResult}
+            />
+          )}
         </footer>
       </div>
     </main>
   )
 }
-
-
-
-
 
 

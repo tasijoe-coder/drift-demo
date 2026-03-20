@@ -1,5 +1,10 @@
 ﻿import { create } from 'zustand'
 
+import type { NpcId } from '../data/npcs'
+import { behaviorPressureOnNpc, applyNpcDelta as applyNpcDeltaToState, type NpcDelta, type NpcState } from '../systems/npcState'
+import { memoryDeltaForKey, rememberNpcAction, type NpcMemoryKey } from '../systems/memory'
+import { createRunSetup, type RunSetup } from '../systems/runSetup'
+
 export type GamePhase = 'encounter' | 'result' | 'log' | 'ending'
 
 export type Weather = 'sunny' | 'rain' | 'cloudy'
@@ -65,6 +70,8 @@ type GameStore = {
   cooperativeCount: number
   aggressiveCount: number
   metaVariables: MetaVariables
+  runSetup: RunSetup | null
+  npcs: Record<NpcId, NpcState>
   nextDay: () => DayTransitionSummary
   setDay: (day: number) => void
   changePhase: (phase: GamePhase) => void
@@ -88,6 +95,9 @@ type GameStore = {
   modifyResource: (value: number) => void
   modifyOddities: (value: number) => void
   applyEffect: (effect?: GameStateEffect, supplyFocus?: SupplyFocus) => AppliedEffectSummary
+  initializeNpcRun: () => RunSetup
+  applyNpcDelta: (npcId: NpcId, delta: NpcDelta) => void
+  recordNpcMemory: (npcId: NpcId, key: NpcMemoryKey, amount?: number) => void
   setOtherAlive: (value: boolean) => void
   visitNode: (nodeId: string) => void
   hasVisitedNode: (nodeId: string) => boolean
@@ -206,28 +216,15 @@ const applyEffectToSnapshot = (
 }
 
 export const getDayPhase = (day: number): DayPhase => {
-  if (day <= 5) {
-    return 'phase1'
-  }
-
-  if (day <= 12) {
-    return 'phase2'
-  }
-
-  if (day <= 20) {
-    return 'phase3'
-  }
-
-  if (day <= 27) {
-    return 'phase4'
-  }
-
+  if (day <= 5) return 'phase1'
+  if (day <= 12) return 'phase2'
+  if (day <= 20) return 'phase3'
+  if (day <= 27) return 'phase4'
   return 'phase5'
 }
 
 const getInitialMeta = (): MetaVariables => {
   const hour = new Date().getHours()
-
   return {
     hour,
     weather: 'sunny',
@@ -254,7 +251,7 @@ const buildDayTransition = (
 
   if (current.metaVariables.weather === 'rain') {
     baseEffect.stress = (baseEffect.stress ?? 0) + 1
-    notes.push('????????????????????')
+    notes.push('夜裡的雨氣壓得人更難安穩。')
   }
 
   if (!hadWater) {
@@ -262,25 +259,25 @@ const buildDayTransition = (
     baseEffect.stamina = (baseEffect.stamina ?? 0) - (current.day <= 10 ? 8 : current.day <= 20 ? 10 : 14)
     baseEffect.suspicion = (baseEffect.suspicion ?? 0) + (current.day <= 12 ? 1 : 2)
     baseEffect.hp = (baseEffect.hp ?? 0) - (current.day <= 10 ? 2 : current.day <= 20 ? 4 : 6)
-    notes.push('?????????????????????????')
+    notes.push('缺水讓夜裡比白天更快把人逼急。')
   }
 
   if (!hadFood) {
     baseEffect.stress = (baseEffect.stress ?? 0) + (current.day <= 10 ? 6 : current.day <= 20 ? 8 : 12)
     baseEffect.stamina = (baseEffect.stamina ?? 0) - (current.day <= 10 ? 6 : current.day <= 20 ? 8 : 12)
     baseEffect.hp = (baseEffect.hp ?? 0) - (current.day <= 10 ? 1 : current.day <= 20 ? 3 : 5)
-    notes.push('?????????????????????')
+    notes.push('飢餓沒有聲音，但它會讓每句話都更尖。')
   }
 
   if (hadWater && hadFood) {
-    notes.push('??????????????????????????????')
+    notes.push('至少今晚，身體沒有先在半夜背叛你。')
   }
 
   if (!current.goalCompleted) {
     baseEffect.stress = (baseEffect.stress ?? 0) + 6
     baseEffect.trust = (baseEffect.trust ?? 0) - 3
     baseEffect.suspicion = (baseEffect.suspicion ?? 0) + 2
-    notes.push('???????????????????????????')
+    notes.push('今天沒收好的那件事，隔夜只會更重。')
   }
 
   const applied = applyEffectToSnapshot(current, baseEffect, 'mixed')
@@ -336,6 +333,8 @@ const getInitialState = () => {
     cooperativeCount: 0,
     aggressiveCount: 0,
     metaVariables: getInitialMeta(),
+    runSetup: null as RunSetup | null,
+    npcs: {} as Record<NpcId, NpcState>,
   }
 }
 
@@ -354,33 +353,15 @@ export const useProjectStore = create<GameStore>((set, get) => ({
   },
   setDay: (day) => {
     const nextDayValue = Math.max(1, Math.min(30, day))
-
-    set({
-      day: nextDayValue,
-      dayPhase: getDayPhase(nextDayValue),
-    })
+    set({ day: nextDayValue, dayPhase: getDayPhase(nextDayValue) })
   },
-  changePhase: (phase) => {
-    set({ phase })
-  },
-  setDayGoalKey: (goalKey) => {
-    set({ dayGoalKey: goalKey })
-  },
-  setGoalCompleted: (value) => {
-    set({ goalCompleted: value })
-  },
-  consumeAction: (amount = 1) => {
-    set((state) => ({ remainingActions: clampActions(state.remainingActions - amount) }))
-  },
-  resetDailyActions: () => {
-    set({ remainingActions: 2, goalCompleted: false })
-  },
-  setStamina: (value) => {
-    set({ stamina: clampZeroToHundred(value) })
-  },
-  modifyStamina: (value) => {
-    set((state) => ({ stamina: clampZeroToHundred(state.stamina + value) }))
-  },
+  changePhase: (phase) => set({ phase }),
+  setDayGoalKey: (goalKey) => set({ dayGoalKey: goalKey }),
+  setGoalCompleted: (value) => set({ goalCompleted: value }),
+  consumeAction: (amount = 1) => set((state) => ({ remainingActions: clampActions(state.remainingActions - amount) })),
+  resetDailyActions: () => set({ remainingActions: 2, goalCompleted: false }),
+  setStamina: (value) => set({ stamina: clampZeroToHundred(value) }),
+  modifyStamina: (value) => set((state) => ({ stamina: clampZeroToHundred(state.stamina + value) })),
   setWater: (value) => {
     set((state) => {
       const water = clampSupply(value)
@@ -417,27 +398,13 @@ export const useProjectStore = create<GameStore>((set, get) => ({
       }
     })
   },
-  setTrust: (value) => {
-    set({ trust: clampZeroToHundred(value) })
-  },
-  modifyTrust: (value) => {
-    set((state) => ({ trust: clampZeroToHundred(state.trust + value) }))
-  },
-  setSuspicion: (value) => {
-    set({ suspicion: clampZeroToHundred(value) })
-  },
-  modifySuspicion: (value) => {
-    set((state) => ({ suspicion: clampZeroToHundred(state.suspicion + value) }))
-  },
-  setStress: (value) => {
-    set({ stress: clampZeroToHundred(value) })
-  },
-  modifyStress: (value) => {
-    set((state) => ({ stress: clampZeroToHundred(state.stress + value) }))
-  },
-  modifyHp: (value) => {
-    set((state) => ({ hp: clampZeroToHundred(state.hp + value) }))
-  },
+  setTrust: (value) => set({ trust: clampZeroToHundred(value) }),
+  modifyTrust: (value) => set((state) => ({ trust: clampZeroToHundred(state.trust + value) })),
+  setSuspicion: (value) => set({ suspicion: clampZeroToHundred(value) }),
+  modifySuspicion: (value) => set((state) => ({ suspicion: clampZeroToHundred(state.suspicion + value) })),
+  setStress: (value) => set({ stress: clampZeroToHundred(value) }),
+  modifyStress: (value) => set((state) => ({ stress: clampZeroToHundred(state.stress + value) })),
+  modifyHp: (value) => set((state) => ({ hp: clampZeroToHundred(state.hp + value) })),
   modifyResource: (value) => {
     set((state) => {
       const distributed = distributeSupplyDelta(state.water, state.food, value, 'mixed')
@@ -448,59 +415,89 @@ export const useProjectStore = create<GameStore>((set, get) => ({
       }
     })
   },
-  modifyOddities: (value) => {
-    set((state) => ({ oddities: Math.max(0, state.oddities + value) }))
-  },
+  modifyOddities: (value) => set((state) => ({ oddities: Math.max(0, state.oddities + value) })),
   applyEffect: (effect = {}, supplyFocus = 'mixed') => {
     const applied = applyEffectToSnapshot(get(), effect, supplyFocus)
     set(applied.nextState)
+    return { delta: applied.delta }
+  },
+  initializeNpcRun: () => {
+    const { setup, npcs } = createRunSetup()
+    set({ runSetup: setup, npcs })
+    return setup
+  },
+  applyNpcDelta: (npcId, delta) => {
+    set((state) => {
+      const currentNpc = state.npcs[npcId]
+      if (!currentNpc) {
+        return state
+      }
 
-    return {
-      delta: applied.delta,
-    }
+      return {
+        npcs: {
+          ...state.npcs,
+          [npcId]: applyNpcDeltaToState(currentNpc, delta),
+        },
+      }
+    })
   },
-  setOtherAlive: (value) => {
-    set({ otherAlive: value })
+  recordNpcMemory: (npcId, key, amount = 1) => {
+    set((state) => {
+      const currentNpc = state.npcs[npcId]
+      if (!currentNpc) {
+        return state
+      }
+
+      const remembered = {
+        ...currentNpc,
+        memory: rememberNpcAction(currentNpc.memory, key, amount),
+      }
+
+      const updated = applyNpcDeltaToState(remembered, memoryDeltaForKey(key, amount))
+      return {
+        npcs: {
+          ...state.npcs,
+          [npcId]: updated,
+        },
+      }
+    })
   },
-  visitNode: (nodeId) => {
-    set((state) => ({
-      visitedNodes: state.visitedNodes.includes(nodeId) ? state.visitedNodes : [...state.visitedNodes, nodeId],
-    }))
-  },
+  setOtherAlive: (value) => set({ otherAlive: value }),
+  visitNode: (nodeId) => set((state) => ({ visitedNodes: state.visitedNodes.includes(nodeId) ? state.visitedNodes : [...state.visitedNodes, nodeId] })),
   hasVisitedNode: (nodeId) => get().visitedNodes.includes(nodeId),
-  setFlag: (flag) => {
-    set((state) => ({
-      flags: state.flags.includes(flag) ? state.flags : [...state.flags, flag],
-    }))
-  },
-  clearFlag: (flag) => {
-    set((state) => ({
-      flags: state.flags.filter((currentFlag) => currentFlag !== flag),
-    }))
-  },
+  setFlag: (flag) => set((state) => ({ flags: state.flags.includes(flag) ? state.flags : [...state.flags, flag] })),
+  clearFlag: (flag) => set((state) => ({ flags: state.flags.filter((currentFlag) => currentFlag !== flag) })),
   hasFlag: (flag) => get().flags.includes(flag),
   incrementBehavior: (behavior) => {
     if (!behavior) {
       return
     }
 
-    set((state) => ({
-      selfishCount: behavior === 'selfish' ? state.selfishCount + 1 : state.selfishCount,
-      honestCount: behavior === 'honest' ? state.honestCount + 1 : state.honestCount,
-      cooperativeCount: behavior === 'cooperative' ? state.cooperativeCount + 1 : state.cooperativeCount,
-      aggressiveCount: behavior === 'aggressive' ? state.aggressiveCount + 1 : state.aggressiveCount,
-    }))
-  },
-  setMetaVariables: (partialMeta) => {
-    set((state) => ({
-      metaVariables: {
-        ...state.metaVariables,
-        ...partialMeta,
-      },
-    }))
-  },
-  resetGame: () => {
-    set(getInitialState())
-  },
-}))
+    set((state) => {
+      const nextState = {
+        selfishCount: behavior === 'selfish' ? state.selfishCount + 1 : state.selfishCount,
+        honestCount: behavior === 'honest' ? state.honestCount + 1 : state.honestCount,
+        cooperativeCount: behavior === 'cooperative' ? state.cooperativeCount + 1 : state.cooperativeCount,
+        aggressiveCount: behavior === 'aggressive' ? state.aggressiveCount + 1 : state.aggressiveCount,
+      }
 
+      const behaviorSnapshot = {
+        selfishCount: nextState.selfishCount,
+        honestCount: nextState.honestCount,
+        cooperativeCount: nextState.cooperativeCount,
+        aggressiveCount: nextState.aggressiveCount,
+      }
+
+      const npcs = Object.fromEntries(
+        Object.entries(state.npcs).map(([id, npc]) => [id, behaviorPressureOnNpc(npc, behaviorSnapshot)]),
+      ) as Record<NpcId, NpcState>
+
+      return {
+        ...nextState,
+        npcs,
+      }
+    })
+  },
+  setMetaVariables: (partialMeta) => set((state) => ({ metaVariables: { ...state.metaVariables, ...partialMeta } })),
+  resetGame: () => set(getInitialState()),
+}))
