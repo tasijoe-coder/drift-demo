@@ -1,10 +1,7 @@
-﻿import { StarterShell } from './components/StarterShell'
-import { useProjectTitle } from './hooks/useProjectTitle'
+import { Game } from './game/Game'
 
 function App() {
-  useProjectTitle()
-
-  return <StarterShell />
+  return <Game />
 }
 
 export default App
