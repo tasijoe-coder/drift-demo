@@ -1,7 +1,7 @@
-import { Game } from './game/Game'
+import { App as HongXian } from './hx/App'
 
 function App() {
-  return <Game />
+  return <HongXian />
 }
 
 export default App

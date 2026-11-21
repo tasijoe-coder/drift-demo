@@ -1,11 +1,11 @@
-﻿{
-  "name": "你能相信他嗎",
-  "short_name": "你能相信他嗎",
-  "description": "30 天荒島生存敘事遊戲，聚焦信任、懷疑與資源分配。",
+{
+  "name": "紅線千年",
+  "short_name": "紅線千年",
+  "description": "你是月老，改寫七世夫妻的命運。",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#020617",
+  "background_color": "#1a0d0f",
+  "theme_color": "#1a0d0f",
   "icons": [
     {
       "src": "/icon-192.png",
