@@ -1,0 +1,5 @@
+.celestial-rig{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;filter:brightness(var(--rig-light,1));z-index:2;pointer-events:none}
+.celestial-rig .rig-ink{filter:brightness(.12) sepia(.7);opacity:.92}
+.celestial-rig .rig-control-rod{stroke:#46301f;stroke-width:.8;opacity:.58}
+.shadow-stage-has-rig .shadow-celestial-cup,.shadow-stage-has-rig .shadow-fate-thread{display:none}
+.shadow-stage-has-rig .shadow-register{z-index:3}

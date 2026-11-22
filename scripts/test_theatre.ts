@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { advanceStory, chooseStory, opening, restoreStory, startStory, storyMemories, storyNode, storyTranscript, type StoryPosition } from '../src/hx/theatre_story'
+import { performance, samplePerformance, solveArm } from '../src/hx/celestial_rig'
 
 const ids = new Set(opening.nodes.map((node) => node.id))
 assert.equal(ids.size, opening.nodes.length, 'Scene IDs must be unique')
@@ -71,3 +72,21 @@ for (const corrupt of [null, {}, { node: 'truth', beat: 0, choices: [] }, { node
 }
 console.log(`PASS: ${routes} complete routes, ${scenes.size} scenes, ${checkpoints} save/resume checkpoints; all 3 decisions gated, 8 distinct recaps, invalid saves rejected.`)
 console.log(`PASS: ${prologueLines} celestial prologue beats without choices; existing mortal progress retained.`)
+// The first scene must perform real joint/prop motion and preserve the accident.
+for (let beat = 0; beat < 8; beat++) {
+  const p = performance('heaven-banquet', beat, 'toast')
+  assert.ok(p.duration > 0)
+  assert.equal(p.keys[0].at, 0)
+  assert.equal(p.keys.at(-1)!.at, 1)
+  for (let i = 1; i < p.keys.length; i++) assert.ok(p.keys[i].at > p.keys[i - 1].at)
+  for (let i = 0; i <= 20; i++) for (const v of Object.values(samplePerformance(p, i / 20))) assert.ok(Number.isFinite(v))
+}
+assert.equal(samplePerformance(performance('heaven-banquet', 4, 'cup-fall'), 1).drop, 1)
+assert.equal(samplePerformance(performance('heaven-banquet', 6, 'offer'), 1).blood, 1)
+for (const flip of [-1, 1]) {
+  const angles = solveArm([190 + flip * 136, 213], [190, 110], flip, 0)
+  const a = angles.upper * Math.PI / 180, b = (angles.upper + angles.lower) * Math.PI / 180
+  assert.ok(Math.abs(52 * Math.cos(a) + 50 * Math.cos(b) - 70) < .001)
+  assert.ok(Math.abs(52 * Math.sin(a) + 50 * Math.sin(b) - 15) < .001)
+}
+console.log('PASS: 8 animated cues, finite joint poses, cup release and injury continuity, mirrored arm reach.')

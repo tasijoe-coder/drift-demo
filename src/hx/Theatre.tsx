@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { advanceStory, chooseStory, opening, restoreStory, startStory, storyMemories, storyNode, storyTranscript, type StoryPosition } from './theatre_story'
 import { isMuted, setMuted, sfx, unlock } from './sfx'
 import './theatre.css'
+import { CelestialPuppets } from './CelestialPuppets'
 
 const SAVE_KEY = 'hx.theatre.qin-opening.v1'
 const readPosition = () => {
@@ -93,7 +94,7 @@ export function Theatre({ onHome, restart = false }: { onHome: () => void; resta
           <button type="button" aria-pressed={muted} onClick={() => { setMuted(!muted); setMute(!muted) }}>{muted ? '音效關' : '音效開'}</button>
         </header>
 
-        <section className={`shadow-stage shadow-scene-${node.scene}${choosing ? ' shadow-stage-paused' : ''}`} data-pose={beat.pose} role="img" aria-label={`${node.setting}。${beat.speaker}：${beat.text}`}>
+        <section className={`shadow-stage shadow-scene-${node.scene}${node.era ? ' shadow-stage-has-rig' : ''}${choosing ? ' shadow-stage-paused' : ''}`} data-pose={beat.pose} role="img" aria-label={`${node.setting}。${beat.speaker}：${beat.text}`}>
           <div className="shadow-screen">
             <div className="shadow-valance" /><div className="shadow-moon" />
             <div className="shadow-wall" /><div className="shadow-door" /><div className="shadow-flower" />
@@ -101,7 +102,7 @@ export function Theatre({ onHome, restart = false }: { onHome: () => void; resta
             <div className="shadow-rain" />
             <div className="shadow-clouds" /><div className="shadow-celestial-cup" /><div className="shadow-fate-thread" />
             <div className="shadow-register" aria-hidden="true"><span>姻緣簿</span></div>
-            <Puppet who="meng" /><Puppet who="fan" /><Puppet who="father" /><Puppet who="zhang" />
+            {node.era ? <CelestialPuppets node={node.id} beat={position.beat} pose={beat.pose} paused={!pageVisible || choosing} /> : <><Puppet who="meng" /><Puppet who="fan" /><Puppet who="father" /><Puppet who="zhang" /></>}
             <div className="shadow-floor" />
           </div>
           <div className="shadow-stage-caption">{node.setting}</div>
