@@ -77,7 +77,7 @@ function Btn({ children, sub, onClick, tone = 'red', disabled, small }: { childr
 }
 
 // ---------- 主程式 ----------
-type Screen = { name: 'home' } | { name: 'theatre' } | { name: 'scroll' } | { name: 'intro'; life: string; step: number } | { name: 'play' } | { name: 'gallery' }
+type Screen = { name: 'home' } | { name: 'theatre'; restart?: boolean } | { name: 'scroll' } | { name: 'intro'; life: string; step: number } | { name: 'play' } | { name: 'gallery' }
 
 export function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'home' })
@@ -122,7 +122,7 @@ export function App() {
     })
   }
 
-  if (screen.name === 'theatre') return <Theatre onHome={() => setScreen({ name: 'home' })} />
+  if (screen.name === 'theatre') return <Theatre restart={screen.restart} onHome={() => setScreen({ name: 'home' })} />
   if (screen.name === 'gallery') return <Gallery rec={rec} onBack={() => setScreen({ name: 'home' })} />
   if (screen.name === 'scroll') return <Scroll rec={rec} onPick={begin} onBack={() => setScreen({ name: 'home' })} />
 
@@ -186,16 +186,19 @@ export function App() {
         <RedThread width={240} tension={0.5} />
         <h1 className="mt-4 text-[2.6rem] tracking-[0.35em] text-[#f6e7d0]">紅線千年</h1>
         <p className="mt-3 text-[0.98rem] leading-7 text-[#f3ece0]/70">
-          玉帝說：配為夫妻，卻不許成婚。
+          七世夫妻，前六世不得白頭。
           <br />
           你是月老。這一次，你想改寫。
         </p>
       </div>
       <div className="flex-1" />
       <div className="space-y-2.5">
-        <Btn onClick={async () => { await unlock(); setScreen({ name: 'theatre' }); sfx.act() }} sub="皮影戲・相遇、留宿與求親">
+        <Btn onClick={async () => { await unlock(); setScreen({ name: 'theatre' }); sfx.act() }} sub="第〇世緣起・第一世相遇、留宿與求親">
           走進第一折
         </Btn>
+        <button type="button" className="min-h-11 w-full text-center text-[12px] tracking-[0.15em] text-[#f3ece0]/55" onClick={async () => { await unlock(); setScreen({ name: 'theatre', restart: true }); sfx.act() }}>
+          從第〇世重新看
+        </button>
         {canResume && (
           <Btn onClick={async () => { await unlock(); setScreen({ name: 'play' }) }} sub={`${life!.title}・繼續`}>
             繼續

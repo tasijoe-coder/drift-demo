@@ -107,5 +107,31 @@
 .shadow-interval .shadow-next-act{font-size:12px;color:var(--s-muted);margin-top:20px}
 .shadow-secondary{display:block;width:100%;min-height:44px;background:transparent;border:0;color:var(--s-muted);font-size:13px;margin-top:10px}
 @keyframes shadow-line-in{from{transform:translateY(15px)}to{transform:translateY(0)}}
+.shadow-clouds,.shadow-celestial-cup,.shadow-fate-thread,.shadow-register{display:none}
+.shadow-scene-heaven .shadow-screen{background:radial-gradient(ellipse at 50% 45%,#f7e4b5,#cfad6c 60%,#8e673b)}
+.shadow-scene-heaven .shadow-wall,.shadow-scene-heaven .shadow-door,.shadow-scene-heaven .shadow-flower,.shadow-scene-heaven .shadow-bowl,.shadow-scene-heaven .shadow-table{display:none}
+.shadow-scene-heaven .shadow-clouds{display:block;position:absolute;left:-4%;right:-4%;height:34px;bottom:17px;background:radial-gradient(ellipse at 5% 90%,#8b673c 0 23%,transparent 24%),radial-gradient(ellipse at 28% 110%,#8b673c 0 40%,transparent 41%),radial-gradient(ellipse at 60% 110%,#8b673c 0 37%,transparent 38%),radial-gradient(ellipse at 95% 100%,#8b673c 0 40%,transparent 41%);opacity:.36}
+.shadow-scene-heaven .shadow-moon{opacity:.7;left:44%;top:28px;width:43px;height:43px;background:#fff0bc;box-shadow:0 0 26px #ffeeae70}
+.shadow-scene-heaven .shadow-valance{background:#846027}
+.shadow-scene-heaven .shadow-meng,.shadow-scene-heaven .shadow-fan{color:#65421c}
+.shadow-scene-heaven .shadow-celestial-cup{display:block;position:absolute;left:47%;bottom:98px;width:16px;height:12px;background:#553413;border-radius:1px 1px 70% 70%;opacity:0;transition:transform .65s,opacity .5s}
+.shadow-scene-heaven .shadow-fate-thread{display:block;position:absolute;left:37%;bottom:75px;width:27%;height:22px;border-bottom:1px solid #b2382d;border-radius:0 0 50% 50%;transform:rotate(-8deg);opacity:.75;transition:width .7s,opacity .6s}
+.shadow-stage[data-pose=toast] .shadow-meng .shadow-arm{transform:rotate(-24deg)}
+.shadow-stage[data-pose=toast] .shadow-fan .shadow-arm{transform:rotate(177deg)}
+.shadow-stage[data-pose=toast] .shadow-celestial-cup{opacity:1}
+.shadow-stage[data-pose=cup-fall] .shadow-celestial-cup{transform:translate(13px,70px) rotate(62deg);opacity:1}
+.shadow-stage[data-pose=cup-fall] .shadow-fan{transform:translate(-21px,17px) rotate(-17deg)}
+.shadow-stage[data-pose=throne] .shadow-father{opacity:1;transform:translate(4px,-14px) scaleX(-1) scale(1.06)}
+.shadow-scene-heaven .shadow-father .shadow-hair{background:#68451e;clip-path:polygon(0 0,20% 25%,40% 0,60% 25%,80% 0,100% 25%,100% 100%,0 100%)}
+.shadow-stage[data-pose=throne] .shadow-meng{transform:translate(-15px,18px) rotate(10deg)}
+.shadow-stage[data-pose=throne] .shadow-fan{transform:translate(-25px,27px) rotate(16deg)}
+.shadow-stage[data-pose=parting] .shadow-meng{transform:translate(-18px,0) rotate(8deg)}
+.shadow-stage[data-pose=parting] .shadow-fan{transform:translate(23px,0) rotate(-7deg)}
+.shadow-stage[data-pose=parting] .shadow-fate-thread{width:40%;left:29%}
+.shadow-stage[data-pose=book] .shadow-meng,.shadow-stage[data-pose=book] .shadow-fan,.shadow-stage[data-pose=vanish] .shadow-meng,.shadow-stage[data-pose=vanish] .shadow-fan{transform:translateY(20px);opacity:0}
+.shadow-stage[data-pose=book] .shadow-celestial-cup,.shadow-stage[data-pose=book] .shadow-fate-thread,.shadow-stage[data-pose=vanish] .shadow-celestial-cup,.shadow-stage[data-pose=vanish] .shadow-fate-thread{opacity:0}
+.shadow-stage[data-pose=book].shadow-scene-heaven .shadow-register{display:flex;position:absolute;left:calc(50% - 49px);bottom:41px;width:98px;height:105px;align-items:center;justify-content:center;background:linear-gradient(90deg,#55351d 0 8px,#d3aa63 8px 92px,#55351d 92px);border-top:4px solid #674323;border-bottom:4px solid #674323;box-shadow:6px 7px 0 #69482130;transform:rotate(-7deg)}
+.shadow-register span{writing-mode:vertical-rl;color:#633e20;font-size:20px;letter-spacing:6px;border:1px solid #8d603b66;padding:5px}
+.shadow-scene-heaven .shadow-stage-caption{color:#60401b}
 @media(max-height:680px){.shadow-header{min-height:52px}.shadow-scene-heading{min-height:44px}.shadow-stage{flex-basis:29svh}.shadow-puppet{transform-origin:50% 100%;zoom:.9}.shadow-line p{font-size:15px;line-height:1.8}.shadow-footer{padding-top:10px}.shadow-decision-context{display:none}.shadow-decision h1{font-size:18px}.shadow-options{gap:9px}}
 @media(prefers-reduced-motion:reduce){.shadow-page *{transition:none!important;animation:none!important}}

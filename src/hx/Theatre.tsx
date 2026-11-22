@@ -20,8 +20,8 @@ function Puppet({ who }: { who: string }) {
   )
 }
 
-export function Theatre({ onHome }: { onHome: () => void }) {
-  const [position, setPosition] = useState<StoryPosition>(readPosition)
+export function Theatre({ onHome, restart = false }: { onHome: () => void; restart?: boolean }) {
+  const [position, setPosition] = useState<StoryPosition>(() => restart ? startStory(opening) : readPosition())
   const [auto, setAuto] = useState(false)
   const [muted, setMute] = useState(isMuted)
   const [pageVisible, setPageVisible] = useState(() => !document.hidden)
@@ -60,6 +60,7 @@ export function Theatre({ onHome }: { onHome: () => void }) {
     }
     if (beat.sound === 'knock') sfx.warn()
     if (beat.sound === 'wind') sfx.drop()
+    if (beat.sound === 'bell') sfx.heaven()
   }, [beat, position.node])
 
   useEffect(() => {
@@ -88,7 +89,7 @@ export function Theatre({ onHome }: { onHome: () => void }) {
       <div className="shadow-theatre">
         <header className="shadow-header">
           <button type="button" onClick={onHome} aria-label="返回姻緣簿">← 返回</button>
-          <span>紅線千年<span className="shadow-header-sub">第一世・秦</span></span>
+          <span>紅線千年<span className="shadow-header-sub">{node.era ?? '第一世・秦'}</span></span>
           <button type="button" aria-pressed={muted} onClick={() => { setMuted(!muted); setMute(!muted) }}>{muted ? '音效關' : '音效開'}</button>
         </header>
 
@@ -98,6 +99,8 @@ export function Theatre({ onHome }: { onHome: () => void }) {
             <div className="shadow-wall" /><div className="shadow-door" /><div className="shadow-flower" />
             <div className="shadow-table" /><div className="shadow-lamp" /><div className="shadow-bowl" />
             <div className="shadow-rain" />
+            <div className="shadow-clouds" /><div className="shadow-celestial-cup" /><div className="shadow-fate-thread" />
+            <div className="shadow-register" aria-hidden="true"><span>姻緣簿</span></div>
             <Puppet who="meng" /><Puppet who="fan" /><Puppet who="father" /><Puppet who="zhang" />
             <div className="shadow-floor" />
           </div>
@@ -105,9 +108,9 @@ export function Theatre({ onHome }: { onHome: () => void }) {
         </section>
 
         <div className="shadow-scene-heading">
-          <span>{opening.title}<span className="shadow-separator">／</span>{node.chapter}</span>
+          <span>{node.title ?? opening.title}<span className="shadow-separator">／</span>{node.chapter}</span>
           {!choosing && !finished && <button type="button" aria-pressed={auto} onClick={async () => { await unlock(); setAuto((value) => !value) }}>{auto ? '暫停自動' : '自動演出'}</button>}
-          {(choosing || finished) && <span className="shadow-mode">{choosing ? '此刻・由你' : '第一折・暫歇'}</span>}
+          {(choosing || finished) && <span className="shadow-mode">{choosing ? '此刻・由你' : '第一折・待續'}</span>}
         </div>
 
         <section className="shadow-lower">
@@ -131,21 +134,21 @@ export function Theatre({ onHome }: { onHome: () => void }) {
           </div>}
 
           {finished && <div className="shadow-interval">
-            <div className="shadow-eyebrow">燈還留著，故事未完</div><h1>第一折・暫歇</h1>
-            <p>今夜，他們還沒有許下一生。<br />你留下的這幾筆，已讓相逢有了不同。</p>
+            <div className="shadow-eyebrow">燈還留著，門外已有來人</div><h1>第一折・待續</h1>
+            <p>今夜，他們才學會把一個人留下。<br />前廳那張文書，卻已等著天亮。</p>
             <h2>這一折，你留下的天意</h2>
             <ol>{storyMemories(opening, position).map((memory) => <li key={memory}>{memory}</li>)}</ol>
-            <p className="shadow-next-act">下一折：當留下來的人，成了必須帶走的人。</p>
-            <button type="button" className="shadow-primary" onClick={replay}>換一種天意，重演第一折</button>
+            <p className="shadow-next-act">下一折：父親要開的那扇門，會讓誰進來？</p>
+            <button type="button" className="shadow-primary" onClick={replay}>從第〇世，重看這段姻緣</button>
             <button type="button" className="shadow-secondary" onClick={onHome}>回到姻緣簿</button>
           </div>}
         </section>
 
         {!choosing && !finished && <footer className="shadow-footer">
           <button ref={nextButton} type="button" className="shadow-primary" onClick={continueStory}>
-            {position.beat === node.beats.length - 1 && node.choice ? '降下天意' : position.beat === node.beats.length - 1 && !node.next ? '收起紅線，暫歇一折' : '繼續演出'}<span aria-hidden="true">{position.beat === node.beats.length - 1 && node.choice ? '◇' : '↓'}</span>
+            {position.beat === node.beats.length - 1 && node.choice ? '降下天意' : position.beat === node.beats.length - 1 && !node.next ? '第一折・待續' : '繼續演出'}<span aria-hidden="true">{position.beat === node.beats.length - 1 && node.choice ? '◇' : '↓'}</span>
           </button>
-          <p>對話可往上回看・演到分歧，才由你決定</p>
+          <p>{node.era ? '第〇世・緣起　／　對話可往上回看' : '對話可往上回看・演到分歧，才由你決定'}</p>
         </footer>}
       </div>
     </main>

@@ -7,6 +7,8 @@ export type StoryNode = {
   chapter: string
   setting: string
   scene: string
+  title?: string
+  era?: string
   beats: Beat[]
   next?: string
   choice?: { prompt: string; options: StoryOption[] }
