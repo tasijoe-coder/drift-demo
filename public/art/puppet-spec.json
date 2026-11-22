@@ -25,6 +25,6 @@
     "後側上臂",
     "酒壺或酒盞"
   ],
-  "animation": "Images stay unchanged. SVG viewports select atlas regions, joints rotate at neck/shoulder/elbow/wrist; two-bone IK positions the hands. Cup release and three clipped cup shards are animated in stage coordinates.",
+  "animation": "Images stay unchanged. SVG viewports split the original forearm-and-hand cell into overlapping sleeve and hand regions. Neck tabs seat behind the collar; neck rotation is limited to +/-7 degrees. Two-bone IK bends elbows down, while independent wrists keep palms and held props at their authored angle. Hand rods use actual clamped grip endpoints in stage coordinates, independently of arm rotation; each figure also has a torso rod. Cup release and three clipped cup shards animate in stage coordinates. This digital approximation has not been validated by a traditional puppeteer.",
   "scope": "第〇世使用生成角色；七夕宴八段有獨立動作時間軸，其後天庭段落使用同一組角色與基礎姿態。其他角色仍為原有暫代剪影。"
 }

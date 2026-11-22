@@ -26,9 +26,9 @@ export function performance(node: string, beat: number, pose: string): Performan
       { duration:2400,label:'玉女示意杯沿缺口，轉腕，金童低頭看杯',keys:[key(0,{}),key(.4,{yh:-12,cup:-22,yfx:350,yfy:218,jh:12,jfx:336,jfy:221}),key(.72,{yh:-8,cup:21,yfx:352,yfy:220,jh:14,jfx:336,jfy:221}),key(1,{yh:-8,cup:21,yfx:352,yfy:220,jh:14,jfx:336,jfy:221})] },
       { duration:2500,label:'金童傾壺，照顧她受傷的手，玉女低頭',keys:[key(0,{cup:15,jfx:336,jfy:221}),key(.35,{jug:24,jbx:340,jby:196,spill:.8,yh:-7,jh:5,cup:10}),key(.65,{jug:18,jbx:340,jby:196,spill:.5,yh:-12,jh:7}),key(1,{jug:10,jbx:337,jby:202,yh:-8,jh:4})] },
       { duration:2400,label:'察覺殿上目光，急退碰杯，杯墜地碎裂',keys:[key(0,{jug:10}),key(.22,{jx:180,jl:5,jh:-10,jfx:350,jfy:218,light:.83}),key(.43,{jx:176,jl:7,jh:-13,jfx:350,jfy:221,drop:.02,yh:-3,light:.83}),key(.79,{jx:176,jl:10,jfx:350,jfy:266,drop:1,yfx:389,yfy:228,light:.83}),key(1,{jx:176,jl:10,jfx:350,jfy:266,drop:1,yfx:389,yfy:228,light:.83})] },
-      { duration:2100,label:'金童俯身擋碎片，玉女驚退再回身',keys:[key(0,{jx:176,jl:10,jfx:350,jfy:266,drop:1,yfx:389,yfy:228}),key(.35,{jx:184,jl:23,jh:14,jfx:346,jfy:302,drop:1,yx:522,yh:-10,yfx:395,yfy:223}),key(.78,{jx:184,jl:15,jh:10,jfx:342,jfy:270,drop:1,yx:484,yl:-5,yh:8,yfx:347,yfy:270,blood:1}),key(1,{jx:184,jl:15,jh:10,jfx:342,jfy:270,drop:1,yx:484,yl:-5,yh:8,yfx:347,yfy:270,blood:1})] },
-      { duration:2400,label:'玉女伸手按傷，金童想收手，兩手再次相握',keys:[key(0,{jx:184,jl:15,jh:10,jfx:342,jfy:270,drop:1,yx:484,yl:-5,yh:8,yfx:347,yfy:270,blood:1}),key(.32,{jx:184,jl:10,jh:8,jfx:329,jfy:265,drop:1,yx:480,yl:-7,yh:3,yfx:335,yfy:265,blood:1}),key(.7,{jx:184,jl:8,jh:4,jfx:338,jfy:265,drop:1,yx:480,yl:-7,yh:2,yfx:339,yfy:265,blood:1}),key(1,{jx:184,jl:8,jh:4,jfx:338,jfy:265,drop:1,yx:480,yl:-7,yh:2,yfx:339,yfy:265,blood:1})] },
-      { duration:1700,label:'玉帝畫外責問，燈色轉冷，二人僵住',keys:[key(0,{jx:184,jl:8,jfx:338,jfy:265,drop:1,yx:480,yl:-7,yfx:339,yfy:265,blood:1}),key(.4,{jx:184,jl:7,jh:-13,jfx:338,jfy:265,drop:1,yx:480,yl:-3,yh:-12,yfx:339,yfy:265,blood:1,light:.65}),key(1,{jx:184,jl:7,jh:-13,jfx:338,jfy:265,drop:1,yx:480,yl:-3,yh:-12,yfx:339,yfy:265,blood:1,light:.65})] },
+      { duration:2100,label:'金童俯身擋碎片，玉女驚退再回身',keys:[key(0,{jx:176,jl:10,jfx:350,jfy:266,drop:1,yfx:389,yfy:228}),key(.35,{jx:200,jl:23,jh:14,jfx:346,jfy:302,drop:1,yx:522,yh:-10,yfx:395,yfy:223}),key(.78,{jx:200,jl:15,jh:10,jfx:342,jfy:270,drop:1,yx:474,yl:-5,yh:8,yfx:347,yfy:270,blood:1}),key(1,{jx:200,jl:15,jh:10,jfx:342,jfy:270,drop:1,yx:474,yl:-5,yh:8,yfx:347,yfy:270,blood:1})] },
+      { duration:2400,label:'玉女伸手按傷，金童想收手，兩手再次相握',keys:[key(0,{jx:200,jl:15,jh:10,jfx:342,jfy:270,drop:1,yx:474,yl:-5,yh:8,yfx:347,yfy:270,blood:1}),key(.32,{jx:200,jl:10,jh:8,jfx:329,jfy:265,drop:1,yx:470,yl:-7,yh:3,yfx:335,yfy:265,blood:1}),key(.7,{jx:200,jl:8,jh:4,jfx:338,jfy:265,drop:1,yx:470,yl:-7,yh:2,yfx:339,yfy:265,blood:1}),key(1,{jx:200,jl:8,jh:4,jfx:338,jfy:265,drop:1,yx:470,yl:-7,yh:2,yfx:339,yfy:265,blood:1})] },
+      { duration:1700,label:'玉帝畫外責問，燈色轉冷，二人僵住',keys:[key(0,{jx:200,jl:8,jfx:338,jfy:265,drop:1,yx:470,yl:-7,yfx:339,yfy:265,blood:1}),key(.4,{jx:200,jl:7,jh:-13,jfx:338,jfy:265,drop:1,yx:470,yl:-3,yh:-12,yfx:339,yfy:265,blood:1,light:.65}),key(1,{jx:200,jl:7,jh:-13,jfx:338,jfy:265,drop:1,yx:470,yl:-3,yh:-12,yfx:339,yfy:265,blood:1,light:.65})] },
     ]
     return scenes[Math.min(beat,scenes.length-1)]
   }
@@ -59,7 +59,18 @@ export function solveArm(target: Point, root: Point, flip: number, lean: number)
   const localY=x*Math.sin(r)+y*Math.cos(r)+180
   const dx=localX-66,dy=localY-88
   const a=52,b=50,d=Math.max(3,Math.min(a+b-.01,Math.hypot(dx,dy)))
-  const elbow=Math.acos(Math.max(-1,Math.min(1,(d*d-a*a-b*b)/(2*a*b))))
+  const elbow=-Math.acos(Math.max(-1,Math.min(1,(d*d-a*a-b*b)/(2*a*b))))
   const shoulder=Math.atan2(dy,dx)-Math.atan2(b*Math.sin(elbow),a+b*Math.cos(elbow))
   return {upper:shoulder*180/Math.PI,lower:elbow*180/Math.PI}
+}
+
+// A hand has its own hinge: its palm stays level while the sleeve bends.
+// Resolve the actual endpoint after reach clamping so rods never detach.
+export function armPose(target: Point, root: Point, flip: number, lean: number, handAngle=0) {
+  const h=handAngle*Math.PI/180,ox=flip*15*Math.cos(h),oy=15*Math.sin(h)
+  const angles=solveArm([target[0]-ox,target[1]-oy],root,flip,lean)
+  const a=angles.upper*Math.PI/180,b=(angles.upper+angles.lower)*Math.PI/180,r=lean*Math.PI/180
+  const lx=52*Math.cos(a)+50*Math.cos(b),ly=88+52*Math.sin(a)+50*Math.sin(b)-180
+  const wrist:Point=[root[0]+flip*(66+lx*Math.cos(r)-ly*Math.sin(r)),root[1]+180+lx*Math.sin(r)+ly*Math.cos(r)]
+  return {...angles,wrist:handAngle-lean-angles.upper-angles.lower,grip:[wrist[0]+ox,wrist[1]+oy] as Point}
 }

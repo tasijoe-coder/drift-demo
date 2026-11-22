@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { advanceStory, chooseStory, opening, restoreStory, startStory, storyMemories, storyNode, storyTranscript, type StoryPosition } from '../src/hx/theatre_story'
-import { performance, samplePerformance, solveArm } from '../src/hx/celestial_rig'
+import { performance, samplePerformance, solveArm, armPose } from '../src/hx/celestial_rig'
 
 const ids = new Set(opening.nodes.map((node) => node.id))
 assert.equal(ids.size, opening.nodes.length, 'Scene IDs must be unique')
@@ -90,3 +90,14 @@ for (const flip of [-1, 1]) {
   assert.ok(Math.abs(52 * Math.sin(a) + 50 * Math.sin(b) - 15) < .001)
 }
 console.log('PASS: 8 animated cues, finite joint poses, cup release and injury continuity, mirrored arm reach.')
+// Palm direction must remain independent of elbow and torso rotation.
+for (const flip of [-1,1]) for (const lean of [-15,0,15]) for (const hand of [-22,0,24]) {
+  const root:[number,number]=[190,110],target:[number,number]=[190+flip*130,230]
+  const p=armPose(target,root,flip,lean,hand)
+  assert.ok(Math.abs(p.upper+p.lower+p.wrist+lean-hand)<1e-8)
+  assert.ok(Math.hypot(p.grip[0]-target[0],p.grip[1]-target[1])<.001,'Reachable grip must meet prop/rod attachment')
+  assert.ok(p.lower<=0,'Elbow should bend below the reaching hand')
+}
+const distant=armPose([1000,1000],[190,110],1,0)
+assert.ok(Math.hypot(distant.grip[0]-256-15,distant.grip[1]-198)<=102.001,'Unreachable targets must not stretch the arm')
+console.log('PASS: independent wrist direction, mirrored grip attachment, natural elbow bend and bounded reach.')
