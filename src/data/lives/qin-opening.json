@@ -1,0 +1,156 @@
+{
+  "id": "qin-opening",
+  "title": "第一折・牆內的人",
+  "start": "arrival",
+  "nodes": [
+    {
+      "id": "arrival", "chapter": "相遇", "setting": "孟家後院・暮春", "scene": "garden",
+      "beats": [
+        {"speaker": "旁白", "text": "你是月老。姻緣簿上，這兩個人注定相愛，也注定不能白頭。可此刻，他們還不認得彼此。", "pose": "alone"},
+        {"speaker": "旁白", "text": "孟家的後院，有人正替一件舊衣收針。牆外忽然傳來急促的腳步聲。", "pose": "alone"},
+        {"speaker": "旁白", "text": "一個男人翻過牆，重重跌下來。他伸手護住被撞倒的針線籃，掌心擦過碎瓦。", "pose": "fall"},
+        {"speaker": "孟姜女", "text": "「別動。」她蹲下來，從他掌心挑掉一小片瓦。\n「你把血滴進我的線裡了。」", "pose": "kneel"},
+        {"speaker": "范喜良", "text": "「對不住。我……」\n他看了一眼院門，後半句沒能說完。", "pose": "offer"},
+        {"speaker": "門外・趙督工", "text": "「姑娘！可見過一個逃役的男人？有人看見他往這裡來了。」", "pose": "knock", "sound": "knock"},
+        {"speaker": "范喜良", "text": "他把水碗放下，退到花架旁。\n「別為我撒謊。你不認得我。」", "pose": "withdraw"},
+        {"speaker": "旁白", "text": "她看見泥地上的血腳印，手停在門閂前。\n你可以降下一陣風。要把她也牽進這場逃亡嗎？", "pose": "door"}
+      ],
+      "choice": {
+        "prompt": "門外又敲了一聲。這陣風，要替誰留路？",
+        "options": [
+          {"id": "shelter", "label": "吹散腳印，讓她藏住他", "detail": "她能瞞過官差，也得承擔替陌生人撒謊的風險。", "next": "shelter", "memory": "她替一個還不知道名字的人，撒了第一個謊。"},
+          {"id": "divert", "label": "吹響側門，讓追兵轉身", "detail": "給他離開的空隙，讓她暫時置身事外。", "next": "divert", "memory": "他有機會離開，卻把她的針線籃記在了心裡。"}
+        ]
+      }
+    },
+    {
+      "id": "shelter", "chapter": "相遇", "setting": "孟家後院・門後", "scene": "garden",
+      "beats": [
+        {"speaker": "旁白", "text": "風貼著泥地走過，細葉蓋住了腳印。她將他推到花架後，才拔開門閂。", "pose": "hide", "sound": "wind"},
+        {"speaker": "孟姜女", "text": "「只有我。」\n她把受傷的手藏在袖裡。方才挑碎瓦時，她也割破了一點。", "pose": "hide"},
+        {"speaker": "旁白", "text": "趙督工看過院子，往別處去了。她關上門，抵著門板，慢慢吐出一口氣。", "pose": "door"},
+        {"speaker": "范喜良", "text": "「為什麼幫我？」\n她把水碗遞回去：「先洗。血乾了不好洗。」", "pose": "offer"}
+      ], "next": "shelter-night"
+    },
+    {
+      "id": "divert", "chapter": "相遇", "setting": "孟家後院・牆邊", "scene": "garden",
+      "beats": [
+        {"speaker": "旁白", "text": "風撞開巷尾的側門。追兵聽見響動，轉身追去。他望向牆頭，終於有了逃的機會。", "pose": "withdraw", "sound": "wind"},
+        {"speaker": "范喜良", "text": "他把地上的針一根根拾回籃裡。\n「少一根，往後會扎著你。」", "pose": "kneel"},
+        {"speaker": "孟姜女", "text": "「你還有空數這個？」\n他沒有答。她看著他掌心重新滲出的血，拿出一條乾淨布帶。", "pose": "offer"},
+        {"speaker": "旁白", "text": "巷子很快又有了腳步聲。他攀住牆頭的手鬆下來。她把布帶塞進他手裡，指了指後院堆柴的小棚。", "pose": "hide"}
+      ], "next": "divert-night"
+    },
+    {
+      "id": "shelter-night", "chapter": "留宿", "setting": "孟家後院・入夜", "scene": "night",
+      "beats": [
+        {"speaker": "旁白", "text": "父親還沒回來。她把多盛的一碗粥擱在他面前，自己坐到另一頭。", "pose": "meal"},
+        {"speaker": "范喜良", "text": "「我叫范喜良。」\n「知道名字，萬一官差再問，你就更不好答了。」", "pose": "meal"},
+        {"speaker": "孟姜女", "text": "「那你早一點說，我好想怎麼答。」\n她低下頭攪粥，嘴角卻動了一下。", "pose": "offer"}
+      ], "next": "lodging"
+    },
+    {
+      "id": "divert-night", "chapter": "留宿", "setting": "孟家柴棚・入夜", "scene": "night",
+      "beats": [
+        {"speaker": "旁白", "text": "他蜷在柴棚裡等天黑。一碗熱粥從門縫推了進來，旁邊放著那條洗乾淨的布帶。", "pose": "hide"},
+        {"speaker": "范喜良", "text": "「范喜良。」他朝門外說。\n「我的名字。不是要你替我瞞，只是……總不能連謝誰都不知道。」", "pose": "withdraw"},
+        {"speaker": "孟姜女", "text": "「先記著粥是誰煮的就好。」\n門外的人沒有走。他聽見她在檢查夜裡會漏雨的棚頂。", "pose": "offer"}
+      ], "next": "lodging"
+    },
+    {
+      "id": "lodging", "chapter": "留宿", "setting": "孟家・第一場春雨", "scene": "night",
+      "beats": [
+        {"speaker": "旁白", "text": "雨先落了兩滴，接著打滿屋簷。街上還有人巡查，他卻開始把碗放回托盤，準備告辭。", "pose": "rain"},
+        {"speaker": "孟姜女", "text": "「你往哪裡走？」\n他望向後門：「能走多遠，就多遠。」", "pose": "withdraw"},
+        {"speaker": "范喜良", "text": "「你爹回來，我怎麼說？」\n她看了一眼漏雨的屋頂：「先讓他看見你會做什麼。」", "pose": "meal"},
+        {"speaker": "旁白", "text": "你手裡還有一點風，能護住屋裡的燈，也能吹開棚頂，讓她看見他要睡的地方。留下他，要從哪裡開始？", "pose": "rain"}
+      ],
+      "choice": {
+        "prompt": "今晚，讓他們怎麼學著相信彼此？",
+        "options": [
+          {"id": "lamp", "label": "護住燈火，留一晚說話的時間", "detail": "讓她把人帶進屋，連同這個決定一起告訴父親。", "next": "lamp", "memory": "第一夜，他們隔著一盞燈，說出了彼此害怕的事。"},
+          {"id": "eaves", "label": "掀起漏雨的棚草，讓她看見", "detail": "先留一個屋簷，讓他用明早的行動慢慢取得信任。", "next": "eaves", "memory": "第一夜只借了屋簷；天亮後，他把漏雨的地方補好了。"}
+        ]
+      }
+    },
+    {
+      "id": "lamp", "chapter": "留宿", "setting": "孟家灶間・燈下", "scene": "night",
+      "beats": [
+        {"speaker": "旁白", "text": "風繞開燈芯。她把凳子挪進灶間，讓他坐下，自己留在門邊。", "pose": "meal", "sound": "wind"},
+        {"speaker": "范喜良", "text": "「我不是怕做活。我是怕去了，家裡連個知道我死活的人都沒有。」\n他說完，才想起自己已經沒有家了。", "pose": "withdraw"},
+        {"speaker": "孟姜女", "text": "「那明天先把我家的屋頂補好。」\n停了一會兒，她又說：「我爹會問很多話。別再說自己什麼都沒有。」", "pose": "offer"},
+        {"speaker": "孟員外", "text": "父親回來時，她先開了口。他聽完，將濕蓑衣掛好：「今晚雨大，明早再問。窗別關死，爐子還燒著。」", "pose": "father"}
+      ], "next": "morning-lamp"
+    },
+    {
+      "id": "eaves", "chapter": "留宿", "setting": "孟家柴棚・屋簷下", "scene": "night",
+      "beats": [
+        {"speaker": "旁白", "text": "風掀起一角棚草，雨落在他收好的包袱上。她看了看，將自己的厚蓆抱來，鋪在不漏雨的屋簷下。", "pose": "rain", "sound": "wind"},
+        {"speaker": "范喜良", "text": "「我天亮前就走，不叫你為難。」\n她把補屋頂的工具擱到蓆旁：「那漏雨怎麼辦？」", "pose": "offer"},
+        {"speaker": "旁白", "text": "天還沒亮，他就上了棚頂。她提燈站在下面，告訴他哪一片還在滴水。", "pose": "repair"},
+        {"speaker": "孟員外", "text": "父親推門出來，看見補好的棚子，又看見女兒手裡的燈。\n「下來吃飯。屋頂上的事，總得說個明白。」", "pose": "father"}
+      ], "next": "morning-eaves"
+    },
+    {
+      "id": "morning-lamp", "chapter": "求親", "setting": "孟家前廳・幾日後", "scene": "morning",
+      "beats": [
+        {"speaker": "旁白", "text": "他留了幾日，修屋頂、抄帳，也學著在吃飯時抬起頭。那盞燈沒再點到深夜，凳子卻一直留著。", "pose": "repair"},
+        {"speaker": "孟姜女", "text": "他替她挑水，她發現扁擔磨得很滑。\n「你倒像早就知道，我嫌它扎手。」\n他只把水桶往門裡提，沒接話。", "pose": "offer"}
+      ], "next": "proposal"
+    },
+    {
+      "id": "morning-eaves", "chapter": "求親", "setting": "孟家前廳・幾日後", "scene": "morning",
+      "beats": [
+        {"speaker": "旁白", "text": "他留了幾日。每修好一樣東西，她便再找出一樣要修的。後來籬笆都齊了，她只好把那根扎手的扁擔遞給他。", "pose": "repair"},
+        {"speaker": "范喜良", "text": "「這個修好，還有嗎？」\n她摸了摸新磨的木頭：「先用用看。」\n他點頭，把工具留在了門邊。", "pose": "offer"}
+      ], "next": "proposal"
+    },
+    {
+      "id": "proposal", "chapter": "求親", "setting": "孟家前廳・提親", "scene": "proposal",
+      "beats": [
+        {"speaker": "旁白", "text": "張家的聘禮到了。媒人唱過禮單，孟員外只問了一句：「若往後徵役，又怎麼辦？」", "pose": "zhang"},
+        {"speaker": "張公子", "text": "「伯父放心。家裡的路引、糧稅，都有人照應。」\n他望向她：「你不必再為這些事操心。」", "pose": "zhang"},
+        {"speaker": "孟姜女", "text": "「那若有一天，我不想照你安排的過呢？」\n媒人忙笑著說姑娘多心。張公子沒有立即回答。", "pose": "zhang"},
+        {"speaker": "孟員外", "text": "「我只怕妳受苦。」父親說。\n她低頭看自己的手，上面的細傷早就好了。", "pose": "father"},
+        {"speaker": "旁白", "text": "范喜良在後院聽見了。他把修好的扁擔放下，提起包袱。這一次，門外沒有追兵。", "pose": "withdraw"},
+        {"speaker": "范喜良", "text": "「張家說的那些，我給不了。」\n她擋在門口：「可我還沒有答。你為什麼先替我答了？」", "pose": "door"},
+        {"speaker": "旁白", "text": "你能讓一隻燕子銜走他的路引，將真相帶到父親面前；也能讓雨留住媒人，替她爭一段自己開口的時間。", "pose": "hesitate"}
+      ],
+      "choice": {
+        "prompt": "要留住他，先把哪一句話說出口？",
+        "options": [
+          {"id": "truth", "label": "讓燕子把路引送到父親面前", "detail": "請他用真名留下；父親也會知道，他是官府要找的人。", "next": "truth", "memory": "范喜良在她父親面前，報出了自己一直不敢用的真名。"},
+          {"id": "time", "label": "讓雨留住媒人，等她親自答覆", "detail": "先守住她決定婚事的時間，逃役的秘密仍留在兩人之間。", "next": "time", "memory": "孟姜女沒有立刻許給任何人。這次，先由她自己回答。"}
+        ]
+      }
+    },
+    {
+      "id": "truth", "chapter": "求親", "setting": "孟家前廳・真名", "scene": "proposal",
+      "beats": [
+        {"speaker": "旁白", "text": "燕子掠過包袱，銜走露在外頭的路引。紙落到孟員外腳邊，他展開，手停在那個名字上。", "pose": "father", "sound": "wind"},
+        {"speaker": "范喜良", "text": "他走進前廳，沒再伸手去搶那張紙。\n「范喜良。晚輩一直沒敢報的，是這個名字。」", "pose": "face"},
+        {"speaker": "孟員外", "text": "「你知道，留你要擔多大的事？」\n「知道。所以今日，想請您聽我自己說。」", "pose": "father"},
+        {"speaker": "孟姜女", "text": "她將另一張凳子搬到他旁邊。\n「爹，先讓他坐下吧。站著，好像又要趕他走了。」", "pose": "together"},
+        {"speaker": "旁白", "text": "孟員外沒有答應婚事。他把張家的禮單壓住，叫廚房多添一副碗筷。范喜良這回坐下了，包袱仍擱在腳邊。", "pose": "together"}
+      ], "next": "interval"
+    },
+    {
+      "id": "time", "chapter": "求親", "setting": "孟家前廳・答覆", "scene": "proposal",
+      "beats": [
+        {"speaker": "旁白", "text": "雨堵住巷口，提親的轎子暫時走不了。孟姜女走回前廳，沒讓父親或媒人替她開口。", "pose": "rain", "sound": "wind"},
+        {"speaker": "孟姜女", "text": "「聘禮先帶回去。若還願意等，下回請先問我。」\n張公子望著她，終於將禮單收了起來。", "pose": "zhang"},
+        {"speaker": "旁白", "text": "她回到後門，范喜良還在。包袱提在手裡，卻一直沒有跨過門檻。", "pose": "door"},
+        {"speaker": "孟姜女", "text": "「我不是因為你，才不答應張家。」\n她看了看他手裡的包袱：「可你若想留下，要自己跟我爹說。」", "pose": "offer"},
+        {"speaker": "范喜良", "text": "他把包袱放回門內。\n「好。明早，我去說。」\n她沒替他拿，只往旁邊讓了一步。", "pose": "together"}
+      ], "next": "interval"
+    },
+    {
+      "id": "interval", "chapter": "暫歇", "setting": "孟家・燈未熄", "scene": "night",
+      "beats": [
+        {"speaker": "土地公", "text": "「這回，簿上怎麼寫？」\n你低頭看，原本只有相逢與離別的一頁，多出了幾處還未乾的墨。", "pose": "together"},
+        {"speaker": "旁白", "text": "她還沒決定嫁給誰，他也還沒找到能安穩留下的方法。可明早吃飯時，他們知道，桌邊還有一個人在。", "pose": "together"},
+        {"speaker": "旁白", "text": "你暫時收起紅線。今夜先讓他們把燈留著。", "pose": "together"}
+      ]
+    }
+  ]
+}

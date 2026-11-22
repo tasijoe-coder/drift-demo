@@ -1,0 +1,111 @@
+.shadow-page{--s-ink:#f1e3ce;--s-muted:#bb9f87;--s-wood:#1d100e;--s-shadow:#402519;--s-paper:#e6c38e;--s-red:#9c3932;background:radial-gradient(ellipse at top,#3c2019,#100908 75%);color:var(--s-ink);font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;height:100dvh;height:100svh;overflow:hidden}
+.shadow-theatre{max-width:460px;margin:auto;display:flex;flex-direction:column;height:100%;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
+.shadow-header{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px;min-height:62px;font-size:14px;letter-spacing:3px;text-align:center}
+.shadow-header-sub{display:block;font-size:10px;letter-spacing:2px;color:var(--s-muted);margin-top:2px}
+.shadow-header button,.shadow-scene-heading button{min-width:52px;min-height:44px;font-size:12px;letter-spacing:1px;color:var(--s-muted);background:none;border:0}
+.shadow-page button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.shadow-page button:focus-visible,.shadow-dialogue:focus-visible{outline:2px solid #e8c689;outline-offset:3px}
+.shadow-stage{position:relative;flex:0 0 clamp(155px,32svh,265px);border:7px solid #54251d;background:#54251d;box-shadow:0 12px 30px #0005;transition:filter .45s}
+.shadow-screen{height:100%;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 65%,#f5dbab,var(--s-paper) 65%,#ac7948);box-shadow:inset 0 0 35px #5b321a50}
+.shadow-screen:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,#75431a0a 3px 4px);pointer-events:none}
+.shadow-stage-paused{filter:brightness(.72)}
+.shadow-valance{position:absolute;top:0;left:0;right:0;height:20px;background:#84352b;z-index:5;clip-path:polygon(0 0,100% 0,100% 65%,90% 100%,80% 65%,70% 100%,60% 65%,50% 100%,40% 65%,30% 100%,20% 65%,10% 100%,0 65%)}
+.shadow-stage-caption{position:absolute;bottom:7px;right:10px;font-size:10px;letter-spacing:2px;color:#57311e;z-index:5}
+.shadow-floor{position:absolute;bottom:20px;left:0;right:0;border-top:2px solid #58341c;opacity:.65}
+.shadow-wall{position:absolute;left:0;bottom:20px;width:30px;height:85%;background:repeating-linear-gradient(0deg,#593c2925 0 20px,#50342050 20px 22px);border-right:3px solid #65482c66}
+.shadow-door{position:absolute;right:9px;bottom:21px;width:48px;height:77%;border:4px solid var(--s-shadow);border-bottom:0;opacity:.62;background:repeating-linear-gradient(90deg,transparent 0 10px,#402519 10px 12px)}
+.shadow-door:after{content:"";position:absolute;left:0;right:0;top:52%;border-top:3px solid var(--s-shadow)}
+.shadow-flower{position:absolute;bottom:21px;left:22px;height:65px;width:39px;background:var(--s-shadow);opacity:.65;clip-path:polygon(42% 100%,42% 52%,9% 33%,0 17%,44% 42%,40% 20%,26% 0,46% 7%,56% 30%,80% 8%,100% 10%,58% 48%,59% 60%,90% 44%,100% 49%,60% 78%,62% 100%)}
+.shadow-moon{position:absolute;top:37px;left:57%;width:25px;height:25px;background:#fff1bf;border-radius:50%;opacity:0;transition:opacity .7s}
+.shadow-scene-night .shadow-screen{background:radial-gradient(ellipse at 42% 65%,#e1b574,#b17d46 75%,#70492d)}
+.shadow-scene-night .shadow-moon{opacity:.7}
+.shadow-table{position:absolute;bottom:22px;left:31%;width:39%;height:37px;border-top:5px solid var(--s-shadow);border-left:4px solid var(--s-shadow);border-right:4px solid var(--s-shadow);opacity:0;transition:opacity .4s}
+.shadow-scene-night .shadow-table,.shadow-scene-proposal .shadow-table{opacity:.8}
+.shadow-bowl{position:absolute;left:45%;bottom:22px;width:18px;height:8px;background:var(--s-shadow);border-radius:0 0 12px 12px;transition:bottom .6s}
+.shadow-scene-night .shadow-bowl,.shadow-scene-proposal .shadow-bowl{bottom:60px}
+.shadow-lamp{position:absolute;left:50%;bottom:59px;width:15px;height:18px;border-bottom:3px solid var(--s-shadow);opacity:0;transition:opacity .4s}
+.shadow-lamp:after{content:"";position:absolute;left:5px;bottom:4px;width:6px;height:13px;background:#fff2bf;box-shadow:0 0 20px 8px #f5bc6e70;border-radius:70% 20% 60% 40%;transform:rotate(15deg)}
+.shadow-scene-night .shadow-lamp{opacity:1}
+.shadow-rain{position:absolute;inset:20px 0 20px;opacity:0;pointer-events:none;background:repeating-linear-gradient(105deg,transparent 0 22px,#5e351b25 23px 24px,transparent 25px 36px);transition:opacity .5s}
+.shadow-stage[data-pose=rain] .shadow-rain{opacity:1}
+.shadow-puppet{position:absolute;bottom:22px;width:68px;height:148px;color:var(--s-shadow);transform-origin:50% 100%;transition:transform .7s ease,left .7s ease,opacity .5s;filter:drop-shadow(1px 1px 1px #5b2b1640)}
+.shadow-meng{left:23%;transform:rotate(-3deg)}
+.shadow-fan{left:50%;transform:rotate(2deg)}
+.shadow-father{left:68%;transform:scaleX(-1);opacity:0}
+.shadow-zhang{left:68%;transform:scaleX(-1);opacity:0}
+.shadow-head{position:absolute;top:12px;left:25px;width:24px;height:31px;background:currentColor;border-radius:45% 45% 42% 45%;transform:rotate(7deg)}
+.shadow-head:after{content:"";position:absolute;right:-6px;top:14px;border-top:4px solid transparent;border-bottom:3px solid transparent;border-left:8px solid currentColor}
+.shadow-hair{position:absolute;top:7px;left:21px;width:27px;height:26px;background:currentColor;border-radius:50% 40% 15% 35%;transform:rotate(-12deg)}
+.shadow-meng .shadow-hair:after{content:"";position:absolute;left:-7px;top:-3px;width:15px;height:15px;background:currentColor;border-radius:50%;box-shadow:-4px 10px 0 -4px currentColor}
+.shadow-fan .shadow-hair,.shadow-zhang .shadow-hair,.shadow-father .shadow-hair{top:0;left:22px;width:31px;height:25px;clip-path:polygon(10% 0,80% 10%,100% 100%,0 100%);border-radius:0;transform:none}
+.shadow-fan .shadow-head{transform:scaleX(-1) rotate(4deg)}
+.shadow-body{position:absolute;top:40px;left:14px;width:44px;height:53px;background:currentColor;clip-path:polygon(20% 0,67% 0,100% 94%,3% 100%,0 30%)}
+.shadow-robe{position:absolute;top:80px;left:3px;width:64px;height:62px;background:currentColor;clip-path:polygon(23% 0,70% 0,100% 92%,82% 100%,66% 93%,51% 100%,36% 94%,18% 100%,0 92%)}
+.shadow-cutwork{position:absolute;top:84px;left:24px;width:19px;height:49px;background:repeating-linear-gradient(45deg,transparent 0 5px,var(--s-paper) 5px 6px);opacity:.65;clip-path:polygon(42% 0,78% 0,100% 100%,0 100%)}
+.shadow-fan .shadow-robe,.shadow-father .shadow-robe,.shadow-zhang .shadow-robe{clip-path:polygon(23% 0,70% 0,92% 89%,66% 100%,50% 89%,23% 100%,4% 90%)}
+.shadow-father .shadow-head:before{content:"";position:absolute;right:-2px;top:25px;width:13px;height:22px;background:currentColor;clip-path:polygon(0 0,100% 0,25% 100%)}
+.shadow-zhang .shadow-cutwork{width:28px;left:20px;background:repeating-linear-gradient(45deg,transparent 0 4px,var(--s-paper) 4px 6px)}
+.shadow-arm{position:absolute;top:46px;left:35px;width:38px;height:18px;background:currentColor;border-radius:15% 55% 40% 15%;transform-origin:8px 9px;transform:rotate(25deg);transition:transform .65s}
+.shadow-forearm{position:absolute;left:28px;top:5px;width:25px;height:10px;background:currentColor;border-radius:4px;transform-origin:3px 5px;transform:rotate(-33deg)}
+.shadow-joint{position:absolute;top:5px;left:5px;width:5px;height:5px;border-radius:50%;background:var(--s-paper);opacity:.75}
+.shadow-rod{position:absolute;top:6px;left:18px;width:1px;height:135px;background:currentColor;opacity:.65;transform-origin:top;transform:rotate(-16deg)}
+.shadow-fan .shadow-arm{left:7px;transform:rotate(140deg)}
+.shadow-fan .shadow-forearm{transform:rotate(25deg)}
+.shadow-foot{position:absolute;bottom:0;left:24px;width:31px;height:7px;border-radius:70% 30% 10% 10%;background:currentColor}
+.shadow-stage[data-pose=alone] .shadow-fan{transform:translate(150px,-40px) rotate(40deg);opacity:0}
+.shadow-stage[data-pose=fall] .shadow-fan{transform:translate(9px,14px) rotate(32deg)}
+.shadow-stage[data-pose=kneel] .shadow-fan{transform:translate(-6px,22px) rotate(20deg)}
+.shadow-stage[data-pose=kneel] .shadow-meng{transform:translate(2px,13px) rotate(15deg)}
+.shadow-stage[data-pose=offer] .shadow-meng .shadow-arm{transform:rotate(-25deg)}
+.shadow-stage[data-pose=offer] .shadow-fan{transform:translate(-8px,0) rotate(-4deg)}
+.shadow-stage[data-pose=knock] .shadow-meng{transform:translate(12px,0) rotate(9deg)}
+.shadow-stage[data-pose=knock] .shadow-door{transform:rotate(-1deg)}
+.shadow-stage[data-pose=withdraw] .shadow-fan{transform:translate(25px,5px) rotate(10deg)}
+.shadow-stage[data-pose=hide] .shadow-fan{transform:translate(-53px,30px) rotate(24deg);opacity:.65}
+.shadow-stage[data-pose=hide] .shadow-meng,.shadow-stage[data-pose=door] .shadow-meng{transform:translate(40px,0) rotate(8deg)}
+.shadow-stage[data-pose=meal] .shadow-fan{transform:translate(7px,17px) rotate(-5deg)}
+.shadow-stage[data-pose=meal] .shadow-meng{transform:translate(-5px,14px) rotate(3deg)}
+.shadow-stage[data-pose=repair] .shadow-fan{transform:translate(21px,-12px) rotate(19deg)}
+.shadow-stage[data-pose=repair] .shadow-fan .shadow-arm{transform:rotate(223deg)}
+.shadow-stage[data-pose=father] .shadow-father{opacity:1;transform:translate(-3px,0) scaleX(-1)}
+.shadow-stage[data-pose=father] .shadow-fan{transform:translate(-25px,4px) rotate(-6deg)}
+.shadow-stage[data-pose=father] .shadow-meng{transform:translate(-21px,0) rotate(3deg)}
+.shadow-stage[data-pose=zhang] .shadow-zhang{opacity:1;transform:translate(-3px,0) scaleX(-1)}
+.shadow-stage[data-pose=zhang] .shadow-fan{opacity:.32;transform:translate(-60px,4px) rotate(-8deg)}
+.shadow-stage[data-pose=face] .shadow-fan{transform:translate(30px,0) rotate(-3deg)}
+.shadow-stage[data-pose=together] .shadow-fan{transform:translate(-14px,9px) rotate(-4deg)}
+.shadow-stage[data-pose=together] .shadow-meng{transform:translate(0,5px) rotate(4deg)}
+.shadow-stage[data-pose=hesitate] .shadow-meng .shadow-arm{transform:rotate(-32deg)}
+.shadow-stage[data-pose=hesitate] .shadow-fan{transform:translate(20px,0) rotate(10deg)}
+.shadow-scene-heading{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:4px;min-height:49px;font-size:11px;letter-spacing:1px;color:var(--s-muted)}
+.shadow-separator{padding:0 6px;opacity:.5}.shadow-mode{white-space:nowrap;color:#e9c78f}
+.shadow-lower{position:relative;flex:1;min-height:0;display:flex;flex-direction:column}
+.shadow-dialogue{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#84634d55 transparent;padding:0 7px;mask-image:linear-gradient(transparent,#000 15px);-webkit-mask-image:linear-gradient(transparent,#000 15px)}
+.shadow-dialogue-lines{display:flex;flex-direction:column;justify-content:flex-end;min-height:100%;gap:21px;padding-top:18px;padding-bottom:5px}
+.shadow-line{flex:none;opacity:.38;transition:opacity .3s}
+.shadow-line-current{opacity:1;animation:shadow-line-in .4s ease-out}
+.shadow-speaker{font-size:11px;letter-spacing:2px;color:#d8ad83;margin-bottom:6px}
+.shadow-line p{margin:0;white-space:pre-line;font-size:16px;line-height:1.9;letter-spacing:.4px}
+.shadow-dialogue-hidden{display:none}
+.shadow-footer{flex-shrink:0;padding:16px 3px 9px}
+.shadow-primary{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px;background:linear-gradient(#743029,#4d211e);border:1px solid #b45a4780;border-radius:7px;padding:12px 16px;color:var(--s-ink);font-size:14px;letter-spacing:2px}
+.shadow-primary:hover{background:#7b362d}
+.shadow-footer p{font-size:10px;color:#a48570;text-align:center;margin:8px 0 0;letter-spacing:1px}
+.shadow-decision,.shadow-interval{overflow-y:auto;min-height:0;padding:4px 6px 18px;scrollbar-width:thin;scrollbar-color:#84634d55 transparent}
+.shadow-eyebrow{color:#d8ad83;font-size:11px;letter-spacing:3px;margin:3px 0 12px}
+.shadow-decision h1,.shadow-interval h1{font-size:20px;font-weight:400;line-height:1.65;letter-spacing:2px;margin:0 0 13px}
+.shadow-decision-context{font-size:12px;line-height:1.85;white-space:pre-line;color:var(--s-muted);margin:0 0 18px}
+.shadow-options{display:flex;flex-direction:column;gap:12px}
+.shadow-options button{padding:14px;text-align:left;border:1px solid #a86c4c70;border-radius:7px;background:#542c2340;color:var(--s-ink);min-height:72px}
+.shadow-options button:hover{background:#6d352b90;border-color:#d09b70}
+.shadow-options button>span{display:block;font-size:15px;line-height:1.6;letter-spacing:.6px}
+.shadow-options small{display:block;font-size:12px;line-height:1.7;margin-top:6px;color:var(--s-muted)}
+.shadow-interval>p{font-size:14px;line-height:1.9;margin:0 0 20px}
+.shadow-interval h2{font-size:12px;color:#d8ad83;letter-spacing:2px;font-weight:400;margin:24px 0 14px}
+.shadow-interval ol{padding-left:20px;font-size:13px;line-height:1.85;color:var(--s-muted);margin:0 0 22px}
+.shadow-interval li{margin-bottom:10px;padding-left:4px}
+.shadow-interval .shadow-next-act{font-size:12px;color:var(--s-muted);margin-top:20px}
+.shadow-secondary{display:block;width:100%;min-height:44px;background:transparent;border:0;color:var(--s-muted);font-size:13px;margin-top:10px}
+@keyframes shadow-line-in{from{transform:translateY(15px)}to{transform:translateY(0)}}
+@media(max-height:680px){.shadow-header{min-height:52px}.shadow-scene-heading{min-height:44px}.shadow-stage{flex-basis:29svh}.shadow-puppet{transform-origin:50% 100%;zoom:.9}.shadow-line p{font-size:15px;line-height:1.8}.shadow-footer{padding-top:10px}.shadow-decision-context{display:none}.shadow-decision h1{font-size:18px}.shadow-options{gap:9px}}
+@media(prefers-reduced-motion:reduce){.shadow-page *{transition:none!important;animation:none!important}}

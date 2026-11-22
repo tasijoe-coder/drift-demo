@@ -4,6 +4,7 @@ import * as F from '../engine/fate'
 import type { Life, State, Target } from '../engine/fate'
 import { LIFE_MENU, lifeById } from '../data/lives'
 import { sfx, unlock, isMuted, setMuted } from './sfx'
+import { Theatre } from './Theatre'
 
 // ---------- 存檔 ----------
 const KEY_SAVE = 'hx.save.v1'
@@ -76,7 +77,7 @@ function Btn({ children, sub, onClick, tone = 'red', disabled, small }: { childr
 }
 
 // ---------- 主程式 ----------
-type Screen = { name: 'home' } | { name: 'scroll' } | { name: 'intro'; life: string; step: number } | { name: 'play' } | { name: 'gallery' }
+type Screen = { name: 'home' } | { name: 'theatre' } | { name: 'scroll' } | { name: 'intro'; life: string; step: number } | { name: 'play' } | { name: 'gallery' }
 
 export function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'home' })
@@ -121,6 +122,7 @@ export function App() {
     })
   }
 
+  if (screen.name === 'theatre') return <Theatre onHome={() => setScreen({ name: 'home' })} />
   if (screen.name === 'gallery') return <Gallery rec={rec} onBack={() => setScreen({ name: 'home' })} />
   if (screen.name === 'scroll') return <Scroll rec={rec} onPick={begin} onBack={() => setScreen({ name: 'home' })} />
 
@@ -191,12 +193,15 @@ export function App() {
       </div>
       <div className="flex-1" />
       <div className="space-y-2.5">
+        <Btn onClick={async () => { await unlock(); setScreen({ name: 'theatre' }); sfx.act() }} sub="皮影戲・相遇、留宿與求親">
+          走進第一折
+        </Btn>
         {canResume && (
           <Btn onClick={async () => { await unlock(); setScreen({ name: 'play' }) }} sub={`${life!.title}・繼續`}>
             繼續
           </Btn>
         )}
-        <Btn tone={canResume ? 'ghost' : 'red'} onClick={() => setScreen({ name: 'scroll' })} sub="七世姻緣簿">
+        <Btn tone="ghost" onClick={() => setScreen({ name: 'scroll' })} sub="七世姻緣簿">
           翻開姻緣簿
         </Btn>
         <Btn tone="ghost" small onClick={() => setScreen({ name: 'gallery' })} sub={`已見證 ${totalEndings} 種結局`}>
