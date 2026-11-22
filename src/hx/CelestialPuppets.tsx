@@ -46,6 +46,7 @@ function Arm({who,rear=false}:{who:'jin'|'yu';rear?:boolean}) {
 function Figure({who}:{who:'jin'|'yu'}) {
   return <g data-joint={`${who}-root`}>
     <Arm who={who} rear />
+    <path d="M62 55 72 55 74 88 64 88Z" fill="#16130c" />
     <Art who={who} piece="body" />
     <g data-joint={`${who}-head`}><Art who={who} piece="head" /></g>
     <Arm who={who} />
