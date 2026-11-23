@@ -69,7 +69,7 @@ assert.equal(reached.size,47);assert.equal(lengths.length,96)
 assert.deepEqual(endings,{E1:16,E2:16,E3:16,E4:16,E5:16,E6:16})
 assert.deepEqual([...griefSources].sort(),['E5:house','E5:work','E6:house','E6:work'])
 assert.equal(shown.size,story.nodes.reduce((s,n)=>s+n.beats.length,0),'Every conditional paragraph is reachable')
-assert.equal(new Set(NOVELS.flatMap(s=>Object.values(novelKeys(s)))).size,20)
+assert.equal(new Set(NOVELS.flatMap(s=>Object.values(novelKeys(s)))).size,NOVELS.length*4)
 for(const bad of [null,{},...previous.map(startNovel),{node:'E1',choices:[]},{node:'M0',choices:[],finished:true},{node:'C2',choices:[],flags:{alive:true}}]){
   assert.deepEqual(restoreNovel(story,bad),startNovel(story))
 }
@@ -102,4 +102,4 @@ assert.ok(app.indexOf('<NovelEntry story={song}')<app.indexOf('<NovelEntry story
 assert.ok(readFileSync(new URL('../src/hx/NovelReader.tsx',import.meta.url),'utf8').includes('src="/art/zero/ledger.webp"'))
 console.log('PASS: 47 scenes, 96 routes, 6 endings, '+checkpoints+' restore checkpoints; 16 scenes / 6 decisions per run.')
 console.log('PASS: actual visible text '+Math.min(...lengths)+'–'+Math.max(...lengths)+' characters; all conditional text, four grief origins, confirmed death never reversed.')
-console.log('PASS: fourth finish-only unlock, permanent replay completion, 20 isolated save keys, old progress preservation, corrupt saves and backtracking.')
+console.log('PASS: fourth finish-only unlock, permanent replay completion, isolated save keys, old progress preservation, corrupt saves and backtracking.')

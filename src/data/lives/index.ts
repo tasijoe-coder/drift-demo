@@ -5,9 +5,10 @@ import jinNovel from './jin-novel.json'
 import tangNovel from './tang-novel.json'
 import songNovel from './song-novel.json'
 import ming1Novel from './ming1-novel.json'
+import ming2Novel from './ming2-novel.json'
 import type { Novel } from '../../engine/novel'
 
-export const NOVELS: Novel[] = [qinNovel as Novel, jinNovel as Novel, tangNovel as Novel, songNovel as Novel, ming1Novel as Novel]
+export const NOVELS: Novel[] = [qinNovel as Novel, jinNovel as Novel, tangNovel as Novel, songNovel as Novel, ming1Novel as Novel, ming2Novel as Novel]
 
 export const LIVES: Life[] = [qin as unknown as Life]
 
@@ -18,7 +19,7 @@ export const LIFE_MENU = [
   { id: 'tang', order: 3, era: '唐', lovers: '王月英・郭華', tagline: '土地廟之約，一個沒等到，一個來遲了。', free: false },
   { id: 'song', order: 4, era: '宋', lovers: '錢玉蓮・王十朋', tagline: '一支荊釵，兩個版本的命運。', free: false },
   { id: 'ming1', order: 5, era: '明', lovers: '秦雪梅・商琳', tagline: '毀婚、替嫁、氣絕——狗血的極致。', free: false },
-  { id: 'ming2', order: 6, era: '明', lovers: '賈玉珍・韋燕春', tagline: '寄人籬下的書生，與不該愛上的小姐。', free: false },
+  { id: 'ming2', order: 6, era: '明', lovers: '賈玉珍・韋燕春', tagline: '井邊借水，藍橋夜約；一場雨，改變了守信的意思。', free: false },
   { id: 'seventh', order: 7, era: '？', lovers: '劉瑞蓮・李奎元', tagline: '唯一美滿的一世——前提是你沒改壞前面六世。', free: false },
   { id: 'modern', order: 8, era: '現代', lovers: '？？？', tagline: '八點檔篇：失憶、豪門、雙胞胎。這一世，他們連性別都換了。', free: false },
 ]
