@@ -3,9 +3,10 @@ import qin from './qin.json'
 import qinNovel from './qin-novel.json'
 import jinNovel from './jin-novel.json'
 import tangNovel from './tang-novel.json'
+import songNovel from './song-novel.json'
 import type { Novel } from '../../engine/novel'
 
-export const NOVELS: Novel[] = [qinNovel as Novel, jinNovel as Novel, tangNovel as Novel]
+export const NOVELS: Novel[] = [qinNovel as Novel, jinNovel as Novel, tangNovel as Novel, songNovel as Novel]
 
 export const LIVES: Life[] = [qin as unknown as Life]
 

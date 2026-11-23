@@ -5,7 +5,7 @@ import { advanceNovel, chooseNovel, finishNovel, novelNode, novelView, previousN
 import { novelKeys, readNovel, readEndings, readNovelCompleted } from '../src/hx/novel_save'
 
 const [qin,jin,story] = NOVELS
-assert.deepEqual(NOVELS.map(s=>s.id), ['qin-novel','jin-novel','tang-novel'])
+assert.deepEqual(NOVELS.slice(0,3).map(s=>s.id), ['qin-novel','jin-novel','tang-novel'])
 assert.equal(story.nodes.length,41)
 assert.equal(new Set(story.nodes.map(n=>n.id)).size,41)
 const reached=new Set<string>(), sharedE4=new Set<string>(), repairE5=new Set<string>()
@@ -61,7 +61,7 @@ assert.equal(lengths.length,64)
 assert.deepEqual(endings,{E1:8,E2:8,E3:8,E4:16,E5:16,E6:8})
 assert.deepEqual([...sharedE4].sort(),['kept','missed'])
 assert.deepEqual([...repairE5].sort(),['mother','space'])
-assert.equal(new Set(NOVELS.flatMap(s=>Object.values(novelKeys(s)))).size,12,'Save, bookmark, collection and completion keys never overlap')
+assert.equal(new Set(NOVELS.flatMap(s=>Object.values(novelKeys(s)))).size,NOVELS.length*4,'Save, bookmark, collection and completion keys never overlap')
 for(const corrupt of [null,{},startNovel(qin),startNovel(jin),{node:'E1',choices:[]},{node:'T0',choices:[],finished:true},{node:'B0',choices:[],flags:{route:'missed'}}]){
  assert.deepEqual(restoreNovel(story,corrupt),startNovel(story))
 }
@@ -93,4 +93,4 @@ const reader=readFileSync(new URL('../src/hx/NovelReader.tsx',import.meta.url),'
 assert.ok(reader.includes('src="/art/zero/ledger.webp"'))
 console.log(`PASS: 41 reachable scenes, 64 complete routes, 6 endings, ${checkpoints} restore checkpoints; 16 scenes / 6 choices per run.`)
 console.log(`PASS: actual text ${Math.min(...lengths)}–${Math.max(...lengths)} characters, both shared ending origins retained, all routes alive, no automatic decisions.`)
-console.log('PASS: sequential finish-only unlock, older progress preserved, 12 isolated save keys, invalid saves, backtracking and permanent replay unlock.')
+console.log('PASS: sequential finish-only unlock, older progress preserved, isolated save keys, invalid saves, backtracking and permanent replay unlock.')
