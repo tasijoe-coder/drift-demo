@@ -18,6 +18,7 @@ const qin = NOVELS[0]
 const jin = NOVELS[1]
 const tang = NOVELS[2]
 const song = NOVELS[3]
+const ming1 = NOVELS[4]
 function loadCompleted() {
   try { return readZeroUnlock(localStorage) }
   catch { return zeroFinished(loadPosition()) }
@@ -35,11 +36,12 @@ function Still({ id, caption }: { id: string; caption: string }) {
 
 export function PrologueApp() {
   const [position, setPosition] = useState(loadPosition)
-  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song'>('home')
+  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song' | 'ming1'>('home')
   const qinProgress = useNovelProgress(qin)
   const jinProgress = useNovelProgress(jin)
   const tangProgress = useNovelProgress(tang)
   const songProgress = useNovelProgress(song)
+  const ming1Progress = useNovelProgress(ming1)
   const [completed, setCompleted] = useState(loadCompleted)
   const [muted, setMute] = useState(isMuted)
   const hasProgress = position.node !== zeroStory.start || position.beat > 0
@@ -48,8 +50,9 @@ export function PrologueApp() {
   const jinUnlocked = qinUnlocked && qinProgress.completed
   const tangUnlocked = jinUnlocked && jinProgress.completed
   const songUnlocked = tangUnlocked && tangProgress.completed
+  const ming1Unlocked = songUnlocked && songProgress.completed
 
-  useEffect(() => { document.title = '紅線千年｜杯中月與四世姻緣' }, [])
+  useEffect(() => { document.title = '紅線千年｜杯中月與五世姻緣' }, [])
   useEffect(() => {
     try { localStorage.setItem(ZERO_SAVE_KEY, JSON.stringify(position)) } catch { /* Reading remains available without storage. */ }
   }, [position])
@@ -83,18 +86,20 @@ export function PrologueApp() {
   const changeJin = (next: NovelPosition) => { if (jinUnlocked) jinProgress.setPosition(next) }
   const changeTang = (next: NovelPosition) => { if (tangUnlocked) tangProgress.setPosition(next) }
   const changeSong = (next: NovelPosition) => { if (songUnlocked) songProgress.setPosition(next) }
+  const changeMing1 = (next: NovelPosition) => { if (ming1Unlocked) ming1Progress.setPosition(next) }
 
   if (reading === 'zero') return <PrologueReader position={position} onChange={changeZero} onHome={() => setReading('home')} muted={muted} onToggleSound={toggleSound} />
   if (reading === 'qin' && qinUnlocked) return <NovelReader key={qin.id} story={qin} position={qinProgress.position} onChange={changeQin} onHome={() => setReading('home')} endings={qinProgress.endings} onFinish={qinProgress.finish} />
   if (reading === 'jin' && jinUnlocked) return <NovelReader key={jin.id} story={jin} position={jinProgress.position} onChange={changeJin} onHome={() => setReading('home')} endings={jinProgress.endings} onFinish={jinProgress.finish} />
   if (reading === 'tang' && tangUnlocked) return <NovelReader key={tang.id} story={tang} position={tangProgress.position} onChange={changeTang} onHome={() => setReading('home')} endings={tangProgress.endings} onFinish={tangProgress.finish} />
   if (reading === 'song' && songUnlocked) return <NovelReader key={song.id} story={song} position={songProgress.position} onChange={changeSong} onHome={() => setReading('home')} endings={songProgress.endings} onFinish={songProgress.finish} />
+  if (reading === 'ming1' && ming1Unlocked) return <NovelReader key={ming1.id} story={ming1} position={ming1Progress.position} onChange={changeMing1} onHome={() => setReading('home')} endings={ming1Progress.endings} onFinish={ming1Progress.finish} />
   return <main className="zero-page zero-home">
     <div className="zero-home-inner">
       <div className="zero-home-top"><span>一段姻緣，從天上說起</span><button type="button" onClick={toggleSound} aria-pressed={muted}>{muted ? '音效關' : '音效開'}</button></div>
       <div className="zero-title-mark" aria-hidden="true">緣</div>
       <h1>紅線千年</h1>
-      <p className="zero-home-subtitle">杯中月・四世人間</p>
+      <p className="zero-home-subtitle">杯中月・五世人間</p>
       <Still id="banquet" caption="瑤池・七夕宴" />
       <p className="zero-home-copy">他們還不知道，<br />有一天，連記得彼此都會成為奢望。</p>
       <p className="zero-home-role">你是月老，見證這段姻緣的開始。</p>
@@ -104,9 +109,10 @@ export function PrologueApp() {
         <NovelEntry story={jin} position={jinProgress.position} unlocked={jinUnlocked} onBegin={() => setReading('jin')} lovers="梁山伯・祝英台" unlockHint="讀完第一世任一結局後開啟" />
         <NovelEntry story={tang} position={tangProgress.position} unlocked={tangUnlocked} onBegin={() => setReading('tang')} lovers="王月英・郭華" unlockHint="讀完第二世任一結局後開啟" />
         <NovelEntry story={song} position={songProgress.position} unlocked={songUnlocked} onBegin={() => setReading('song')} lovers="錢玉蓮・王十朋" unlockHint="讀完第三世任一結局後開啟" />
+        <NovelEntry story={ming1} position={ming1Progress.position} unlocked={ming1Unlocked} onBegin={() => setReading('ming1')} lovers="秦雪梅・商琳" unlockHint="讀完第四世任一結局後開啟" />
         {hasProgress && !finished && <button type="button" className="zero-text-button" onClick={() => void begin(true)}>從頭閱讀</button>}
       </div>
-      <p className="zero-home-note">依序開啟・各世進度分開保存<br />第一至第四世每輪約 45–60 分鐘，依閱讀速度而異</p>
+      <p className="zero-home-note">依序開啟・各世進度分開保存<br />第一至第五世每輪約 45–60 分鐘，依閱讀速度而異</p>
     </div>
   </main>
 }

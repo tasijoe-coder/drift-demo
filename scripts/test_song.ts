@@ -78,7 +78,7 @@ assert.equal(lengths.length,96)
 assert.deepEqual(endings,{E1:16,E2:16,E3:16,E4:16,E5:24,E6:8})
 assert.deepEqual([...reunionOrigins].sort(),['C5F','C5O','C5P'])
 assert.equal(visibleBeats.size,story.nodes.reduce((n,s)=>n+s.beats.length,0),'Every conditional paragraph is reachable')
-assert.equal(new Set(NOVELS.flatMap(s=>Object.values(novelKeys(s)))).size,16)
+assert.equal(new Set(NOVELS.flatMap(s=>Object.values(novelKeys(s)))).size,NOVELS.length*4)
 for(const corrupt of [null,{},startNovel(qin),startNovel(jin),startNovel(tang),{node:'E1',choices:[]},{node:'F0',choices:[],finished:true},{node:'C5P',choices:[],flags:{alive:true,mutualAliveKnown:true}}]){
   assert.deepEqual(restoreNovel(story,corrupt),startNovel(story))
 }
@@ -115,4 +115,4 @@ assert.ok(app.indexOf('<NovelEntry story={tang}')<app.indexOf('<NovelEntry story
 assert.ok(readFileSync(new URL('../src/hx/NovelReader.tsx',import.meta.url),'utf8').includes('src="/art/zero/ledger.webp"'))
 console.log('PASS: 47 scenes, 96 complete routes, 6 endings, '+checkpoints+' restore checkpoints; 16 scenes / 6 decisions per run.')
 console.log('PASS: actual visible text '+Math.min(...lengths)+'–'+Math.max(...lengths)+' characters; all conditional text reachable; three verified reunion origins; no resurrection.')
-console.log('PASS: finish-only third-to-fourth unlock, permanent replay completion, 16 isolated keys, prior progress preserved, corrupted saves and branch rewind.')
+console.log('PASS: finish-only third-to-fourth unlock, permanent replay completion, isolated keys, prior progress preserved, corrupted saves and branch rewind.')
