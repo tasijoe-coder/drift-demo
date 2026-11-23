@@ -3,9 +3,10 @@ import { storyNode, storyTranscript, type StoryPosition } from './theatre_story'
 import { nextZero, previousZero, restoreZero, startZero, ZERO_SAVE_KEY, zeroDelay, zeroFinished, zeroReadCount, zeroStills, zeroStory, zeroTotal } from './zero_story'
 import { isMuted, setMuted, sfx, unlock } from './sfx'
 import { NOVELS } from '../data/lives'
-import { startNovel, type NovelPosition } from '../engine/novel'
+import type { NovelPosition } from '../engine/novel'
 import { NovelEntry, NovelReader } from './NovelReader'
-import { QIN_ENDINGS_KEY, QIN_SAVE_KEY, readEndings, readNovel, readZeroUnlock, ZERO_COMPLETED_KEY } from './novel_save'
+import { readZeroUnlock, ZERO_COMPLETED_KEY } from './novel_save'
+import { useNovelProgress } from './useNovelProgress'
 import './prologue.css'
 
 function loadPosition() {
@@ -14,15 +15,10 @@ function loadPosition() {
 }
 
 const qin = NOVELS[0]
-function loadQin() {
-  try { return readNovel(localStorage, qin) } catch { return startNovel(qin) }
-}
+const jin = NOVELS[1]
 function loadCompleted() {
   try { return readZeroUnlock(localStorage) }
   catch { return zeroFinished(loadPosition()) }
-}
-function loadCollected() {
-  try { return readEndings(localStorage, qin) } catch { return [] }
 }
 
 function Still({ id, caption }: { id: string; caption: string }) {
@@ -37,16 +33,17 @@ function Still({ id, caption }: { id: string; caption: string }) {
 
 export function PrologueApp() {
   const [position, setPosition] = useState(loadPosition)
-  const [reading, setReading] = useState<'home' | 'zero' | 'qin'>('home')
-  const [qinPosition, setQinPosition] = useState(loadQin)
+  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin'>('home')
+  const qinProgress = useNovelProgress(qin)
+  const jinProgress = useNovelProgress(jin)
   const [completed, setCompleted] = useState(loadCompleted)
-  const [endings, setEndings] = useState<string[]>(loadCollected)
   const [muted, setMute] = useState(isMuted)
   const hasProgress = position.node !== zeroStory.start || position.beat > 0
   const finished = zeroFinished(position)
   const qinUnlocked = completed || finished
+  const jinUnlocked = qinUnlocked && qinProgress.completed
 
-  useEffect(() => { document.title = '紅線千年｜杯中月與人間第一世' }, [])
+  useEffect(() => { document.title = '紅線千年｜杯中月・孟姜女・梁祝' }, [])
   useEffect(() => {
     try { localStorage.setItem(ZERO_SAVE_KEY, JSON.stringify(position)) } catch { /* Reading remains available without storage. */ }
   }, [position])
@@ -55,12 +52,6 @@ export function PrologueApp() {
       try { localStorage.setItem(ZERO_COMPLETED_KEY, 'true') } catch { /* Session unlock remains available. */ }
     }
   }, [qinUnlocked])
-  useEffect(() => {
-    try { localStorage.setItem(QIN_SAVE_KEY, JSON.stringify(qinPosition)) } catch { /* Session progress remains available. */ }
-  }, [qinPosition])
-  useEffect(() => {
-    try { localStorage.setItem(QIN_ENDINGS_KEY, JSON.stringify(endings)) } catch { /* Session collection remains available. */ }
-  }, [endings])
   useEffect(() => {
     // Small compressed stills are cached before the reader reaches their sentence.
     const images = Object.values(zeroStills).map(still => {
@@ -82,25 +73,28 @@ export function PrologueApp() {
     setPosition(next)
     if (zeroFinished(next)) setCompleted(true)
   }
-  const changeQin = (next: NovelPosition) => { if (qinUnlocked) setQinPosition(next) }
+  const changeQin = (next: NovelPosition) => { if (qinUnlocked) qinProgress.setPosition(next) }
+  const changeJin = (next: NovelPosition) => { if (jinUnlocked) jinProgress.setPosition(next) }
 
   if (reading === 'zero') return <PrologueReader position={position} onChange={changeZero} onHome={() => setReading('home')} muted={muted} onToggleSound={toggleSound} />
-  if (reading === 'qin' && qinUnlocked) return <NovelReader story={qin} position={qinPosition} onChange={changeQin} onHome={() => setReading('home')} endings={endings} onFinish={id => setEndings(current => current.includes(id) ? current : [...current, id])} />
+  if (reading === 'qin' && qinUnlocked) return <NovelReader key={qin.id} story={qin} position={qinProgress.position} onChange={changeQin} onHome={() => setReading('home')} endings={qinProgress.endings} onFinish={qinProgress.finish} />
+  if (reading === 'jin' && jinUnlocked) return <NovelReader key={jin.id} story={jin} position={jinProgress.position} onChange={changeJin} onHome={() => setReading('home')} endings={jinProgress.endings} onFinish={jinProgress.finish} />
   return <main className="zero-page zero-home">
     <div className="zero-home-inner">
       <div className="zero-home-top"><span>一段姻緣，從天上說起</span><button type="button" onClick={toggleSound} aria-pressed={muted}>{muted ? '音效關' : '音效開'}</button></div>
       <div className="zero-title-mark" aria-hidden="true">緣</div>
       <h1>紅線千年</h1>
-      <p className="zero-home-subtitle">杯中月・人間第一世</p>
+      <p className="zero-home-subtitle">杯中月・孟姜女・梁祝</p>
       <Still id="banquet" caption="瑤池・七夕宴" />
       <p className="zero-home-copy">他們還不知道，<br />有一天，連記得彼此都會成為奢望。</p>
       <p className="zero-home-role">你是月老，見證這段姻緣的開始。</p>
       <div className="zero-home-actions">
         <button type="button" className="zero-primary" onClick={() => void begin(finished)}>{finished ? '重讀第〇世' : hasProgress ? '繼續閱讀第〇世' : '閱讀第〇世'}<span aria-hidden="true">→</span></button>
-        <NovelEntry story={qin} position={qinPosition} unlocked={qinUnlocked} onBegin={() => setReading('qin')} />
+        <NovelEntry story={qin} position={qinProgress.position} unlocked={qinUnlocked} onBegin={() => setReading('qin')} lovers="孟姜女・范喜良" unlockHint="讀完第〇世後開啟" />
+        <NovelEntry story={jin} position={jinProgress.position} unlocked={jinUnlocked} onBegin={() => setReading('jin')} lovers="梁山伯・祝英台" unlockHint="讀完第一世任一結局後開啟" />
         {hasProgress && !finished && <button type="button" className="zero-text-button" onClick={() => void begin(true)}>從頭閱讀</button>}
       </div>
-      <p className="zero-home-note">第〇世無選擇・第一世可分歧重讀・進度自動保存<br />第一世單輪約 45–60 分鐘，依閱讀速度而異</p>
+      <p className="zero-home-note">依序開啟・各世進度分開保存<br />第一世、第二世每輪約 45–60 分鐘，依閱讀速度而異</p>
     </div>
   </main>
 }
