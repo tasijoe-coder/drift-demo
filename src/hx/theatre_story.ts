@@ -1,6 +1,6 @@
 import content from '../data/lives/qin-opening.json'
 
-export type Beat = { speaker: string; text: string; pose: string; sound?: string }
+export type Beat = { speaker: string; text: string; pose: string; sound?: string; still?: string }
 export type StoryOption = { id: string; label: string; detail: string; next: string; memory: string }
 export type StoryNode = {
   id: string

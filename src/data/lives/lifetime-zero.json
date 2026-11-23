@@ -1,0 +1,743 @@
+{
+  "id": "lifetime-zero-v2",
+  "title": "第〇世・杯中月",
+  "start": "zero-banquet",
+  "nodes": [
+    {
+      "id": "zero-banquet",
+      "title": "第〇世・杯中月",
+      "era": "第〇世・天上",
+      "chapter": "七夕宴",
+      "setting": "瑤池・宴未散",
+      "scene": "heaven",
+      "next": "zero-court",
+      "beats": [
+        {
+          "speaker": "旁白",
+          "text": "天上原是沒有夜的。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "那年七夕，瑤池為一場宴席點了三千盞燈，杯底映著月亮，連仙人也說，像極了人間。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你坐在殿末，案上攤著尚未合起的姻緣簿。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "今日有人新婚，有人再嫁，也有人仍替亡妻留著一副碗筷。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "宴上的酒換過兩巡，你才把最後一個名字寫完。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「月老，您的酒涼了。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女將新盞放到你手邊，順手挪開壓著紙角的空碟。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "她知道你寫字時，袖子總會碰倒東西。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童跟在她身後，替你另放了一壺湯。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "金童",
+          "text": "「醒酒湯，她說您每年都會把回去的路走錯。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「我說的是前年。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "她看了他一眼，你沒有拆穿：去年送你回去的，也是他們。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女轉身奉酒，金童退開半步，讓過她拖地的裙角。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "兩人沒有交談，動作卻接得妥貼，像同一件差事已做了許多年。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「杯子轉過來。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "她停在階前，用指尖輕點金童正要接過的酒盞。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「這裡缺了一角，別又割著手。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童將缺口轉向自己，接過那只盞。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "金童",
+          "text": "「我拿去換，上回燙著的地方，好了沒有？」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「早好了。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "金童",
+          "text": "「那妳讓我看看。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「這是在殿上。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童這才閉嘴，玉女走出兩步，又放慢了些。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「藥很好用，剩下的還在，不用再找。」",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "他應了一聲，嘴角卻一直沒有放下。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你將筆擱在硯邊，忽然想不起，從哪一年起，來送酒的總是他們兩個。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "就在這時，殿上一道目光落了下來。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童先看見了，急著退開，手裡的壺碰上杯沿。",
+          "pose": "banquet",
+          "still": "banquet"
+        },
+        {
+          "speaker": "旁白",
+          "text": "那一聲脆響，在滿殿樂聲裡，竟格外清楚。",
+          "pose": "wound",
+          "still": "wound",
+          "sound": "knock"
+        },
+        {
+          "speaker": "旁白",
+          "text": "他伸手去接，碎片擦過掌心，落在白玉階上。",
+          "pose": "wound",
+          "still": "wound"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女立刻抓住他的手。",
+          "pose": "wound",
+          "still": "wound"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「只是一只杯子，你急什麼？」",
+          "pose": "wound",
+          "still": "wound"
+        },
+        {
+          "speaker": "旁白",
+          "text": "她先是氣，見他還想把手藏起來，又忍不住笑了一下。",
+          "pose": "wound",
+          "still": "wound"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「別動，越躲越疼。」",
+          "pose": "wound",
+          "still": "wound"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童果然不動了。",
+          "pose": "wound",
+          "still": "wound"
+        },
+        {
+          "speaker": "旁白",
+          "text": "殿上的樂聲，也在這時停了。",
+          "pose": "wound",
+          "still": "wound"
+        }
+      ]
+    },
+    {
+      "id": "zero-court",
+      "title": "第〇世・杯中月",
+      "era": "第〇世・天上",
+      "chapter": "殿前",
+      "setting": "瑤池・白玉階",
+      "scene": "heaven",
+      "next": "zero-bridge",
+      "beats": [
+        {
+          "speaker": "玉帝",
+          "text": "「殿前失儀，為何還笑？」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女抬起頭，這才發現，滿殿的人都在看他們交握的手。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "金童",
+          "text": "「是臣失手，玉女只是替臣止血。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童跪下時，輕輕將她的手推開了。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「此事多久了？」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "金童",
+          "text": "「臣不明白。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「朕問的，是你們。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女的手指微微一顫。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "仙籍有禁，不得私結姻緣，這條戒律，他們入殿的第一日便聽過。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你記得那日的金童，冠帽繫得太緊，一直偷偷伸手去扯。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女站在旁邊，替他擋著糾察仙官的目光。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "原來已經過了那麼久。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "金童",
+          "text": "「是臣先起的心思，請陛下責罰臣一人。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女轉頭看他，他卻低著頭，將受傷的手往袖裡收。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「陛下，臣也記得他值夜的日子。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童猛地抬頭。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「他送來的藥，臣收了，每次奉宴，臣也會等他一起回去。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「無人逼迫，臣願領自己的罪。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童嘴唇動了動，終究沒能再替她說什麼。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你起身離案，走到階前。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "月老・你",
+          "text": "「陛下，二人供職多年，未曾因私誤事，今日之過，還請從輕。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「月老替人間牽線，也該知道，仙凡各有其律。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "月老・你",
+          "text": "「臣知道，只是相逢一場，動了心，未必就是存心犯錯。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉帝望向你，你沒有退開。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「他們既願作夫妻，便去人間，受人間夫妻的命數。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你的袖中，還收著方才寫完的姻緣簿。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "那些成婚、喪偶、等人歸來的名字，忽然重得讓你抬不起手。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童、玉女被削去仙籍，判入人間輪迴。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「七世為夫妻，前六世，不得白頭。」",
+          "pose": "court",
+          "still": "court",
+          "sound": "bell"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你握緊袖口，向前半步。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "月老・你",
+          "text": "「七世已長，若連白頭也——」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「月老，照命繫線。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童的肩背僵住了，玉女卻像沒有聽懂。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「每一世，都會遇見嗎？」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "玉帝",
+          "text": "「有緣相逢，劫滿再議歸天。」",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "她低下頭，慢慢將染血的那截袖口折進去，仔細壓平。",
+          "pose": "court",
+          "still": "court"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童伸了伸手，最後只攥住了自己的衣角。",
+          "pose": "court",
+          "still": "court"
+        }
+      ]
+    },
+    {
+      "id": "zero-bridge",
+      "title": "第〇世・杯中月",
+      "era": "第〇世・天上",
+      "chapter": "牽線下凡",
+      "setting": "輪迴渡口・雲將散",
+      "scene": "heaven",
+      "beats": [
+        {
+          "speaker": "旁白",
+          "text": "通往人間的渡口，聽得見水聲。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女站在石欄邊，望著雲底那些細小的燈火。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「原來他們夜裡，也會留燈。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "月老・你",
+          "text": "「有些，是等人歸家。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "她看了許久，金童站在她身後，掌上只剩一道薄薄的紅痕。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「到了下面，這個還會在嗎？」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你搖頭，仙身與身上的傷，都得留在這裡。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「那我們記得的事呢？」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你沒有立即回答，玉女先轉過身。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「也要留下，是不是？」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "月老・你",
+          "text": "「是。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童望向她，像是怕她下一刻就會不見。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「我會找到妳。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女看了他一會兒，輕輕說了句從前常說的話。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「你每次答應事情，都這麼快。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "從前他總知道該怎麼哄她，這回，卻想了很久。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「那妳等等我。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女捏住袖口，像是忽然找不到可以安放雙手的地方。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「若是你先遇見我，別一上來就說這些。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「為什麼？」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「我又不認得你。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童怔住了，玉女伸手替他理好歪掉的衣領。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「先問名字。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「好，先問名字。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你取出一縷紅線，繞過他的腕間，再牽到她手上。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "這樣的結，你打過無數次，今日，兩人卻都在看你的手。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「月老，這條線會斷嗎？」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "月老・你",
+          "text": "「它會引你們相逢。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "金童還想再問，玉女輕輕碰了碰他的手，他便停住了。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "結扣繫好時，渡口響起一聲鐘。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女先往前走，到了橋邊，又望向金童空著的雙手。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "玉女",
+          "text": "「你的壺呢？」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "他愣了愣，也低頭去看。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "每日奉宴，都是他提著壺，她端著盞，如今什麼都不必拿了，兩人反而都有些不習慣。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "金童",
+          "text": "「不帶了。」",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "玉女點頭，轉身走進雲裡，金童跟上去，仍像從前一樣，讓過她的裙角。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "那一瞬，你幾乎以為，他們只是又做完一場宴席，要沿著熟悉的路回去。",
+          "pose": "bridge",
+          "still": "bridge"
+        },
+        {
+          "speaker": "旁白",
+          "text": "雲霧合攏，腳步聲很快便聽不見了。",
+          "pose": "ledger",
+          "still": "ledger"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你站了片刻，才翻開姻緣簿。",
+          "pose": "ledger",
+          "still": "ledger"
+        },
+        {
+          "speaker": "旁白",
+          "text": "兩個仙名正在褪去，紙上漸漸浮出陌生的生辰、鄉里，以及他們在人間將用的名字。",
+          "pose": "ledger",
+          "still": "ledger"
+        },
+        {
+          "speaker": "旁白",
+          "text": "往後數十年的命數，也一行行顯現。",
+          "pose": "ledger",
+          "still": "ledger"
+        },
+        {
+          "speaker": "旁白",
+          "text": "你讀到第一處離別時，握住了筆。",
+          "pose": "ledger",
+          "still": "ledger"
+        },
+        {
+          "speaker": "旁白",
+          "text": "筆尖懸在紙上，許久沒有落下。",
+          "pose": "ledger",
+          "still": "ledger"
+        },
+        {
+          "speaker": "旁白",
+          "text": "人間，正下著雨。",
+          "pose": "ledger",
+          "still": "ledger"
+        }
+      ]
+    }
+  ]
+}

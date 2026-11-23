@@ -1,7 +1,7 @@
-import { App as HongXian } from './hx/App'
+import { PrologueApp } from './hx/PrologueApp'
 
 function App() {
-  return <HongXian />
+  return <PrologueApp />
 }
 
 export default App
