@@ -3,9 +3,10 @@ import { advanceNovel, chooseNovel, finishNovel, novelNode, novelView, previousD
 import { novelKeys } from './novel_save'
 import './novel.css'
 
-export function NovelReader({ story, position, onChange, onHome, endings, onFinish }: {
+export function NovelReader({ story, position, onChange, onHome, endings, onFinish, onAfterword }: {
   story: Novel; position: NovelPosition; onChange: (next: NovelPosition) => void
   onHome: () => void; endings: string[]; onFinish: (id: string) => void
+  onAfterword?: () => void
 }) {
   const view = novelView(story, position)
   const label = story.title.split('・')[0]
@@ -77,6 +78,7 @@ export function NovelReader({ story, position, onChange, onHome, endings, onFini
           <span>{view.node.perfect ? '相伴至白首' : '此路至此'}</span>
           <h2>{view.node.title}</h2>
           {!position.finished ? <button type="button" className="zero-primary" onClick={finish}>讀完{label}・記下這個結局</button> : <p role="status">已記下這個結局</p>}
+          {position.finished && onAfterword && <button type="button" className="zero-primary" onClick={onAfterword}>接著閱讀後日談・歸天以後</button>}
           <p className="novel-ending-count">已讀結局 {endings.length} / {story.nodes.filter(node => node.ending).length}</p>
           <div className="novel-ending-list">{story.nodes.filter(node => node.ending).map(node => <span key={node.id}>{endings.includes(node.id) ? node.title : '尚未讀到的結局'}</span>)}</div>
           <button type="button" className="zero-text-button" onClick={() => change(previousDecision(story, position))}>回到上一個選擇</button>

@@ -7,6 +7,8 @@ import type { NovelPosition } from '../engine/novel'
 import { NovelEntry, NovelReader } from './NovelReader'
 import { readZeroUnlock, ZERO_COMPLETED_KEY } from './novel_save'
 import { useNovelProgress } from './useNovelProgress'
+import { AfterwordReader } from './AfterwordReader'
+import { isAfterwordOrigin, type AfterwordOrigin } from './afterword_story'
 import './prologue.css'
 
 function loadPosition() {
@@ -46,6 +48,7 @@ export function PrologueApp() {
   const ming1Progress = useNovelProgress(ming1)
   const ming2Progress = useNovelProgress(ming2)
   const seventhProgress = useNovelProgress(seventh)
+  const [afterwordOrigin, setAfterwordOrigin] = useState<AfterwordOrigin | null>(null)
   const [completed, setCompleted] = useState(loadCompleted)
   const [muted, setMute] = useState(isMuted)
   const hasProgress = position.node !== zeroStory.start || position.beat > 0
@@ -57,6 +60,8 @@ export function PrologueApp() {
   const ming1Unlocked = songUnlocked && songProgress.completed
   const ming2Unlocked = ming1Unlocked && ming1Progress.completed
   const seventhUnlocked = ming2Unlocked && ming2Progress.completed
+  const seventhEnding = seventhProgress.position.node
+  const canReadAfterword = seventhUnlocked && seventhProgress.position.finished && seventhProgress.endings.includes(seventhEnding) && isAfterwordOrigin(seventhEnding)
 
   useEffect(() => { document.title = '紅線千年｜杯中月與七世姻緣' }, [])
   useEffect(() => {
@@ -103,7 +108,8 @@ export function PrologueApp() {
   if (reading === 'song' && songUnlocked) return <NovelReader key={song.id} story={song} position={songProgress.position} onChange={changeSong} onHome={() => setReading('home')} endings={songProgress.endings} onFinish={songProgress.finish} />
   if (reading === 'ming1' && ming1Unlocked) return <NovelReader key={ming1.id} story={ming1} position={ming1Progress.position} onChange={changeMing1} onHome={() => setReading('home')} endings={ming1Progress.endings} onFinish={ming1Progress.finish} />
   if (reading === 'ming2' && ming2Unlocked) return <NovelReader key={ming2.id} story={ming2} position={ming2Progress.position} onChange={changeMing2} onHome={() => setReading('home')} endings={ming2Progress.endings} onFinish={ming2Progress.finish} />
-  if (reading === 'seventh' && seventhUnlocked) return <NovelReader key={seventh.id} story={seventh} position={seventhProgress.position} onChange={changeSeventh} onHome={() => setReading('home')} endings={seventhProgress.endings} onFinish={seventhProgress.finish} />
+  if (reading === 'seventh' && canReadAfterword && afterwordOrigin === seventhEnding) return <AfterwordReader key={afterwordOrigin} origin={afterwordOrigin} onBack={() => setAfterwordOrigin(null)} onHome={() => { setAfterwordOrigin(null); setReading('home') }} />
+  if (reading === 'seventh' && seventhUnlocked) return <NovelReader key={seventh.id} story={seventh} position={seventhProgress.position} onChange={changeSeventh} onHome={() => setReading('home')} endings={seventhProgress.endings} onFinish={seventhProgress.finish} onAfterword={canReadAfterword ? () => { if (isAfterwordOrigin(seventhEnding)) setAfterwordOrigin(seventhEnding) } : undefined} />
   return <main className="zero-page zero-home">
     <div className="zero-home-inner">
       <div className="zero-home-top"><span>一段姻緣，從天上說起</span><button type="button" onClick={toggleSound} aria-pressed={muted}>{muted ? '音效關' : '音效開'}</button></div>

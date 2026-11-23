@@ -17,7 +17,8 @@
     "test:song": "tsx scripts/test_song.ts",
     "test:ming1": "tsx scripts/test_ming1.ts",
     "test:ming2": "tsx scripts/test_ming2.ts",
-    "test:seventh": "tsx scripts/test_seventh.ts"
+    "test:seventh": "tsx scripts/test_seventh.ts",
+    "test:afterword": "tsx scripts/test_afterword.ts"
   },
   "dependencies": {
     "lucide-react": "^0.577.0",
