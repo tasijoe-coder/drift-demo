@@ -1,0 +1,490 @@
+{
+  "id": "tang-novel",
+  "title": "第三世・王月英與郭華",
+  "start": "T0",
+  "pageCount": 16,
+  "readingMinutes": [
+    45,
+    60
+  ],
+  "nodes": [
+    {
+      "id": "T0",
+      "title": "燈下有一只空盒",
+      "next": "T1",
+      "set": {}
+    },
+    {
+      "id": "T1",
+      "title": "買胭脂的人",
+      "prompt": "她已問起，那些買回去的胭脂究竟給誰用。先讓哪件事說清？",
+      "options": [
+        {
+          "id": "plain",
+          "label": "讓他有機會親口說出來意",
+          "next": "T1P",
+          "detail": "承認原先只是想再見她，不以花錢換她答應；也承擔被拒絕的窘。"
+        },
+        {
+          "id": "return",
+          "label": "讓未拆的舊盒回到她眼前",
+          "next": "T1R",
+          "detail": "先歸還用不上的胭脂，說清銀錢與浪費，再慢慢談自己的心思。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "T1P",
+      "title": "這回不必再買",
+      "next": "T2",
+      "set": {
+        "approach": "plain"
+      }
+    },
+    {
+      "id": "T1R",
+      "title": "收回去的不是情意",
+      "next": "T2",
+      "set": {
+        "approach": "returned"
+      }
+    },
+    {
+      "id": "T2",
+      "title": "香氣以外的日子",
+      "next": "T3",
+      "set": {}
+    },
+    {
+      "id": "T3",
+      "title": "沒寄出的落第信",
+      "prompt": "他不能再讓未來都押在一句會考上。先替哪封真話找到出口？",
+      "options": [
+        {
+          "id": "her",
+          "label": "先讓月英聽見落第與去留",
+          "next": "T3Y",
+          "detail": "他親口說明眼前處境，不等功成才求相認；家中欠下的解釋仍須補。"
+        },
+        {
+          "id": "home",
+          "label": "先讓家人知道銀錢與考期",
+          "next": "T3H",
+          "detail": "先停止以報喜信拖延家中生計，再向月英說明；她會較晚知道。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "T3Y",
+      "title": "不拿明年抵今日",
+      "next": "T4",
+      "set": {
+        "disclosure": "her_first"
+      }
+    },
+    {
+      "id": "T3H",
+      "title": "寫回家裡的那一頁",
+      "next": "T4",
+      "set": {
+        "disclosure": "home_first"
+      }
+    },
+    {
+      "id": "T4",
+      "title": "土地堂前，說定一件事",
+      "next": "T5",
+      "set": {}
+    },
+    {
+      "id": "T5",
+      "title": "各自準備的元宵",
+      "next": "T6",
+      "set": {}
+    },
+    {
+      "id": "T6",
+      "title": "赴約以前的酒席",
+      "prompt": "元宵的路與工作機會撞在同一晚。先讓哪一份安排抵達？",
+      "options": [
+        {
+          "id": "early",
+          "label": "讓他提前交稿，能按時離席",
+          "next": "A0",
+          "detail": "先守住約定，放下席間可能談成的長工；往後仍須另覓收入。"
+        },
+        {
+          "id": "work",
+          "label": "讓能談長工的人今夜留下",
+          "next": "B0",
+          "detail": "守住真實的工作機會，時間卻靠近赴約。他須自己設下離席界限，必要時提前改約。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "A0",
+      "title": "這一回，兩個人都到了",
+      "prompt": "見面不是答案的終點。先替哪一份生活的真話留下時辰？",
+      "options": [
+        {
+          "id": "shop",
+          "label": "先讓她把鋪子的事說完",
+          "next": "A1S",
+          "detail": "讓她說自己的工作、母親與想留下的生活，不只談嫁人。"
+        },
+        {
+          "id": "road",
+          "label": "先讓他把去留的事說完",
+          "next": "A1R",
+          "detail": "讓他說收入、家人與再試的願望，不靠一句都聽妳的過關。"
+        }
+      ],
+      "set": {
+        "route": "kept",
+        "missed": false
+      }
+    },
+    {
+      "id": "A1S",
+      "title": "一間鋪子，不是一個陪嫁",
+      "next": "A2",
+      "set": {
+        "firstConcern": "shop"
+      }
+    },
+    {
+      "id": "A1R",
+      "title": "他也有想去的地方",
+      "next": "A2",
+      "set": {
+        "firstConcern": "road"
+      }
+    },
+    {
+      "id": "A2",
+      "title": "天亮以後，還認不認這句話",
+      "prompt": "兩人已相認，也看清眼前難處。先讓哪一套安排到位？",
+      "options": [
+        {
+          "id": "together",
+          "label": "讓兩家與當事人把共同生活談清",
+          "next": "A3C",
+          "detail": "親口面對錢、住處與責任，也承擔家中不一定祝福的結果。"
+        },
+        {
+          "id": "season",
+          "label": "讓各自先做一季、再會面的約定到位",
+          "next": "A3S",
+          "detail": "給真實工作與去留一段時間，訂下確切回覆；相處後也可能發現想要不同。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "A3C",
+      "title": "親口說給家裡聽",
+      "next": "A4C",
+      "set": {
+        "commitment": "shared"
+      }
+    },
+    {
+      "id": "A3S",
+      "title": "這一次，等多久都說好",
+      "next": "A4S",
+      "set": {
+        "commitment": "season"
+      }
+    },
+    {
+      "id": "A4C",
+      "title": "把家安在哪一盞燈下",
+      "prompt": "同住與營生都能開始，兩個地方各有要放下的事。哪份安排先到？",
+      "options": [
+        {
+          "id": "home",
+          "label": "讓留在原城共同生活的安排抵達",
+          "next": "A5H",
+          "detail": "續起月英的鋪子與兩家照護，郭華也保有自己的工作；須承擔舊街坊的眼光。"
+        },
+        {
+          "id": "away",
+          "label": "讓兩人另起新鋪的安排抵達",
+          "next": "A5A",
+          "detail": "以已談妥的分工移往新城，放下熟客與原先考期；母親的生活須先安置。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "A5H",
+      "title": "兩個人各有一把鑰匙",
+      "next": "E1",
+      "set": {
+        "together": true,
+        "settlement": "home",
+        "alive": true
+      }
+    },
+    {
+      "id": "A5A",
+      "title": "帶走名字，不帶走所有答案",
+      "next": "E2",
+      "set": {
+        "together": true,
+        "settlement": "away",
+        "alive": true
+      }
+    },
+    {
+      "id": "A4S",
+      "title": "一季之後，重新問一次",
+      "prompt": "約好的日子到了，工作與想望都比當初清楚。先讓哪一份回覆送到？",
+      "options": [
+        {
+          "id": "continue",
+          "label": "讓兩地相伴的期限與往來安排到位",
+          "next": "A5L",
+          "detail": "兩人仍想繼續，先各做眼前的事；有明確探訪與重新商量的日子。"
+        },
+        {
+          "id": "apart",
+          "label": "讓雙方把不再同行的心意說完",
+          "next": "A5P",
+          "detail": "彼此承認喜歡，也承認想過的生活不同；不以違約或第三者解釋分開。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "A5L",
+      "title": "下個春天，不必靠猜",
+      "next": "E3",
+      "set": {
+        "together": false,
+        "relationship": "committed_distance",
+        "alive": true
+      }
+    },
+    {
+      "id": "A5P",
+      "title": "不必把相遇寫成錯",
+      "next": "E4",
+      "set": {
+        "together": false,
+        "relationship": "mutual_parting",
+        "alive": true
+      }
+    },
+    {
+      "id": "B0",
+      "title": "他醒時，燈已換過一輪",
+      "prompt": "她曾來過，他卻沒有醒著相見。先讓哪件事被妥善處理？",
+      "options": [
+        {
+          "id": "message",
+          "label": "先讓梅香帶回他親口承認的失約",
+          "next": "B1M",
+          "detail": "如實說酒席與自己未守界限，不替他求原諒；月英仍有不見的權利。"
+        },
+        {
+          "id": "token",
+          "label": "先把她留下的信物交還本人",
+          "next": "B1T",
+          "detail": "保護她的隱私，讓她親自決定如何收回；仍須自己說明失約。"
+        }
+      ],
+      "set": {
+        "route": "missed",
+        "missed": true
+      }
+    },
+    {
+      "id": "B1M",
+      "title": "不寫成一場意外",
+      "next": "B2",
+      "set": {
+        "repair": "message"
+      }
+    },
+    {
+      "id": "B1T",
+      "title": "她的東西，不是他的證詞",
+      "next": "B2",
+      "set": {
+        "repair": "token"
+      }
+    },
+    {
+      "id": "B2",
+      "title": "她沒有開門",
+      "prompt": "月英尚不願見面。先把哪一份回應送到？",
+      "options": [
+        {
+          "id": "space",
+          "label": "讓他收到有期限的暫不見面",
+          "next": "B3S",
+          "detail": "尊重她先處理自己的日子；到約定日只准再問一次，不能逼答。"
+        },
+        {
+          "id": "mother",
+          "label": "讓他先向王母說明、不求代答",
+          "next": "B3M",
+          "detail": "承認對鋪子與家中造成的影響；母親可以表態，仍不能替月英答應。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "B3S",
+      "title": "等候也要有界限",
+      "next": "B4S",
+      "set": {
+        "repairBoundary": "space"
+      }
+    },
+    {
+      "id": "B3M",
+      "title": "好意差一點又替人決定",
+      "next": "B4M",
+      "set": {
+        "repairBoundary": "mother"
+      }
+    },
+    {
+      "id": "B4S",
+      "title": "道歉以後，還有日子",
+      "prompt": "到了能再次詢問的那天。先讓哪份真心而清楚的答覆抵達？",
+      "options": [
+        {
+          "id": "again",
+          "label": "讓可以重新相處、卻不必立刻許婚的安排到位",
+          "next": "B5R",
+          "detail": "月英願再試，仍保有停下的權利；他要以一段日常重新取得信任。"
+        },
+        {
+          "id": "close",
+          "label": "讓兩人把這段關係好好收束",
+          "next": "B5C",
+          "detail": "雙方說清不再同行，不以誰付出更多就該被選作伴侶。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "B5R",
+      "title": "第二次約定，先從小事開始",
+      "next": "E5",
+      "set": {
+        "together": true,
+        "relationship": "rebuilt",
+        "alive": true
+      }
+    },
+    {
+      "id": "B5C",
+      "title": "一起走到告別的地方",
+      "next": "E4",
+      "set": {
+        "together": false,
+        "relationship": "mutual_parting",
+        "alive": true
+      }
+    },
+    {
+      "id": "B4M",
+      "title": "母親的答應，不是她的答應",
+      "prompt": "他看清善意也可能越過她。先讓哪一份回應到位？",
+      "options": [
+        {
+          "id": "ask",
+          "label": "讓他撤回代答，再由月英親口選",
+          "next": "B5A",
+          "detail": "承認自己的急，給她實際考慮與停止的空間；本路月英願意重新相處。"
+        },
+        {
+          "id": "stop",
+          "label": "讓她不再見面的決定被完整送達",
+          "next": "B5N",
+          "detail": "郭華仍想重來，她已不願；他必須停止託人勸說，保護彼此的往後。"
+        }
+      ],
+      "set": {}
+    },
+    {
+      "id": "B5A",
+      "title": "這次等她自己說",
+      "next": "E5",
+      "set": {
+        "together": true,
+        "relationship": "rebuilt",
+        "alive": true
+      }
+    },
+    {
+      "id": "B5N",
+      "title": "把敲門的手收回去",
+      "next": "E6",
+      "set": {
+        "together": false,
+        "relationship": "declined",
+        "alive": true
+      }
+    },
+    {
+      "id": "E1",
+      "title": "滿城燈火",
+      "ending": true
+    },
+    {
+      "id": "E2",
+      "title": "另起一盞燈",
+      "ending": true
+    },
+    {
+      "id": "E3",
+      "title": "來年仍有約",
+      "ending": true
+    },
+    {
+      "id": "E4",
+      "title": "各自天明",
+      "ending": true
+    },
+    {
+      "id": "E5",
+      "title": "第二次赴約",
+      "ending": true
+    },
+    {
+      "id": "E6",
+      "title": "舊帕已還",
+      "ending": true
+    }
+  ],
+  "status": "正文已依此路由完成；可玩資料另見src/data/lives/tang-novel.json",
+  "metrics": {
+    "nodes": 41,
+    "routes": 64,
+    "endings": {
+      "E1": 8,
+      "E2": 8,
+      "E3": 8,
+      "E4": 16,
+      "E5": 16,
+      "E6": 8
+    },
+    "min": 12611,
+    "max": 13015,
+    "lengths": [
+      16
+    ],
+    "decisions": [
+      6
+    ],
+    "unique": 29620
+  }
+}

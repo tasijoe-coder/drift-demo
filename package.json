@@ -12,7 +12,8 @@
     "test:theatre": "tsx scripts/test_theatre.ts",
     "test:zero": "tsx scripts/test_zero.ts",
     "test:novel": "tsx scripts/test_novel.ts",
-    "test:jin": "tsx scripts/test_jin.ts"
+    "test:jin": "tsx scripts/test_jin.ts",
+    "test:tang": "tsx scripts/test_tang.ts"
   },
   "dependencies": {
     "lucide-react": "^0.577.0",

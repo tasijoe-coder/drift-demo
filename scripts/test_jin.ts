@@ -5,7 +5,7 @@ import { advanceNovel, chooseNovel, finishNovel, novelNode, novelView, previousD
 import { novelKeys, QIN_SAVE_KEY, QIN_ENDINGS_KEY, QIN_BOOKMARK_KEY, QIN_COMPLETED_KEY, readNovel, readEndings, readNovelCompleted } from '../src/hx/novel_save'
 
 const [qin, story] = NOVELS
-assert.equal(NOVELS.length, 2, 'Only the first two mortal lifetimes are exposed')
+assert.ok(NOVELS.length >= 2, 'Lifetime two remains registered in order')
 assert.equal(story.id, 'jin-novel')
 assert.equal(story.nodes.length, 49)
 assert.equal(new Set(story.nodes.map(n => n.id)).size, 49)
