@@ -1,5 +1,9 @@
 import type { Life } from '../../engine/fate'
 import qin from './qin.json'
+import qinNovel from './qin-novel.json'
+import type { Novel } from '../../engine/novel'
+
+export const NOVELS: Novel[] = [qinNovel as Novel]
 
 export const LIVES: Life[] = [qin as unknown as Life]
 
