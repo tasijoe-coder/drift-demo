@@ -15,7 +15,7 @@ export function afterwordStory(origin: AfterwordOrigin): Story {
     }))],
   }
 }
-export const afterwordKey = (origin: AfterwordOrigin) => `hx.theatre.heaven-afterword.${origin}.v1`
+export const afterwordKey = (origin: AfterwordOrigin) => `hx.theatre.heaven-afterword.${origin}.v2`
 export const afterwordFinished = (story: Story, position: StoryPosition) => {
   const node = storyNode(story, position.node)
   return !node.next && position.beat === node.beats.length
