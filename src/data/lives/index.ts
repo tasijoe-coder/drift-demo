@@ -8,10 +8,11 @@ import ming1Novel from './ming1-novel.json'
 import ming2Novel from './ming2-novel.json'
 import seventhNovel from './seventh-novel.json'
 import fogNovel from './fog-novel.json'
+import matineeNovel from './matinee-novel.json'
 import type { Novel } from '../../engine/novel'
 
 export const NOVELS: Novel[] = [qinNovel as Novel, jinNovel as Novel, tangNovel as Novel, songNovel as Novel, ming1Novel as Novel, ming2Novel as Novel, seventhNovel as Novel]
-export const BONUS_NOVELS: Novel[] = [fogNovel as Novel]
+export const BONUS_NOVELS: Novel[] = [fogNovel as Novel, matineeNovel as Novel]
 
 export const LIVES: Life[] = [qin as unknown as Life]
 

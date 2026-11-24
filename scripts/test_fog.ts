@@ -60,7 +60,7 @@ assert.equal(shown.size,story.nodes.reduce((a,n)=>a+n.beats.length,0))
 assert.ok(exhausted>0)
 const oldKeys=NOVELS.flatMap(n=>Object.values(novelKeys(n)))
 assert.ok(Object.values(novelKeys(story)).every(k=>!oldKeys.includes(k)))
-assert.equal(new Set([...NOVELS,...BONUS_NOVELS].map(n=>n.start)).size,8)
+assert.equal(new Set([...NOVELS,...BONUS_NOVELS].map(n=>n.start)).size,NOVELS.length+BONUS_NOVELS.length)
 for(const bad of [null,{},...NOVELS.map(startNovel),{node:'F1',choices:[]},{node:'P0',choices:[],finished:true},{node:'C13',choices:[],flags:{goldExtra:false}}]){
  assert.deepEqual(restoreNovel(story,bad),startNovel(story))
 }

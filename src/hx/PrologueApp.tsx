@@ -17,6 +17,7 @@ import { bonusChapterUnlocked } from './reading_timing'
 import { useBgmTrack } from './bgm'
 import { OpeningCover } from './OpeningCover'
 import { selectResumeChapter } from './chapter_resume'
+import { EndingArchive } from './EndingArchive'
 import './prologue.css'
 
 function loadPosition() {
@@ -32,6 +33,7 @@ const ming1 = NOVELS[4]
 const ming2 = NOVELS[5]
 const seventh = NOVELS[6]
 const fog = BONUS_NOVELS[0]
+const matinee = BONUS_NOVELS[1]
 function loadCompleted() {
   try { return readZeroUnlock(localStorage) }
   catch { return zeroFinished(loadPosition()) }
@@ -40,8 +42,9 @@ function loadCompleted() {
 export function PrologueApp() {
   const [position, setPosition] = useState(loadPosition)
   const [entered, setEntered] = useState(false)
+  const [archive, setArchive] = useState(false)
   const directoryHeading = useRef<HTMLHeadingElement>(null)
-  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song' | 'ming1' | 'ming2' | 'seventh' | 'fog'>('home')
+  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song' | 'ming1' | 'ming2' | 'seventh' | 'fog' | 'matinee'>('home')
   useBgmTrack(reading === 'home' ? 'theme' : undefined)
   const qinProgress = useNovelProgress(qin)
   const jinProgress = useNovelProgress(jin)
@@ -51,6 +54,7 @@ export function PrologueApp() {
   const ming2Progress = useNovelProgress(ming2)
   const seventhProgress = useNovelProgress(seventh)
   const fogProgress = useNovelProgress(fog)
+  const matineeProgress = useNovelProgress(matinee)
   const [afterwordCompleted, setAfterwordCompleted] = useState(() => {
     try { return readAfterwordUnlock(localStorage) } catch { return false }
   })
@@ -67,13 +71,14 @@ export function PrologueApp() {
   const ming2Unlocked = ming1Unlocked && ming1Progress.completed
   const seventhUnlocked = ming2Unlocked && ming2Progress.completed
   const fogUnlocked = seventhUnlocked && bonusChapterUnlocked(8, seventhProgress.completed ? [7] : [])
+  const matineeUnlocked = fogUnlocked && bonusChapterUnlocked(9, fogProgress.completed ? [8] : [])
   const seventhEnding = seventhProgress.position.node
   const canReadAfterword = seventhUnlocked && seventhProgress.position.finished && seventhProgress.endings.includes(seventhEnding) && isAfterwordOrigin(seventhEnding)
 
   useEffect(() => { document.title = '月老｜七世人間' }, [])
   useEffect(() => {
-    if (entered && reading === 'home') directoryHeading.current?.focus({ preventScroll: true })
-  }, [entered, reading])
+    if (entered && reading === 'home' && !archive) directoryHeading.current?.focus({ preventScroll: true })
+  }, [entered, reading, archive])
   useEffect(() => {
     if (reading !== 'home') {
       try { localStorage.setItem('hx.reader.last-chapter.v1', reading) } catch { /* Optional cover shortcut. */ }
@@ -120,6 +125,7 @@ export function PrologueApp() {
   const changeMing2 = (next: NovelPosition) => { if (ming2Unlocked) ming2Progress.setPosition(next) }
   const changeSeventh = (next: NovelPosition) => { if (seventhUnlocked) seventhProgress.setPosition(next) }
   const changeFog = (next: NovelPosition) => { if (fogUnlocked) fogProgress.setPosition(next) }
+  const changeMatinee = (next: NovelPosition) => { if (matineeUnlocked) matineeProgress.setPosition(next) }
 
   if (!entered) return <OpeningCover onEnter={() => setEntered(true)} />
   if (reading === 'zero') return <PrologueReader position={position} onChange={changeZero} onHome={() => setReading('home')} />
@@ -130,6 +136,7 @@ export function PrologueApp() {
   if (reading === 'ming1' && ming1Unlocked) return <NovelReader key={ming1.id} story={ming1} position={ming1Progress.position} onChange={changeMing1} onHome={() => setReading('home')} endings={ming1Progress.endings} onFinish={ming1Progress.finish} />
   if (reading === 'ming2' && ming2Unlocked) return <NovelReader key={ming2.id} story={ming2} position={ming2Progress.position} onChange={changeMing2} onHome={() => setReading('home')} endings={ming2Progress.endings} onFinish={ming2Progress.finish} />
   if (reading === 'fog' && fogUnlocked) return <NovelReader key={fog.id} story={fog} position={fogProgress.position} onChange={changeFog} onHome={() => setReading('home')} endings={fogProgress.endings} onFinish={fogProgress.finish} />
+  if (reading === 'matinee' && matineeUnlocked) return <NovelReader key={matinee.id} story={matinee} position={matineeProgress.position} onChange={changeMatinee} onHome={() => setReading('home')} endings={matineeProgress.endings} onFinish={matineeProgress.finish} />
   if (reading === 'seventh' && canReadAfterword && afterwordOrigin === seventhEnding) return <AfterwordReader key={afterwordOrigin} origin={afterwordOrigin} onBack={() => setAfterwordOrigin(null)} onHome={() => { setAfterwordOrigin(null); setReading('home') }} onComplete={() => setAfterwordCompleted(true)} onBonus={() => { if (fogUnlocked) { setAfterwordOrigin(null); setReading('fog') } }} />
   if (reading === 'seventh' && seventhUnlocked) return <NovelReader key={seventh.id} story={seventh} position={seventhProgress.position} onChange={changeSeventh} onHome={() => setReading('home')} endings={seventhProgress.endings} onFinish={seventhProgress.finish} onAfterword={canReadAfterword ? () => { if (isAfterwordOrigin(seventhEnding)) setAfterwordOrigin(seventhEnding) } : undefined} />
   const entries = [
@@ -141,6 +148,7 @@ export function PrologueApp() {
     { story: ming2, progress: ming2Progress, unlocked: ming2Unlocked, onBegin: () => setReading('ming2'), lovers: '賈玉珍・韋燕春' },
     { story: seventh, progress: seventhProgress, unlocked: seventhUnlocked, onBegin: () => setReading('seventh'), lovers: '劉瑞蓮・李奎元' },
     { story: fog, progress: fogProgress, unlocked: fogUnlocked, onBegin: () => setReading('fog'), lovers: '民初商業諜報番外｜沈照微・陸聞笙' },
+    { story: matinee, progress: matineeProgress, unlocked: matineeUnlocked, onBegin: () => setReading('matinee'), lovers: '江宜寧・許懷生' },
   ]
   let lastChapter = ''
   try { lastChapter = localStorage.getItem('hx.reader.last-chapter.v1') ?? '' } catch { /* Use latest open chapter. */ }
@@ -157,10 +165,12 @@ export function PrologueApp() {
     }
   }))
   const primaryEntry = entries.find(entry => entry.story.id === `${resume}-novel` && entry.unlocked)
+  if (archive) return <EndingArchive entries={entries.filter(entry => NOVELS.some(story => story.id === entry.story.id) || entry.unlocked).map(entry => ({ story: entry.story, endings: entry.progress.endings }))} onBack={() => setArchive(false)} />
   return <main className={`zero-page chapter-hall${large ? ' reader-large' : ''}`} data-opening-phase="directory">
     <div className="chapter-hall-inner">
       <ReaderHeader subtitle="章節清單" leftNote="緣起" />
       <h1 ref={directoryHeading} tabIndex={-1}>七世人間</h1>
+      <button type="button" className="archive-entry" onClick={() => setArchive(true)}>姻緣圖鑑<span>查看已收錄的結局 →</span></button>
       {resume === 'zero' && <section className="chapter-resume" aria-label="繼續閱讀">
         <p>接續姻緣</p>
         <button type="button" className="zero-primary home-primary" onClick={() => void begin(false)}>
@@ -168,14 +178,15 @@ export function PrologueApp() {
           <span aria-hidden="true">→</span>
         </button>
       </section>}
-      {primaryEntry && <section aria-label="繼續閱讀"><NovelEntry story={primaryEntry.story} position={primaryEntry.progress.position} unlocked onBegin={primaryEntry.onBegin} lovers={primaryEntry.lovers} unlockHint="" primary /></section>}
+      {primaryEntry && <section aria-label="繼續閱讀"><NovelEntry story={primaryEntry.story} position={primaryEntry.progress.position} unlocked onBegin={primaryEntry.onBegin} lovers={primaryEntry.lovers} primary /></section>}
       <section className="chapter-directory" aria-labelledby="chapter-directory-title">
         <h2 id="chapter-directory-title">章節目錄</h2>
         <button type="button" className={`zero-primary${resume ? ' zero-secondary' : ' home-primary'}`} onClick={() => void begin(finished)}>第〇世・序章<span aria-hidden="true">〇</span></button>
-        {entries.filter(entry => entry.story.id !== fog.id).map((entry, index) => <NovelEntry key={entry.story.id}
+        {entries.filter(entry => NOVELS.some(story => story.id === entry.story.id)).map(entry => <NovelEntry key={entry.story.id}
           story={entry.story} position={entry.progress.position} unlocked={entry.unlocked} onBegin={entry.onBegin}
-          lovers={entry.lovers} unlockHint={index === 0 ? '讀完第〇世後開啟' : `讀完${entries[index - 1].story.title.split('・')[0]}任一結局後開啟`} />)}
-        {fogUnlocked && <div className="bonus-entry"><h2>簿外・第八世</h2><NovelEntry story={fog} position={fogProgress.position} unlocked onBegin={() => setReading('fog')} lovers="沈照微・陸聞笙" unlockHint="" /></div>}
+          lovers={entry.lovers} />)}
+        {fogUnlocked && <div className="bonus-entry"><h2>簿外・第八世</h2><NovelEntry story={fog} position={fogProgress.position} unlocked onBegin={() => setReading('fog')} lovers="沈照微・陸聞笙" /></div>}
+        {matineeUnlocked && <div className="bonus-entry"><h2>簿外・第九世</h2><NovelEntry story={matinee} position={matineeProgress.position} unlocked onBegin={() => setReading('matinee')} lovers="江宜寧・許懷生" /></div>}
       </section>
       {hasProgress && !finished && <button type="button" className="zero-text-button" onClick={() => void begin(true)}>從頭閱讀第〇世</button>}
     </div>

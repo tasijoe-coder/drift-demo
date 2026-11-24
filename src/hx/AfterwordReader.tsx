@@ -55,7 +55,7 @@ export function AfterwordReader({ origin, onBack, onHome, onComplete, onBonus }:
         </div>
       </section>
       <footer className="zero-footer">
-        {finished ? <><button type="button" className="zero-primary" onClick={onBonus}>閱讀第八世・霧港來電<span aria-hidden="true">→</span></button><button type="button" className="zero-text-button" onClick={() => { setAuto(false); setPosition(startAfterword(story)) }}>重讀歸天以後</button><button type="button" className="zero-text-button" onClick={onBack}>返回第七世結局</button><button type="button" className="zero-text-button" onClick={onHome}>返回首頁</button></> : <>
+        {finished ? <><button type="button" className="zero-primary" onClick={onBonus}>閱讀第八世・沈照微與陸聞笙<span aria-hidden="true">→</span></button><button type="button" className="zero-text-button" onClick={() => { setAuto(false); setPosition(startAfterword(story)) }}>重讀歸天以後</button><button type="button" className="zero-text-button" onClick={onBack}>返回第七世結局</button><button type="button" className="zero-text-button" onClick={onHome}>返回首頁</button></> : <>
           <div className="zero-navigation">
             <button type="button" className="zero-previous" disabled={position.node === story.start && position.beat === 0} onClick={() => { setAuto(false); setPosition(previousAfterword(story, position)) }}>上一句</button>
             <button type="button" className="zero-primary" onClick={next}>{position.beat === node.beats.length - 1 ? node.next ? '下一場' : '讀完後日談' : '下一句'}<span aria-hidden="true">↓</span></button>

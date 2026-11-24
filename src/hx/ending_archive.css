@@ -1,0 +1,22 @@
+.archive-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 48px; margin: -10px 0 28px; padding: 12px 0; border: 0; border-bottom: 1px solid #b9916040; background: transparent; color: #d8b68a; font: 15px/1.8 var(--reader-literary); text-align: left; }
+.archive-entry span { font: 11px/1.8 var(--reader-ui); color: #b19a82; }
+.zero-page.ending-archive { height: 100dvh; min-height: 100dvh; overflow-y: auto; }
+.ending-archive-inner { max-width: 560px; margin: auto; padding: max(8px, env(safe-area-inset-top)) 22px max(36px, env(safe-area-inset-bottom)); }
+.ending-archive h1 { margin: 24px 0 8px; font: 400 28px/1.8 var(--reader-literary); letter-spacing: 4px; }
+.ending-archive h1:focus { outline: none; }
+.archive-count { color: #d3b483; font: 12px/1.8 var(--reader-ui); letter-spacing: 1px; }
+.archive-hint { color: #b9a48c; font: 14px/1.9 var(--reader-literary); margin: 18px 0 32px; }
+.archive-chapter { margin: 0 0 32px; }
+.archive-chapter h2 { margin: 0 0 14px; font: 400 17px/1.8 var(--reader-literary); letter-spacing: .5px; color: #e2c39d; }
+.archive-subtitle { font: 12px/1.8 var(--reader-ui); color: #ae947c; margin: -8px 0 14px; }
+.archive-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.archive-card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; min-height: 144px; padding: 16px 12px; border: 1px solid #99765140; border-radius: 5px; background: linear-gradient(145deg, #34231d, #201411); color: #ad9882; text-align: left; overflow: hidden; }
+.ending-archive .archive-card:disabled { opacity: 1; }
+.archive-card.is-collected { background: linear-gradient(0deg, #21120ff5 0%, #2d1913cc 65%, #21120f80), url('/art/zero/ledger.webp') center/cover; border-color: #bb8c5a88; color: #f0dcc0; }
+.archive-card strong { font: 400 16px/1.8 var(--reader-literary); overflow-wrap: anywhere; }
+.archive-card small { font: 10px/1.8 var(--reader-ui); color: #a99279; margin-top: 6px; }
+.archive-card-number { position: absolute; top: 12px; left: 12px; font: 11px/1.8 var(--reader-ui); letter-spacing: 2px; color: #977e62; }
+.archive-detail .reader-settings-heading h2 { font-family: var(--reader-literary); line-height: 1.8; }
+.archive-excerpt-label { color: #b49875; font: 11px/1.8 var(--reader-ui); letter-spacing: 2px; margin: 20px 0 12px; }
+.archive-excerpt p { font: 17px/1.9 var(--reader-literary); color: #e5d6c2; margin: 0 0 20px; }
+.reader-large .archive-excerpt p { font-size: 20px; }

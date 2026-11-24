@@ -23,7 +23,9 @@
     "export:stories": "tsx scripts/export_novel_dossiers.ts",
     "test:reading": "tsx scripts/test_reading.ts",
     "test:bgm": "tsx scripts/test_bgm.ts",
-    "test:opening": "tsx scripts/test_opening.ts"
+    "test:opening": "tsx scripts/test_opening.ts",
+    "test:matinee": "tsx scripts/test_matinee.ts",
+    "test:collection": "tsx scripts/test_ending_collection.ts"
   },
   "dependencies": {
     "lucide-react": "^0.577.0",

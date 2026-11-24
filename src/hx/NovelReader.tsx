@@ -119,8 +119,8 @@ function ChoiceGate({ children }: { children: React.ReactNode }) {
   }}><fieldset disabled={!ready}>{children}</fieldset></section>
 }
 
-export function NovelEntry({ story, position, unlocked, onBegin, lovers, unlockHint, primary = false }: {
-  story: Novel; position: NovelPosition; unlocked: boolean; onBegin: () => void; lovers: string; unlockHint: string
+export function NovelEntry({ story, position, unlocked, onBegin, lovers, primary = false }: {
+  story: Novel; position: NovelPosition; unlocked: boolean; onBegin: () => void; lovers: string
   primary?: boolean
 }) {
   let hasSentenceProgress = false
@@ -132,10 +132,10 @@ export function NovelEntry({ story, position, unlocked, onBegin, lovers, unlockH
   return <div className={`novel-entry${primary ? ' novel-entry-primary' : ''}`}>
     {primary && <p className="home-current-label">接續姻緣</p>}
     <button type="button" className={`zero-primary${primary ? ' home-primary' : ' zero-secondary'}`} disabled={!unlocked} onClick={() => { if (unlocked) onBegin() }}>
-      <span className={primary ? 'home-action-copy' : undefined}>{primary ? `繼續閱讀 ${label}` : unlocked ? position.finished ? `重訪${label}` : hasProgress ? `繼續閱讀${label}` : `閱讀${label}` : `${label}・尚未開啟`}
+      <span className={primary ? 'home-action-copy' : undefined}>{primary ? `繼續閱讀 ${label}` : unlocked ? story.subtitle ? story.title : position.finished ? `重訪${label}` : hasProgress ? `繼續閱讀${label}` : `閱讀${label}` : `${label}・尚未開啟`}
       {primary && <small>上次停在：{novelNode(story, position.node).title}</small>}</span>
       <span aria-hidden="true">{unlocked ? ordinal : '鎖'}</span>
     </button>
-    {!primary && <p>{unlocked ? `${lovers}｜${endingCount} 個結局` : unlockHint}</p>}
+    {!primary && unlocked && <p>{story.subtitle ?? lovers}｜{endingCount} 個結局</p>}
   </div>
 }

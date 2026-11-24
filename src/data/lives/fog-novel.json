@@ -1,6 +1,6 @@
 {
   "id": "fog-novel",
-  "title": "第八世・霧港來電",
+  "title": "第八世・沈照微與陸聞笙",
   "start": "P0",
   "pageCount": 16,
   "readingMinutes": [
@@ -2136,5 +2136,6 @@
       },
       "ending": true
     }
-  ]
+  ],
+  "subtitle": "霧港來電"
 }

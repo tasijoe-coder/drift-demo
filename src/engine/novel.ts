@@ -8,7 +8,7 @@ export type NovelNode = {
   id: string; title: string; chapter: string; beats: NovelBeat[]; set?: Flags; bgm?: BgmTrack
   next?: string; choice?: { prompt: string; options: NovelOption[] }; ending?: boolean; perfect?: boolean
 }
-export type Novel = { id: string; title: string; start: string; pageCount: number; readingMinutes: number[]; nodes: NovelNode[] }
+export type Novel = { id: string; title: string; subtitle?: string; start: string; pageCount: number; readingMinutes: number[]; nodes: NovelNode[] }
 export type NovelPosition = { node: string; choices: { node: string; option: string }[]; finished: boolean }
 export const startNovel = (story: Novel): NovelPosition => ({ node: story.start, choices: [], finished: false })
 export const matches = (flags: Flags, when?: Condition) => !when || Object.entries(when).every(([key, value]) => flags[key] === value)
