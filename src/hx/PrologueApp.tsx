@@ -14,6 +14,7 @@ import { useReaderPreferences } from './reader_preferences'
 import { StageStill as Still } from './StageStill'
 import { useReadingPlayback } from './useReadingPlayback'
 import { bonusChapterUnlocked } from './reading_timing'
+import { useBgmTrack } from './bgm'
 import './prologue.css'
 
 function loadPosition() {
@@ -37,6 +38,7 @@ function loadCompleted() {
 export function PrologueApp() {
   const [position, setPosition] = useState(loadPosition)
   const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song' | 'ming1' | 'ming2' | 'seventh' | 'fog'>('home')
+  useBgmTrack(reading === 'home' ? 'theme' : undefined)
   const qinProgress = useNovelProgress(qin)
   const jinProgress = useNovelProgress(jin)
   const tangProgress = useNovelProgress(tang)
@@ -174,6 +176,7 @@ function PrologueReader({ position, onChange, onHome }: {
   const { large } = useReaderPreferences()
   const endHeading = useRef<HTMLHeadingElement>(null)
   const node = storyNode(zeroStory, position.node)
+  useBgmTrack(node.bgm)
   const beat = node.beats[Math.min(position.beat, node.beats.length - 1)]
   const finished = zeroFinished(position)
   const count = zeroReadCount(position)

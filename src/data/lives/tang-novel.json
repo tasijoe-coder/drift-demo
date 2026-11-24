@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "T0",
+      "bgm": "theme",
       "title": "燈下有一只空盒",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -61,6 +62,7 @@
     },
     {
       "id": "T1",
+      "bgm": "daily",
       "title": "買胭脂的人",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -161,6 +163,7 @@
     },
     {
       "id": "T1P",
+      "bgm": "daily",
       "title": "這回不必再買",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -236,6 +239,7 @@
     },
     {
       "id": "T1R",
+      "bgm": "daily",
       "title": "收回去的不是情意",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -307,6 +311,7 @@
     },
     {
       "id": "T2",
+      "bgm": "daily",
       "title": "香氣以外的日子",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -461,6 +466,7 @@
     },
     {
       "id": "T3",
+      "bgm": "tension",
       "title": "沒寄出的落第信",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -541,6 +547,7 @@
     },
     {
       "id": "T3Y",
+      "bgm": "tension",
       "title": "不拿明年抵今日",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -604,6 +611,7 @@
     },
     {
       "id": "T3H",
+      "bgm": "tension",
       "title": "寫回家裡的那一頁",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -667,6 +675,7 @@
     },
     {
       "id": "T4",
+      "bgm": "daily",
       "title": "土地堂前，說定一件事",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -761,6 +770,7 @@
     },
     {
       "id": "T5",
+      "bgm": "tension",
       "title": "各自準備的元宵",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -921,6 +931,7 @@
     },
     {
       "id": "T6",
+      "bgm": "tension",
       "title": "赴約以前的酒席",
       "chapter": "胭脂與元宵",
       "beats": [
@@ -985,6 +996,7 @@
     },
     {
       "id": "A0",
+      "bgm": "daily",
       "title": "這一回，兩個人都到了",
       "chapter": "如期而至",
       "beats": [
@@ -1073,6 +1085,7 @@
     },
     {
       "id": "A1S",
+      "bgm": "daily",
       "title": "一間鋪子，不是一個陪嫁",
       "chapter": "如期而至",
       "beats": [
@@ -1132,6 +1145,7 @@
     },
     {
       "id": "A1R",
+      "bgm": "daily",
       "title": "他也有想去的地方",
       "chapter": "如期而至",
       "beats": [
@@ -1187,6 +1201,7 @@
     },
     {
       "id": "A2",
+      "bgm": "tension",
       "title": "天亮以後，還認不認這句話",
       "chapter": "如期而至",
       "beats": [
@@ -1289,6 +1304,7 @@
     },
     {
       "id": "A3C",
+      "bgm": "tension",
       "title": "親口說給家裡聽",
       "chapter": "如期而至",
       "beats": [
@@ -1344,6 +1360,7 @@
     },
     {
       "id": "A3S",
+      "bgm": "tension",
       "title": "這一次，等多久都說好",
       "chapter": "如期而至",
       "beats": [
@@ -1399,6 +1416,7 @@
     },
     {
       "id": "A4C",
+      "bgm": "tension",
       "title": "把家安在哪一盞燈下",
       "chapter": "如期而至",
       "beats": [
@@ -1471,6 +1489,7 @@
     },
     {
       "id": "A5H",
+      "bgm": "daily",
       "title": "兩個人各有一把鑰匙",
       "chapter": "如期而至",
       "beats": [
@@ -1528,6 +1547,7 @@
     },
     {
       "id": "A5A",
+      "bgm": "daily",
       "title": "帶走名字，不帶走所有答案",
       "chapter": "如期而至",
       "beats": [
@@ -1589,6 +1609,7 @@
     },
     {
       "id": "A4S",
+      "bgm": "tension",
       "title": "一季之後，重新問一次",
       "chapter": "如期而至",
       "beats": [
@@ -1661,6 +1682,7 @@
     },
     {
       "id": "A5L",
+      "bgm": "daily",
       "title": "下個春天，不必靠猜",
       "chapter": "如期而至",
       "beats": [
@@ -1718,6 +1740,7 @@
     },
     {
       "id": "A5P",
+      "bgm": "sad",
       "title": "不必把相遇寫成錯",
       "chapter": "如期而至",
       "beats": [
@@ -1779,6 +1802,7 @@
     },
     {
       "id": "B0",
+      "bgm": "tension",
       "title": "他醒時，燈已換過一輪",
       "chapter": "失約以後",
       "beats": [
@@ -1867,6 +1891,7 @@
     },
     {
       "id": "B1M",
+      "bgm": "tension",
       "title": "不寫成一場意外",
       "chapter": "失約以後",
       "beats": [
@@ -1926,6 +1951,7 @@
     },
     {
       "id": "B1T",
+      "bgm": "tension",
       "title": "她的東西，不是他的證詞",
       "chapter": "失約以後",
       "beats": [
@@ -1985,6 +2011,7 @@
     },
     {
       "id": "B2",
+      "bgm": "tension",
       "title": "她沒有開門",
       "chapter": "失約以後",
       "beats": [
@@ -2073,6 +2100,7 @@
     },
     {
       "id": "B3S",
+      "bgm": "tension",
       "title": "等候也要有界限",
       "chapter": "失約以後",
       "beats": [
@@ -2132,6 +2160,7 @@
     },
     {
       "id": "B3M",
+      "bgm": "tension",
       "title": "好意差一點又替人決定",
       "chapter": "失約以後",
       "beats": [
@@ -2191,6 +2220,7 @@
     },
     {
       "id": "B4S",
+      "bgm": "daily",
       "title": "道歉以後，還有日子",
       "chapter": "失約以後",
       "beats": [
@@ -2267,6 +2297,7 @@
     },
     {
       "id": "B5R",
+      "bgm": "daily",
       "title": "第二次約定，先從小事開始",
       "chapter": "失約以後",
       "beats": [
@@ -2336,6 +2367,7 @@
     },
     {
       "id": "B5C",
+      "bgm": "sad",
       "title": "一起走到告別的地方",
       "chapter": "失約以後",
       "beats": [
@@ -2397,6 +2429,7 @@
     },
     {
       "id": "B4M",
+      "bgm": "tension",
       "title": "母親的答應，不是她的答應",
       "chapter": "失約以後",
       "beats": [
@@ -2469,6 +2502,7 @@
     },
     {
       "id": "B5A",
+      "bgm": "daily",
       "title": "這次等她自己說",
       "chapter": "失約以後",
       "beats": [
@@ -2534,6 +2568,7 @@
     },
     {
       "id": "B5N",
+      "bgm": "sad",
       "title": "把敲門的手收回去",
       "chapter": "失約以後",
       "beats": [
@@ -2599,6 +2634,7 @@
     },
     {
       "id": "E1",
+      "bgm": "ending",
       "title": "滿城燈火",
       "chapter": "燈火與天明",
       "beats": [
@@ -2726,6 +2762,7 @@
     },
     {
       "id": "E2",
+      "bgm": "ending",
       "title": "另起一盞燈",
       "chapter": "燈火與天明",
       "beats": [
@@ -2825,6 +2862,7 @@
     },
     {
       "id": "E3",
+      "bgm": "ending",
       "title": "來年仍有約",
       "chapter": "燈火與天明",
       "beats": [
@@ -2928,6 +2966,7 @@
     },
     {
       "id": "E4",
+      "bgm": "sad",
       "title": "各自天明",
       "chapter": "燈火與天明",
       "beats": [
@@ -3031,6 +3070,7 @@
     },
     {
       "id": "E5",
+      "bgm": "ending",
       "title": "第二次赴約",
       "chapter": "燈火與天明",
       "beats": [
@@ -3152,6 +3192,7 @@
     },
     {
       "id": "E6",
+      "bgm": "sad",
       "title": "舊帕已還",
       "chapter": "燈火與天明",
       "beats": [

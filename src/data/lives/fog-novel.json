@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "P0",
+      "bgm": "theme",
       "title": "紙是往上燒的",
       "chapter": "第一章・雨夜來電",
       "beats": [
@@ -64,6 +65,7 @@
     },
     {
       "id": "P1",
+      "bgm": "daily",
       "title": "兩個知道前生的人",
       "chapter": "第一章・雨夜來電",
       "beats": [
@@ -116,6 +118,7 @@
     },
     {
       "id": "P2",
+      "bgm": "tension",
       "title": "底片在誰手裡",
       "chapter": "第一章・雨夜來電",
       "beats": [
@@ -176,6 +179,7 @@
     },
     {
       "id": "H3",
+      "bgm": "tension",
       "title": "一封遲到的信",
       "chapter": "第一章・雨夜來電",
       "beats": [
@@ -219,6 +223,7 @@
     },
     {
       "id": "N3",
+      "bgm": "tension",
       "title": "鑰匙先交出去",
       "chapter": "第一章・雨夜來電",
       "beats": [
@@ -266,6 +271,7 @@
     },
     {
       "id": "P4",
+      "bgm": "tension",
       "title": "門後只有半句話",
       "chapter": "第二章・未寄出的貨單",
       "beats": [
@@ -318,6 +324,7 @@
     },
     {
       "id": "J5",
+      "bgm": "tension",
       "title": "白鷺不是一個人",
       "chapter": "第二章・未寄出的貨單",
       "beats": [
@@ -357,6 +364,7 @@
     },
     {
       "id": "K5",
+      "bgm": "tension",
       "title": "沒有神通的一小時",
       "chapter": "第二章・未寄出的貨單",
       "beats": [
@@ -396,6 +404,7 @@
     },
     {
       "id": "P6",
+      "bgm": "tension",
       "title": "海裡沒有那顆珠子",
       "chapter": "第二章・未寄出的貨單",
       "beats": [
@@ -448,6 +457,7 @@
     },
     {
       "id": "P7",
+      "bgm": "tension",
       "title": "天亮以前選一條路",
       "chapter": "第二章・未寄出的貨單",
       "beats": [
@@ -510,6 +520,7 @@
     },
     {
       "id": "A8",
+      "bgm": "tension",
       "title": "頭版空著一塊",
       "chapter": "第三章・報館線",
       "beats": [
@@ -549,6 +560,7 @@
     },
     {
       "id": "A9",
+      "bgm": "tension",
       "title": "一把鑰匙的價錢",
       "chapter": "第三章・報館線",
       "beats": [
@@ -605,6 +617,7 @@
     },
     {
       "id": "A10S",
+      "bgm": "tension",
       "title": "窗扣沒有指印",
       "chapter": "第三章・報館線",
       "beats": [
@@ -640,6 +653,7 @@
     },
     {
       "id": "A10H",
+      "bgm": "tension",
       "title": "她先拿回自己的錢",
       "chapter": "第三章・報館線",
       "beats": [
@@ -679,6 +693,7 @@
     },
     {
       "id": "A11",
+      "bgm": "tension",
       "title": "一個不肯署名的人",
       "chapter": "第三章・報館線",
       "beats": [
@@ -731,6 +746,7 @@
     },
     {
       "id": "A12Y",
+      "bgm": "daily",
       "title": "在街燈下問完",
       "chapter": "第三章・報館線",
       "beats": [
@@ -770,6 +786,7 @@
     },
     {
       "id": "A12N",
+      "bgm": "sad",
       "title": "文章交給別人續寫",
       "chapter": "第三章・報館線",
       "beats": [
@@ -813,6 +830,7 @@
     },
     {
       "id": "A13",
+      "bgm": "tension",
       "title": "印刷機的頭款",
       "chapter": "第四章・報館線的最後一夜",
       "beats": [
@@ -873,6 +891,7 @@
     },
     {
       "id": "A14",
+      "bgm": "tension",
       "title": "先保住哪一種明天",
       "chapter": "第四章・報館線的最後一夜",
       "beats": [
@@ -925,6 +944,7 @@
     },
     {
       "id": "F1",
+      "bgm": "ending",
       "title": "燈下仍有名字",
       "chapter": "結局・報館線",
       "beats": [
@@ -988,6 +1008,7 @@
     },
     {
       "id": "F2",
+      "bgm": "sad",
       "title": "頭版之外",
       "chapter": "結局・報館線",
       "beats": [
@@ -1050,6 +1071,7 @@
     },
     {
       "id": "B8",
+      "bgm": "tension",
       "title": "兩張船票",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1089,6 +1111,7 @@
     },
     {
       "id": "B9",
+      "bgm": "tension",
       "title": "檢票口前的細雨",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1141,6 +1164,7 @@
     },
     {
       "id": "B10S",
+      "bgm": "tension",
       "title": "銀色的東西落地",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1180,6 +1204,7 @@
     },
     {
       "id": "B10H",
+      "bgm": "tension",
       "title": "沒有鏡頭的相機",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1219,6 +1244,7 @@
     },
     {
       "id": "B11",
+      "bgm": "tension",
       "title": "船不等夢醒",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1271,6 +1297,7 @@
     },
     {
       "id": "B12Y",
+      "bgm": "daily",
       "title": "那端終於有人接",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1314,6 +1341,7 @@
     },
     {
       "id": "B12N",
+      "bgm": "sad",
       "title": "他沒有叫她一起留下",
       "chapter": "第三章・離港線",
       "beats": [
@@ -1353,6 +1381,7 @@
     },
     {
       "id": "B13",
+      "bgm": "tension",
       "title": "盒子裡還有一筆錢",
       "chapter": "第四章・離港線的最後一夜",
       "beats": [
@@ -1417,6 +1446,7 @@
     },
     {
       "id": "B14",
+      "bgm": "sad",
       "title": "還能做的一點小事",
       "chapter": "第四章・離港線的最後一夜",
       "beats": [
@@ -1465,6 +1495,7 @@
     },
     {
       "id": "F3",
+      "bgm": "ending",
       "title": "海那邊有回信",
       "chapter": "結局・離港線",
       "beats": [
@@ -1533,6 +1564,7 @@
     },
     {
       "id": "F4",
+      "bgm": "sad",
       "title": "不等下一班船",
       "chapter": "結局・離港線",
       "beats": [
@@ -1587,6 +1619,7 @@
     },
     {
       "id": "C8",
+      "bgm": "tension",
       "title": "她戴上別人的姓",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1626,6 +1659,7 @@
     },
     {
       "id": "C9",
+      "bgm": "tension",
       "title": "錶鏈晃了三次",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1678,6 +1712,7 @@
     },
     {
       "id": "C10S",
+      "bgm": "tension",
       "title": "門開了，題目變了",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1713,6 +1748,7 @@
     },
     {
       "id": "C10H",
+      "bgm": "tension",
       "title": "有價碼的坦白",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1752,6 +1788,7 @@
     },
     {
       "id": "C11",
+      "bgm": "tension",
       "title": "誰來問那一個問題",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1800,6 +1837,7 @@
     },
     {
       "id": "C12Y",
+      "bgm": "tension",
       "title": "一個買家的不信",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1835,6 +1873,7 @@
     },
     {
       "id": "C12N",
+      "bgm": "daily",
       "title": "她在快門後面說話",
       "chapter": "第三章・夜宴線",
       "beats": [
@@ -1870,6 +1909,7 @@
     },
     {
       "id": "C13",
+      "bgm": "tension",
       "title": "燒掉的到底是哪一頁",
       "chapter": "第四章・夜宴線的最後一夜",
       "beats": [
@@ -1924,6 +1964,7 @@
     },
     {
       "id": "C14",
+      "bgm": "tension",
       "title": "他們問你的名字",
       "chapter": "第四章・夜宴線的最後一夜",
       "beats": [
@@ -1980,6 +2021,7 @@
     },
     {
       "id": "F5",
+      "bgm": "ending",
       "title": "最後一筆通融",
       "chapter": "結局・夜宴線",
       "beats": [
@@ -2038,6 +2080,7 @@
     },
     {
       "id": "F6",
+      "bgm": "sad",
       "title": "月亮不再回話",
       "chapter": "結局・夜宴線",
       "beats": [

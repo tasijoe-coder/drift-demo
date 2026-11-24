@@ -1,9 +1,11 @@
 import content from '../data/lives/qin-opening.json'
+import type { BgmTrack } from '../data/bgm'
 
 export type Beat = { speaker: string; text: string; pose: string; sound?: string; still?: string }
 export type StoryOption = { id: string; label: string; detail: string; next: string; memory: string }
 export type StoryNode = {
   id: string
+  bgm?: BgmTrack
   chapter: string
   setting: string
   scene: string
@@ -16,7 +18,7 @@ export type StoryNode = {
 export type Story = { id: string; title: string; start: string; nodes: StoryNode[] }
 export type StoryPosition = { node: string; beat: number; choices: { node: string; option: string }[] }
 
-export const opening: Story = content
+export const opening = content as Story
 export const storyNode = (story: Story, id: string) => story.nodes.find((node) => node.id === id)!
 export const startStory = (story: Story): StoryPosition => ({ node: story.start, beat: 0, choices: [] })
 

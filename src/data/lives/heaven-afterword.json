@@ -138,6 +138,7 @@
   "scenes": [
     {
       "id": "coda-home",
+      "bgm": "daily",
       "chapter": "第一場・回來的人",
       "setting": "天庭・重逢以後",
       "title": "兩張椅子",
@@ -218,6 +219,7 @@
     },
     {
       "id": "coda-window",
+      "bgm": "theme",
       "chapter": "第二場・人間還在往前",
       "setting": "天庭・臨凡臺",
       "title": "窗外的後來",
@@ -322,6 +324,7 @@
     },
     {
       "id": "coda-cost",
+      "bgm": "tension",
       "chapter": "第三場・沒有保證的事",
       "setting": "月老案前・七頁合簿",
       "title": "先不要替我們繫",
@@ -618,6 +621,7 @@
     },
     {
       "id": "coda-leave",
+      "bgm": "ending",
       "chapter": "第四場・第八頁以前",
       "setting": "天庭・請願與渡口",
       "title": "這回，是我們要去",
@@ -774,5 +778,6 @@
         }
       ]
     }
-  ]
+  ],
+  "bgm": "theme"
 }

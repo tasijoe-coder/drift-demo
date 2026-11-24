@@ -1,7 +1,7 @@
 import content from '../data/lives/lifetime-zero.json'
 import { advanceStory, restoreStory, startStory, storyNode, type Story, type StoryPosition } from './theatre_story'
 
-export const zeroStory: Story = content
+export const zeroStory = content as Story
 // Keep the older theatre/card saves intact: this revision has different sentence boundaries.
 export const ZERO_SAVE_KEY = 'hx.theatre.lifetime-zero.v2'
 export const zeroStills: Record<string, { src: string; alt: string }> = {

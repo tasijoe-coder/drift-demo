@@ -18,7 +18,10 @@
 .zero-page button:disabled { cursor: default; opacity: .42; }
 .zero-reader { display: flex; flex-direction: column; width: 100%; max-width: 560px; height: 100%; margin: auto; padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom); }
 .zero-header { flex: none; min-height: 62px; }
-.reader-header { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; gap: 8px; width: 100%; }
+.reader-header { display: grid; grid-template-columns: 64px minmax(0, 1fr) 108px; align-items: center; gap: 8px; width: 100%; }
+.reader-header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+.reader-header .reader-music-trigger { min-width: 46px; padding: 8px 3px; font-size: 11px; border: 1px solid #b08b6433; border-radius: 4px; }
+.reader-header .music-enabled { color: #e3bf85; border-color: #b08b6466; }
 .reader-header button { min-height: 44px; min-width: 44px; padding: 8px 2px; border: 0; background: transparent; color: #d4bca1; font: 12px/1.6 var(--reader-ui); }
 .reader-header-note { color: #ad9178; font-size: 11px; letter-spacing: 3px; text-align: left; }
 .reader-brand { min-width: 0; text-align: center; font: 15px/1.5 var(--reader-literary); letter-spacing: 3px; color: #ecd2ae; }

@@ -5,6 +5,7 @@
   "nodes": [
     {
       "id": "zero-banquet",
+      "bgm": "theme",
       "title": "第〇世・杯中月",
       "era": "第〇世・天上",
       "chapter": "七夕宴",
@@ -233,6 +234,7 @@
     },
     {
       "id": "zero-court",
+      "bgm": "tension",
       "title": "第〇世・杯中月",
       "era": "第〇世・天上",
       "chapter": "殿前",
@@ -467,6 +469,7 @@
     },
     {
       "id": "zero-bridge",
+      "bgm": "sad",
       "title": "第〇世・杯中月",
       "era": "第〇世・天上",
       "chapter": "牽線下凡",

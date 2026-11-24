@@ -5,6 +5,7 @@ import './prologue.css'
 import { ReaderHeader } from './ReaderHeader'
 import { useReaderPreferences } from './reader_preferences'
 import { useReadingPlayback } from './useReadingPlayback'
+import { useBgmTrack } from './bgm'
 
 export function AfterwordReader({ origin, onBack, onHome, onComplete, onBonus }: {
   origin: AfterwordOrigin; onBack: () => void; onHome: () => void; onComplete: () => void; onBonus: () => void
@@ -18,6 +19,7 @@ export function AfterwordReader({ origin, onBack, onHome, onComplete, onBonus }:
   const [imageFailed, setImageFailed] = useState(false)
   const { large } = useReaderPreferences()
   const node = storyNode(story, position.node)
+  useBgmTrack(node.bgm)
   const finished = afterwordFinished(story, position)
   const transcript = storyTranscript(story, position)
   const total = story.nodes.reduce((sum, n) => sum + n.beats.length, 0)

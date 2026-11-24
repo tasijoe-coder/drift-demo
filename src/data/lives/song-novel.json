@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "F0",
+      "bgm": "theme",
       "title": "釵上沒有金",
       "chapter": "荊釵與家書",
       "beats": [
@@ -81,6 +82,7 @@
     },
     {
       "id": "F1",
+      "bgm": "daily",
       "title": "一支荊釵，兩個人看",
       "chapter": "荊釵與家書",
       "beats": [
@@ -209,6 +211,7 @@
     },
     {
       "id": "F1P",
+      "bgm": "daily",
       "title": "掌心裡的聘禮",
       "chapter": "荊釵與家書",
       "beats": [
@@ -268,6 +271,7 @@
     },
     {
       "id": "F1F",
+      "bgm": "daily",
       "title": "堂前有她的聲音",
       "chapter": "荊釵與家書",
       "beats": [
@@ -323,6 +327,7 @@
     },
     {
       "id": "F2",
+      "bgm": "daily",
       "title": "婚後的兩個月",
       "chapter": "荊釵與家書",
       "beats": [
@@ -493,6 +498,7 @@
     },
     {
       "id": "F3",
+      "bgm": "tension",
       "title": "怎樣知道，信真的到了",
       "chapter": "荊釵與家書",
       "beats": [
@@ -601,6 +607,7 @@
     },
     {
       "id": "F3R",
+      "bgm": "tension",
       "title": "一句收到了",
       "chapter": "荊釵與家書",
       "beats": [
@@ -652,6 +659,7 @@
     },
     {
       "id": "F3T",
+      "bgm": "tension",
       "title": "難聽的話，也寫給我",
       "chapter": "荊釵與家書",
       "beats": [
@@ -707,6 +715,7 @@
     },
     {
       "id": "F4",
+      "bgm": "tension",
       "title": "金榜之後，一封未到的信",
       "chapter": "荊釵與家書",
       "beats": [
@@ -827,6 +836,7 @@
     },
     {
       "id": "F5",
+      "bgm": "tension",
       "title": "信上那個陌生的人",
       "chapter": "荊釵與家書",
       "beats": [
@@ -965,6 +975,7 @@
     },
     {
       "id": "F6",
+      "bgm": "tension",
       "title": "先保住什麼，才有往後",
       "chapter": "荊釵與家書",
       "beats": [
@@ -1063,6 +1074,7 @@
     },
     {
       "id": "A0",
+      "bgm": "tension",
       "title": "紙上破綻，紙外的人",
       "chapter": "原信的去處",
       "beats": [
@@ -1150,6 +1162,7 @@
     },
     {
       "id": "A1L",
+      "bgm": "tension",
       "title": "他終於說信離過手",
       "chapter": "原信的去處",
       "beats": [
@@ -1225,6 +1238,7 @@
     },
     {
       "id": "A1C",
+      "bgm": "tension",
       "title": "一封信的另一份",
       "chapter": "原信的去處",
       "beats": [
@@ -1292,6 +1306,7 @@
     },
     {
       "id": "A2",
+      "bgm": "tension",
       "title": "信辨清了，門還鎖著",
       "chapter": "原信的去處",
       "beats": [
@@ -1390,6 +1405,7 @@
     },
     {
       "id": "A3P",
+      "bgm": "tension",
       "title": "不是只替一個人洗清",
       "chapter": "原信的去處",
       "beats": [
@@ -1449,6 +1465,7 @@
     },
     {
       "id": "A3L",
+      "bgm": "tension",
       "title": "先走出那座門",
       "chapter": "原信的去處",
       "beats": [
@@ -1516,6 +1533,7 @@
     },
     {
       "id": "A4",
+      "bgm": "tension",
       "title": "他不是只欠她一封信",
       "chapter": "原信的去處",
       "beats": [
@@ -1618,6 +1636,7 @@
     },
     {
       "id": "A5P",
+      "bgm": "daily",
       "title": "兩封信，一起帶到新地方",
       "chapter": "原信的去處",
       "beats": [
@@ -1684,6 +1703,7 @@
     },
     {
       "id": "A5H",
+      "bgm": "daily",
       "title": "官印之外，仍有名字",
       "chapter": "原信的去處",
       "beats": [
@@ -1750,6 +1770,7 @@
     },
     {
       "id": "B0",
+      "bgm": "tension",
       "title": "雨中的借宿",
       "chapter": "雨中有屋",
       "beats": [
@@ -1825,6 +1846,7 @@
     },
     {
       "id": "B1M",
+      "bgm": "daily",
       "title": "有人等她先吃一餐",
       "chapter": "雨中有屋",
       "beats": [
@@ -1888,6 +1910,7 @@
     },
     {
       "id": "B1R",
+      "bgm": "daily",
       "title": "借一間能關門的屋",
       "chapter": "雨中有屋",
       "beats": [
@@ -1955,6 +1978,7 @@
     },
     {
       "id": "B2",
+      "bgm": "tension",
       "title": "名字要怎樣送出去",
       "chapter": "雨中有屋",
       "beats": [
@@ -2037,6 +2061,7 @@
     },
     {
       "id": "B3N",
+      "bgm": "tension",
       "title": "她自己寫下的所在",
       "chapter": "雨中有屋",
       "beats": [
@@ -2096,6 +2121,7 @@
     },
     {
       "id": "B3S",
+      "bgm": "tension",
       "title": "信先走，人暫不露面",
       "chapter": "雨中有屋",
       "beats": [
@@ -2155,6 +2181,7 @@
     },
     {
       "id": "B4",
+      "bgm": "tension",
       "title": "真信到了，她還在雨裡",
       "chapter": "雨中有屋",
       "beats": [
@@ -2249,6 +2276,7 @@
     },
     {
       "id": "B5M",
+      "bgm": "daily",
       "title": "先問她願不願進門",
       "chapter": "雨中有屋",
       "beats": [
@@ -2312,6 +2340,7 @@
     },
     {
       "id": "B5L",
+      "bgm": "daily",
       "title": "這一回，兩邊都收到",
       "chapter": "雨中有屋",
       "beats": [
@@ -2371,6 +2400,7 @@
     },
     {
       "id": "C0",
+      "bgm": "tension",
       "title": "帶著半支釵上路",
       "chapter": "江心問名",
       "beats": [
@@ -2438,6 +2468,7 @@
     },
     {
       "id": "C1F",
+      "bgm": "tension",
       "title": "那個姓王的人",
       "chapter": "江心問名",
       "beats": [
@@ -2497,6 +2528,7 @@
     },
     {
       "id": "C1M",
+      "bgm": "tension",
       "title": "她不是來討一句守節",
       "chapter": "江心問名",
       "beats": [
@@ -2564,6 +2596,7 @@
     },
     {
       "id": "C2",
+      "bgm": "sad",
       "title": "聽見死訊的人，還活著",
       "chapter": "江心問名",
       "beats": [
@@ -2653,6 +2686,7 @@
     },
     {
       "id": "C3T",
+      "bgm": "tension",
       "title": "把錯名一個個拆開",
       "chapter": "江心問名",
       "beats": [
@@ -2708,6 +2742,7 @@
     },
     {
       "id": "C3S",
+      "bgm": "sad",
       "title": "她的新名字，也是一個人",
       "chapter": "江心問名",
       "beats": [
@@ -2759,6 +2794,7 @@
     },
     {
       "id": "C4T",
+      "bgm": "tension",
       "title": "江心寺的兩份名帖",
       "chapter": "江心問名",
       "beats": [
@@ -2827,6 +2863,7 @@
     },
     {
       "id": "C5P",
+      "bgm": "daily",
       "title": "釵合上，年月沒有退回",
       "chapter": "江心問名",
       "beats": [
@@ -2892,6 +2929,7 @@
     },
     {
       "id": "C5F",
+      "bgm": "daily",
       "title": "她說完，才輪到他",
       "chapter": "江心問名",
       "beats": [
@@ -2953,6 +2991,7 @@
     },
     {
       "id": "C4S",
+      "bgm": "tension",
       "title": "舊卷重新開，還是先護住名字",
       "chapter": "江心問名",
       "beats": [
@@ -3021,6 +3060,7 @@
     },
     {
       "id": "C5O",
+      "bgm": "daily",
       "title": "蓮娘把本名寫回來",
       "chapter": "江心問名",
       "beats": [
@@ -3086,6 +3126,7 @@
     },
     {
       "id": "C5Q",
+      "bgm": "sad",
       "title": "兩條路上，各有人活著",
       "chapter": "江心問名",
       "beats": [
@@ -3139,6 +3180,7 @@
     },
     {
       "id": "E1",
+      "bgm": "ending",
       "title": "一釵一生",
       "chapter": "一釵的往後",
       "beats": [
@@ -3260,6 +3302,7 @@
     },
     {
       "id": "E2",
+      "bgm": "ending",
       "title": "不向朱門",
       "chapter": "一釵的往後",
       "beats": [
@@ -3364,6 +3407,7 @@
     },
     {
       "id": "E3",
+      "bgm": "ending",
       "title": "雨後見釵",
       "chapter": "一釵的往後",
       "beats": [
@@ -3448,6 +3492,7 @@
     },
     {
       "id": "E4",
+      "bgm": "ending",
       "title": "隔岸有信",
       "chapter": "一釵的往後",
       "beats": [
@@ -3520,6 +3565,7 @@
     },
     {
       "id": "E5",
+      "bgm": "ending",
       "title": "荊釵重會",
       "chapter": "一釵的往後",
       "beats": [
@@ -3622,6 +3668,7 @@
     },
     {
       "id": "E6",
+      "bgm": "sad",
       "title": "兩岸未圓",
       "chapter": "一釵的往後",
       "beats": [

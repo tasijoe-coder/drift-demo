@@ -1,10 +1,11 @@
 /** Data-driven novel routes. No browser state or presentation dependencies. */
+import type { BgmTrack } from '../data/bgm'
 export type Flags = Record<string, string | boolean>
 export type Condition = Flags
 export type NovelBeat = { speaker: string; text: string; when?: Condition }
 export type NovelOption = { id: string; label: string; detail: string; next: string; when?: Condition }
 export type NovelNode = {
-  id: string; title: string; chapter: string; beats: NovelBeat[]; set?: Flags
+  id: string; title: string; chapter: string; beats: NovelBeat[]; set?: Flags; bgm?: BgmTrack
   next?: string; choice?: { prompt: string; options: NovelOption[] }; ending?: boolean; perfect?: boolean
 }
 export type Novel = { id: string; title: string; start: string; pageCount: number; readingMinutes: number[]; nodes: NovelNode[] }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useReadingPlayback } from './useReadingPlayback'
+import { useBgmTrack } from './bgm'
 import { splitReadingText } from './reading_timing'
 import { advanceNovel, chooseNovel, finishNovel, novelNode, novelView, previousDecision, previousNovel, startNovel, type Novel, type NovelPosition } from '../engine/novel'
 import { novelKeys } from './novel_save'
@@ -16,6 +17,7 @@ export function NovelReader(props: ReaderProps) {
 }
 function NovelScene({ story, position, onChange, onHome, endings, onFinish, onAfterword }: ReaderProps) {
   const view = novelView(story, position)
+  useBgmTrack(view.node.bgm)
   const label = story.title.split('・')[0]
   const bookmarkKey = novelKeys(story).bookmark
   const [imageFailed, setImageFailed] = useState(false)

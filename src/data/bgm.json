@@ -1,0 +1,11 @@
+{
+  "maxVolume": 0.45,
+  "crossfadeMs": 2000,
+  "tracks": {
+    "theme": "/music/RED_LINE01.mp3",
+    "daily": "/music/RED_LINE02.mp3",
+    "tension": "/music/RED_LINE03.mp3",
+    "sad": "/music/RED_LINE04.mp3",
+    "ending": "/music/RED_LINE05.mp3"
+  }
+}

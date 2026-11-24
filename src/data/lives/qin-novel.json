@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "G0",
+      "bgm": "theme",
       "title": "人間第一頁",
       "chapter": "相識與成婚",
       "beats": [
@@ -82,6 +83,7 @@
     },
     {
       "id": "G1",
+      "bgm": "daily",
       "title": "後園相遇",
       "chapter": "相識與成婚",
       "beats": [
@@ -210,6 +212,7 @@
     },
     {
       "id": "G1H",
+      "bgm": "daily",
       "title": "門內的秘密",
       "chapter": "相識與成婚",
       "beats": [
@@ -309,6 +312,7 @@
     },
     {
       "id": "G1R",
+      "bgm": "daily",
       "title": "牆外的回頭",
       "chapter": "相識與成婚",
       "beats": [
@@ -412,6 +416,7 @@
     },
     {
       "id": "G2",
+      "bgm": "daily",
       "title": "簷下數日",
       "chapter": "相識與成婚",
       "beats": [
@@ -692,6 +697,7 @@
     },
     {
       "id": "G3",
+      "bgm": "daily",
       "title": "成婚前的實話",
       "chapter": "相識與成婚",
       "beats": [
@@ -784,6 +790,7 @@
     },
     {
       "id": "G3F",
+      "bgm": "daily",
       "title": "父親面前",
       "chapter": "相識與成婚",
       "beats": [
@@ -863,6 +870,7 @@
     },
     {
       "id": "G3P",
+      "bgm": "daily",
       "title": "兩人的約定",
       "chapter": "相識與成婚",
       "beats": [
@@ -938,6 +946,7 @@
     },
     {
       "id": "G4",
+      "bgm": "daily",
       "title": "婚書與家",
       "chapter": "相識與成婚",
       "beats": [
@@ -1234,6 +1243,7 @@
     },
     {
       "id": "G5",
+      "bgm": "tension",
       "title": "喜夜徵役",
       "chapter": "相識與成婚",
       "beats": [
@@ -1426,6 +1436,7 @@
     },
     {
       "id": "G6",
+      "bgm": "tension",
       "title": "第一封求援",
       "chapter": "相識與成婚",
       "beats": [
@@ -1504,6 +1515,7 @@
     },
     {
       "id": "A0",
+      "bgm": "tension",
       "title": "暫緩的日子",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -1620,6 +1632,7 @@
     },
     {
       "id": "A1T",
+      "bgm": "tension",
       "title": "把代價說開",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -1687,6 +1700,7 @@
     },
     {
       "id": "A1V",
+      "bgm": "tension",
       "title": "未說出口的查證",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -1750,6 +1764,7 @@
     },
     {
       "id": "A2",
+      "bgm": "tension",
       "title": "另一戶的名字",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -1874,6 +1889,7 @@
     },
     {
       "id": "A3P",
+      "bgm": "tension",
       "title": "眾人作證",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -1937,6 +1953,7 @@
     },
     {
       "id": "A3Q",
+      "bgm": "tension",
       "title": "個別放行的條件",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -2004,6 +2021,7 @@
     },
     {
       "id": "A4",
+      "bgm": "tension",
       "title": "留誰在門外",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -2124,6 +2142,7 @@
     },
     {
       "id": "A5J",
+      "bgm": "daily",
       "title": "共同承擔",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -2188,6 +2207,7 @@
     },
     {
       "id": "A5S",
+      "bgm": "sad",
       "title": "留下另一個名字",
       "chapter": "名冊上的另一戶",
       "beats": [
@@ -2256,6 +2276,7 @@
     },
     {
       "id": "EA1",
+      "bgm": "ending",
       "title": "白頭人間",
       "chapter": "人間的往後",
       "beats": [
@@ -2400,6 +2421,7 @@
     },
     {
       "id": "EA2",
+      "bgm": "sad",
       "title": "借來的一生",
       "chapter": "人間的往後",
       "beats": [
@@ -2523,6 +2545,7 @@
     },
     {
       "id": "B0",
+      "bgm": "tension",
       "title": "確切的病訊",
       "chapter": "北地與家書",
       "beats": [
@@ -2623,6 +2646,7 @@
     },
     {
       "id": "B1M",
+      "bgm": "tension",
       "title": "藥到營中",
       "chapter": "北地與家書",
       "beats": [
@@ -2691,6 +2715,7 @@
     },
     {
       "id": "B1E",
+      "bgm": "tension",
       "title": "營外的接應",
       "chapter": "北地與家書",
       "beats": [
@@ -2755,6 +2780,7 @@
     },
     {
       "id": "B2",
+      "bgm": "tension",
       "title": "向誰借力",
       "chapter": "北地與家書",
       "beats": [
@@ -2868,6 +2894,7 @@
     },
     {
       "id": "B3Z",
+      "bgm": "tension",
       "title": "有價的援手",
       "chapter": "北地與家書",
       "beats": [
@@ -2935,6 +2962,7 @@
     },
     {
       "id": "B3F",
+      "bgm": "tension",
       "title": "能湊出的明天",
       "chapter": "北地與家書",
       "beats": [
@@ -2998,6 +3026,7 @@
     },
     {
       "id": "B4",
+      "bgm": "tension",
       "title": "陪伴與牽掛",
       "chapter": "北地與家書",
       "beats": [
@@ -3096,6 +3125,7 @@
     },
     {
       "id": "B5H",
+      "bgm": "daily",
       "title": "不回鄉的團聚",
       "chapter": "北地與家書",
       "beats": [
@@ -3165,6 +3195,7 @@
     },
     {
       "id": "B5S",
+      "bgm": "daily",
       "title": "兩地的安排",
       "chapter": "北地與家書",
       "beats": [
@@ -3234,6 +3265,7 @@
     },
     {
       "id": "EB1",
+      "bgm": "ending",
       "title": "長城下的家",
       "chapter": "人間的往後",
       "beats": [
@@ -3361,6 +3393,7 @@
     },
     {
       "id": "EB2",
+      "bgm": "ending",
       "title": "兩地同心",
       "chapter": "人間的往後",
       "beats": [
@@ -3484,6 +3517,7 @@
     },
     {
       "id": "C0",
+      "bgm": "tension",
       "title": "寒衣與來信",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -3568,6 +3602,7 @@
     },
     {
       "id": "C1R",
+      "bgm": "tension",
       "title": "趕在死訊之前",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -3640,6 +3675,7 @@
     },
     {
       "id": "C1W",
+      "bgm": "sad",
       "title": "留下的人",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -3703,6 +3739,7 @@
     },
     {
       "id": "C2",
+      "bgm": "sad",
       "title": "名字與遺物",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -3814,6 +3851,7 @@
     },
     {
       "id": "C3W",
+      "bgm": "sad",
       "title": "眾人的姓名",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -3873,6 +3911,7 @@
     },
     {
       "id": "C3A",
+      "bgm": "sad",
       "title": "城牆下的衣角",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -3940,6 +3979,7 @@
     },
     {
       "id": "C4",
+      "bgm": "sad",
       "title": "厚葬以後",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -4042,6 +4082,7 @@
     },
     {
       "id": "C5H",
+      "bgm": "sad",
       "title": "帶著名字回去",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -4106,6 +4147,7 @@
     },
     {
       "id": "C5P",
+      "bgm": "sad",
       "title": "有人接住的聲音",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -4174,6 +4216,7 @@
     },
     {
       "id": "C5S",
+      "bgm": "sad",
       "title": "無路的海岸",
       "chapter": "寒衣與歸途",
       "beats": [
@@ -4238,6 +4281,7 @@
     },
     {
       "id": "EC1",
+      "bgm": "sad",
       "title": "哭倒長城",
       "chapter": "人間的往後",
       "beats": [
@@ -4339,6 +4383,7 @@
     },
     {
       "id": "EC2",
+      "bgm": "sad",
       "title": "攜骨歸鄉",
       "chapter": "人間的往後",
       "beats": [

@@ -5,6 +5,7 @@
   "nodes": [
     {
       "id": "heaven-banquet",
+      "bgm": "theme",
       "title": "第〇世・杯中月",
       "era": "第〇世・天上",
       "chapter": "七夕宴",
@@ -57,6 +58,7 @@
     },
     {
       "id": "heaven-sentence",
+      "bgm": "tension",
       "title": "第〇世・杯中月",
       "era": "第〇世・天上",
       "chapter": "殿前",
@@ -109,6 +111,7 @@
     },
     {
       "id": "heaven-thread",
+      "bgm": "tension",
       "title": "第〇世・杯中月",
       "era": "第〇世・天上",
       "chapter": "牽線下凡",
@@ -155,6 +158,7 @@
     },
     {
       "id": "arrival",
+      "bgm": "tension",
       "chapter": "相遇",
       "setting": "孟家後院・暮春",
       "scene": "garden",
@@ -243,6 +247,7 @@
     },
     {
       "id": "shelter",
+      "bgm": "tension",
       "chapter": "相遇",
       "setting": "孟家後院・門後",
       "scene": "garden",
@@ -283,6 +288,7 @@
     },
     {
       "id": "divert",
+      "bgm": "tension",
       "chapter": "相遇",
       "setting": "孟家後院・牆邊",
       "scene": "garden",
@@ -328,6 +334,7 @@
     },
     {
       "id": "shelter-night",
+      "bgm": "tension",
       "chapter": "留宿",
       "setting": "孟家後院・入夜",
       "scene": "night",
@@ -367,6 +374,7 @@
     },
     {
       "id": "divert-night",
+      "bgm": "tension",
       "chapter": "留宿",
       "setting": "孟家柴棚・入夜",
       "scene": "night",
@@ -406,6 +414,7 @@
     },
     {
       "id": "lodging",
+      "bgm": "tension",
       "chapter": "留宿",
       "setting": "孟家・第一場春雨",
       "scene": "night",
@@ -474,6 +483,7 @@
     },
     {
       "id": "lamp",
+      "bgm": "tension",
       "chapter": "留宿",
       "setting": "孟家灶間・燈下",
       "scene": "night",
@@ -524,6 +534,7 @@
     },
     {
       "id": "eaves",
+      "bgm": "tension",
       "chapter": "留宿",
       "setting": "孟家柴棚・屋簷下",
       "scene": "night",
@@ -574,6 +585,7 @@
     },
     {
       "id": "morning-lamp",
+      "bgm": "tension",
       "chapter": "求親",
       "setting": "孟家前廳・幾日後",
       "scene": "morning",
@@ -613,6 +625,7 @@
     },
     {
       "id": "morning-eaves",
+      "bgm": "tension",
       "chapter": "求親",
       "setting": "孟家前廳・幾日後",
       "scene": "morning",
@@ -652,6 +665,7 @@
     },
     {
       "id": "proposal",
+      "bgm": "tension",
       "chapter": "求親",
       "setting": "孟家前廳・提親",
       "scene": "proposal",
@@ -739,6 +753,7 @@
     },
     {
       "id": "truth",
+      "bgm": "tension",
       "chapter": "求親",
       "setting": "孟家前廳・真名",
       "scene": "proposal",
@@ -789,6 +804,7 @@
     },
     {
       "id": "time",
+      "bgm": "tension",
       "chapter": "求親",
       "setting": "孟家前廳・答覆",
       "scene": "proposal",
@@ -839,6 +855,7 @@
     },
     {
       "id": "interval",
+      "bgm": "tension",
       "chapter": "暫歇",
       "setting": "孟家・燈未熄",
       "scene": "night",

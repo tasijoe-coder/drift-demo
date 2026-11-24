@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "S0",
+      "bgm": "theme",
       "title": "另一頁，同一條線",
       "chapter": "同窗與相認",
       "beats": [
@@ -62,6 +63,7 @@
     },
     {
       "id": "S1",
+      "bgm": "daily",
       "title": "借一身衣裳出門",
       "chapter": "同窗與相認",
       "beats": [
@@ -170,6 +172,7 @@
     },
     {
       "id": "S1P",
+      "bgm": "daily",
       "title": "不必回答的問題",
       "chapter": "同窗與相認",
       "beats": [
@@ -249,6 +252,7 @@
     },
     {
       "id": "S1V",
+      "bgm": "daily",
       "title": "把末句念完",
       "chapter": "同窗與相認",
       "beats": [
@@ -328,6 +332,7 @@
     },
     {
       "id": "S2",
+      "bgm": "daily",
       "title": "同窗的三個冬天",
       "chapter": "同窗與相認",
       "beats": [
@@ -590,6 +595,7 @@
     },
     {
       "id": "S3",
+      "bgm": "daily",
       "title": "她沒有說完的那句",
       "chapter": "同窗與相認",
       "beats": [
@@ -690,6 +696,7 @@
     },
     {
       "id": "S3D",
+      "bgm": "daily",
       "title": "不再只叫賢弟",
       "chapter": "同窗與相認",
       "beats": [
@@ -773,6 +780,7 @@
     },
     {
       "id": "S3M",
+      "bgm": "daily",
       "title": "交給師母的真話",
       "chapter": "同窗與相認",
       "beats": [
@@ -852,6 +860,7 @@
     },
     {
       "id": "S4",
+      "bgm": "daily",
       "title": "十八里的兩種送別",
       "chapter": "同窗與相認",
       "beats": [
@@ -1189,6 +1198,7 @@
     },
     {
       "id": "S5",
+      "bgm": "tension",
       "title": "樓臺上並不只隔三日",
       "chapter": "同窗與相認",
       "beats": [
@@ -1407,6 +1417,7 @@
     },
     {
       "id": "S6",
+      "bgm": "tension",
       "title": "誰先聽見這句不願意",
       "chapter": "同窗與相認",
       "beats": [
@@ -1481,6 +1492,7 @@
     },
     {
       "id": "A0",
+      "bgm": "tension",
       "title": "把女兒請進談話裡",
       "chapter": "家門內的聲音",
       "beats": [
@@ -1580,6 +1592,7 @@
     },
     {
       "id": "A1W",
+      "bgm": "daily",
       "title": "她的名字寫在文章上",
       "chapter": "家門內的聲音",
       "beats": [
@@ -1657,6 +1670,7 @@
     },
     {
       "id": "A1H",
+      "bgm": "tension",
       "title": "父親沒有問過的事",
       "chapter": "家門內的聲音",
       "beats": [
@@ -1716,6 +1730,7 @@
     },
     {
       "id": "A2",
+      "bgm": "tension",
       "title": "不是把新郎換一個",
       "chapter": "家門內的聲音",
       "beats": [
@@ -1824,6 +1839,7 @@
     },
     {
       "id": "A3R",
+      "bgm": "tension",
       "title": "家門自己付出的代價",
       "chapter": "家門內的聲音",
       "beats": [
@@ -1883,6 +1899,7 @@
     },
     {
       "id": "A3C",
+      "bgm": "tension",
       "title": "不是借來的一塊招牌",
       "chapter": "家門內的聲音",
       "beats": [
@@ -1942,6 +1959,7 @@
     },
     {
       "id": "A4",
+      "bgm": "tension",
       "title": "為了進門，先留下誰",
       "chapter": "家門內的聲音",
       "beats": [
@@ -2026,6 +2044,7 @@
     },
     {
       "id": "A5E",
+      "bgm": "daily",
       "title": "兩張椅子，兩個名字",
       "chapter": "家門內的聲音",
       "beats": [
@@ -2122,6 +2141,7 @@
     },
     {
       "id": "A5X",
+      "bgm": "daily",
       "title": "從正門走出去",
       "chapter": "家門內的聲音",
       "beats": [
@@ -2204,6 +2224,7 @@
     },
     {
       "id": "B0",
+      "bgm": "tension",
       "title": "原來私奔也要算米",
       "chapter": "離家與自立",
       "beats": [
@@ -2287,6 +2308,7 @@
     },
     {
       "id": "B1P",
+      "bgm": "daily",
       "title": "有人不必替他們留下",
       "chapter": "離家與自立",
       "beats": [
@@ -2346,6 +2368,7 @@
     },
     {
       "id": "B1S",
+      "bgm": "daily",
       "title": "暫住不是永遠的家",
       "chapter": "離家與自立",
       "beats": [
@@ -2401,6 +2424,7 @@
     },
     {
       "id": "B2",
+      "bgm": "tension",
       "title": "被留在家裡的人",
       "chapter": "離家與自立",
       "beats": [
@@ -2497,6 +2521,7 @@
     },
     {
       "id": "B3M",
+      "bgm": "tension",
       "title": "代傳，不是代答",
       "chapter": "離家與自立",
       "beats": [
@@ -2548,6 +2573,7 @@
     },
     {
       "id": "B3A",
+      "bgm": "daily",
       "title": "把責任放回原處",
       "chapter": "離家與自立",
       "beats": [
@@ -2611,6 +2637,7 @@
     },
     {
       "id": "B4",
+      "bgm": "tension",
       "title": "你想與我過什麼日子",
       "chapter": "離家與自立",
       "beats": [
@@ -2701,6 +2728,7 @@
     },
     {
       "id": "B5T",
+      "bgm": "daily",
       "title": "下一站，兩個人都在",
       "chapter": "離家與自立",
       "beats": [
@@ -2763,6 +2791,7 @@
     },
     {
       "id": "B5S",
+      "bgm": "daily",
       "title": "同一頁的兩處落款",
       "chapter": "離家與自立",
       "beats": [
@@ -2832,6 +2861,7 @@
     },
     {
       "id": "C0",
+      "bgm": "tension",
       "title": "把一生推給明年",
       "chapter": "等待與往後",
       "beats": [
@@ -2919,6 +2949,7 @@
     },
     {
       "id": "C1T",
+      "bgm": "tension",
       "title": "不再拿往後擔保",
       "chapter": "等待與往後",
       "beats": [
@@ -2983,6 +3014,7 @@
     },
     {
       "id": "C1A",
+      "bgm": "tension",
       "title": "等來的那封准信",
       "chapter": "等待與往後",
       "beats": [
@@ -3051,6 +3083,7 @@
     },
     {
       "id": "C2L",
+      "bgm": "daily",
       "title": "病好了以後，還有我們",
       "chapter": "等待與往後",
       "beats": [
@@ -3143,6 +3176,7 @@
     },
     {
       "id": "C3R",
+      "bgm": "tension",
       "title": "門不是一天開的",
       "chapter": "等待與往後",
       "beats": [
@@ -3202,6 +3236,7 @@
     },
     {
       "id": "C3I",
+      "bgm": "daily",
       "title": "先有能住的地方",
       "chapter": "等待與往後",
       "beats": [
@@ -3257,6 +3292,7 @@
     },
     {
       "id": "C4L",
+      "bgm": "tension",
       "title": "遲來的門，還要不要進",
       "chapter": "等待與往後",
       "beats": [
@@ -3337,6 +3373,7 @@
     },
     {
       "id": "C5R",
+      "bgm": "daily",
       "title": "回去的是兩個人",
       "chapter": "等待與往後",
       "beats": [
@@ -3406,6 +3443,7 @@
     },
     {
       "id": "C5I",
+      "bgm": "daily",
       "title": "門開著，也可以不回去",
       "chapter": "等待與往後",
       "beats": [
@@ -3468,6 +3506,7 @@
     },
     {
       "id": "C2D",
+      "bgm": "sad",
       "title": "他最後沒有等到的話",
       "chapter": "等待與往後",
       "beats": [
@@ -3560,6 +3599,7 @@
     },
     {
       "id": "C3C",
+      "bgm": "sad",
       "title": "不只一個人失去他",
       "chapter": "等待與往後",
       "beats": [
@@ -3619,6 +3659,7 @@
     },
     {
       "id": "C3F",
+      "bgm": "sad",
       "title": "沒有回答的那一聲",
       "chapter": "等待與往後",
       "beats": [
@@ -3682,6 +3723,7 @@
     },
     {
       "id": "C4D",
+      "bgm": "sad",
       "title": "剩下的話，要留在哪裡",
       "chapter": "等待與往後",
       "beats": [
@@ -3754,6 +3796,7 @@
     },
     {
       "id": "C5V",
+      "bgm": "sad",
       "title": "把未寫完的文章帶走",
       "chapter": "等待與往後",
       "beats": [
@@ -3817,6 +3860,7 @@
     },
     {
       "id": "C5M",
+      "bgm": "sad",
       "title": "讓記得的人坐在一起",
       "chapter": "等待與往後",
       "beats": [
@@ -3888,6 +3932,7 @@
     },
     {
       "id": "E1",
+      "bgm": "ending",
       "title": "同窗到白首",
       "chapter": "人間的往後",
       "beats": [
@@ -4031,6 +4076,7 @@
     },
     {
       "id": "E2",
+      "bgm": "ending",
       "title": "天涯共讀",
       "chapter": "人間的往後",
       "beats": [
@@ -4186,6 +4232,7 @@
     },
     {
       "id": "E3",
+      "bgm": "ending",
       "title": "遲開的家門",
       "chapter": "人間的往後",
       "beats": [
@@ -4313,6 +4360,7 @@
     },
     {
       "id": "E4",
+      "bgm": "sad",
       "title": "兩冊不相忘",
       "chapter": "人間的往後",
       "beats": [
@@ -4436,6 +4484,7 @@
     },
     {
       "id": "E5",
+      "bgm": "sad",
       "title": "蝶去人留",
       "chapter": "人間的往後",
       "beats": [

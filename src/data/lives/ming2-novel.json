@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "L0",
+      "bgm": "theme",
       "title": "橋還沒有名字",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -102,6 +103,7 @@
     },
     {
       "id": "L1",
+      "bgm": "daily",
       "title": "借一口水的人",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -222,6 +224,7 @@
     },
     {
       "id": "L1B",
+      "bgm": "daily",
       "title": "桶比詩重",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -285,6 +288,7 @@
     },
     {
       "id": "L1R",
+      "bgm": "daily",
       "title": "你到底要去哪裡",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -352,6 +356,7 @@
     },
     {
       "id": "L2",
+      "bgm": "daily",
       "title": "清明過後的晴日",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -474,6 +479,7 @@
     },
     {
       "id": "L3",
+      "bgm": "daily",
       "title": "說好的，不只三更",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -550,6 +556,7 @@
     },
     {
       "id": "L3W",
+      "bgm": "daily",
       "title": "下雨就換一個地方",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -613,6 +620,7 @@
     },
     {
       "id": "L3F",
+      "bgm": "daily",
       "title": "不是站得久，才算有人要",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -668,6 +676,7 @@
     },
     {
       "id": "L4",
+      "bgm": "daily",
       "title": "藍橋的燈",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -740,6 +749,7 @@
     },
     {
       "id": "L5",
+      "bgm": "tension",
       "title": "風先到了",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -842,6 +852,7 @@
     },
     {
       "id": "L6",
+      "bgm": "tension",
       "title": "把人留在約定之外",
       "chapter": "井邊與藍橋",
       "beats": [
@@ -928,6 +939,7 @@
     },
     {
       "id": "A0",
+      "bgm": "tension",
       "title": "店門今晚不早關",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1004,6 +1016,7 @@
     },
     {
       "id": "A1P",
+      "bgm": "daily",
       "title": "一碗湯不是一份聘",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1063,6 +1076,7 @@
     },
     {
       "id": "A1M",
+      "bgm": "daily",
       "title": "母親沒問那個年歲",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1122,6 +1136,7 @@
     },
     {
       "id": "A2",
+      "bgm": "tension",
       "title": "雨聲裡還有別的事",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1204,6 +1219,7 @@
     },
     {
       "id": "A3S",
+      "bgm": "tension",
       "title": "多一口灶，也要有人歇",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1263,6 +1279,7 @@
     },
     {
       "id": "A3R",
+      "bgm": "tension",
       "title": "少一個名字的夜",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1318,6 +1335,7 @@
     },
     {
       "id": "A4",
+      "bgm": "daily",
       "title": "雨停，不是只能留下",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1404,6 +1422,7 @@
     },
     {
       "id": "A5S",
+      "bgm": "daily",
       "title": "不用站在橋上等一生",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1464,6 +1483,7 @@
     },
     {
       "id": "A5T",
+      "bgm": "daily",
       "title": "走到橋那一頭去",
       "chapter": "燈下先有回話",
       "beats": [
@@ -1520,6 +1540,7 @@
     },
     {
       "id": "B0",
+      "bgm": "tension",
       "title": "請你先離開那裡",
       "chapter": "走下那座橋",
       "beats": [
@@ -1596,6 +1617,7 @@
     },
     {
       "id": "B1K",
+      "bgm": "tension",
       "title": "他自己走下橋的",
       "chapter": "走下那座橋",
       "beats": [
@@ -1651,6 +1673,7 @@
     },
     {
       "id": "B1N",
+      "bgm": "tension",
       "title": "沒有留下信物就走",
       "chapter": "走下那座橋",
       "beats": [
@@ -1710,6 +1733,7 @@
     },
     {
       "id": "B2",
+      "bgm": "tension",
       "title": "她想罵的那個人還在",
       "chapter": "走下那座橋",
       "beats": [
@@ -1796,6 +1820,7 @@
     },
     {
       "id": "B3P",
+      "bgm": "tension",
       "title": "我先怕，再生氣",
       "chapter": "走下那座橋",
       "beats": [
@@ -1847,6 +1872,7 @@
     },
     {
       "id": "B3F",
+      "bgm": "tension",
       "title": "別替她笑著原諒",
       "chapter": "走下那座橋",
       "beats": [
@@ -1902,6 +1928,7 @@
     },
     {
       "id": "B4",
+      "bgm": "daily",
       "title": "沒有試題的約會",
       "chapter": "走下那座橋",
       "beats": [
@@ -1988,6 +2015,7 @@
     },
     {
       "id": "B5H",
+      "bgm": "daily",
       "title": "喜酒不請河水作證",
       "chapter": "走下那座橋",
       "beats": [
@@ -2043,6 +2071,7 @@
     },
     {
       "id": "B5W",
+      "bgm": "daily",
       "title": "你來時，不必先證明",
       "chapter": "走下那座橋",
       "beats": [
@@ -2102,6 +2131,7 @@
     },
     {
       "id": "C0",
+      "bgm": "tension",
       "title": "橋下的聲音變了",
       "chapter": "水退以後",
       "beats": [
@@ -2174,6 +2204,7 @@
     },
     {
       "id": "C1B",
+      "bgm": "tension",
       "title": "水裡沒有一份情書",
       "chapter": "水退以後",
       "beats": [
@@ -2225,6 +2256,7 @@
     },
     {
       "id": "C1S",
+      "bgm": "tension",
       "title": "兩家都有人出去找",
       "chapter": "水退以後",
       "beats": [
@@ -2284,6 +2316,7 @@
     },
     {
       "id": "C2",
+      "bgm": "sad",
       "title": "被救起的人，不欠一場婚",
       "chapter": "水退以後",
       "beats": [
@@ -2370,6 +2403,7 @@
     },
     {
       "id": "C3N",
+      "bgm": "sad",
       "title": "同一座鎮，不同的夢",
       "chapter": "水退以後",
       "beats": [
@@ -2425,6 +2459,7 @@
     },
     {
       "id": "C3A",
+      "bgm": "sad",
       "title": "他換了一扇窗",
       "chapter": "水退以後",
       "beats": [
@@ -2484,6 +2519,7 @@
     },
     {
       "id": "C4N",
+      "bgm": "tension",
       "title": "還想見，不等於已不怕",
       "chapter": "水退以後",
       "beats": [
@@ -2552,6 +2588,7 @@
     },
     {
       "id": "C4A",
+      "bgm": "tension",
       "title": "回來以後，還能再問",
       "chapter": "水退以後",
       "beats": [
@@ -2620,6 +2657,7 @@
     },
     {
       "id": "C5R",
+      "bgm": "daily",
       "title": "先從一條不過橋的路",
       "chapter": "水退以後",
       "beats": [
@@ -2676,6 +2714,7 @@
     },
     {
       "id": "C5N",
+      "bgm": "daily",
       "title": "不是當夜那個人，也仍是你",
       "chapter": "水退以後",
       "beats": [
@@ -2732,6 +2771,7 @@
     },
     {
       "id": "C5L",
+      "bgm": "sad",
       "title": "把那條汗巾還給你",
       "chapter": "水退以後",
       "beats": [
@@ -2792,6 +2832,7 @@
     },
     {
       "id": "C5G",
+      "bgm": "sad",
       "title": "這回不把沉默當答案",
       "chapter": "水退以後",
       "beats": [
@@ -2844,6 +2885,7 @@
     },
     {
       "id": "E1",
+      "bgm": "ending",
       "title": "橋邊白首",
       "chapter": "明日仍有人",
       "beats": [
@@ -2937,6 +2979,7 @@
     },
     {
       "id": "E2",
+      "bgm": "ending",
       "title": "同行有歸期",
       "chapter": "明日仍有人",
       "beats": [
@@ -3005,6 +3048,7 @@
     },
     {
       "id": "E3",
+      "bgm": "ending",
       "title": "雨停成家",
       "chapter": "明日仍有人",
       "beats": [
@@ -3077,6 +3121,7 @@
     },
     {
       "id": "E4",
+      "bgm": "ending",
       "title": "來日有約",
       "chapter": "明日仍有人",
       "beats": [
@@ -3137,6 +3182,7 @@
     },
     {
       "id": "E5",
+      "bgm": "ending",
       "title": "水退之後",
       "chapter": "明日仍有人",
       "beats": [
@@ -3223,6 +3269,7 @@
     },
     {
       "id": "E6",
+      "bgm": "sad",
       "title": "不以此相留",
       "chapter": "明日仍有人",
       "beats": [

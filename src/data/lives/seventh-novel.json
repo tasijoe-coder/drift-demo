@@ -10,6 +10,7 @@
   "nodes": [
     {
       "id": "V0",
+      "bgm": "theme",
       "title": "第七頁先留一個空",
       "chapter": "彩樓以前",
       "beats": [
@@ -102,6 +103,7 @@
     },
     {
       "id": "V1",
+      "bgm": "daily",
       "title": "畫裡少了一扇門",
       "chapter": "彩樓以前",
       "beats": [
@@ -226,6 +228,7 @@
     },
     {
       "id": "V1D",
+      "bgm": "daily",
       "title": "這裡有人住",
       "chapter": "彩樓以前",
       "beats": [
@@ -281,6 +284,7 @@
     },
     {
       "id": "V1U",
+      "bgm": "daily",
       "title": "傘骨不認姓氏",
       "chapter": "彩樓以前",
       "beats": [
@@ -336,6 +340,7 @@
     },
     {
       "id": "V2",
+      "bgm": "daily",
       "title": "還沒接球的那些日子",
       "chapter": "彩樓以前",
       "beats": [
@@ -554,6 +559,7 @@
     },
     {
       "id": "V3",
+      "bgm": "daily",
       "title": "彩樓搭起以前",
       "chapter": "彩樓以前",
       "beats": [
@@ -626,6 +632,7 @@
     },
     {
       "id": "V3R",
+      "bgm": "tension",
       "title": "不是把自己拋下去",
       "chapter": "彩樓以前",
       "beats": [
@@ -685,6 +692,7 @@
     },
     {
       "id": "V3L",
+      "bgm": "tension",
       "title": "不是怕接不著",
       "chapter": "彩樓以前",
       "beats": [
@@ -744,6 +752,7 @@
     },
     {
       "id": "V4",
+      "bgm": "daily",
       "title": "那幅三年後的畫",
       "chapter": "彩樓以前",
       "beats": [
@@ -852,6 +861,7 @@
     },
     {
       "id": "V5",
+      "bgm": "tension",
       "title": "彩球落到人群裡",
       "chapter": "彩樓以前",
       "beats": [
@@ -966,6 +976,7 @@
     },
     {
       "id": "V6",
+      "bgm": "tension",
       "title": "眾人都說命定",
       "chapter": "彩樓以前",
       "beats": [
@@ -1036,6 +1047,7 @@
     },
     {
       "id": "A0",
+      "bgm": "tension",
       "title": "台上留兩個位置",
       "chapter": "本人親口作答",
       "beats": [
@@ -1100,6 +1112,7 @@
     },
     {
       "id": "A1L",
+      "bgm": "tension",
       "title": "球還給你，話留給我",
       "chapter": "本人親口作答",
       "beats": [
@@ -1159,6 +1172,7 @@
     },
     {
       "id": "A1R",
+      "bgm": "tension",
       "title": "她沒有把人交給天",
       "chapter": "本人親口作答",
       "beats": [
@@ -1214,6 +1228,7 @@
     },
     {
       "id": "A2",
+      "bgm": "tension",
       "title": "沒有門第可替人回答",
       "chapter": "本人親口作答",
       "beats": [
@@ -1292,6 +1307,7 @@
     },
     {
       "id": "A3P",
+      "bgm": "tension",
       "title": "撿回來的，也是自己的孩子",
       "chapter": "本人親口作答",
       "beats": [
@@ -1343,6 +1359,7 @@
     },
     {
       "id": "A3D",
+      "bgm": "tension",
       "title": "不是嫁出去才有人生",
       "chapter": "本人親口作答",
       "beats": [
@@ -1398,6 +1415,7 @@
     },
     {
       "id": "A4",
+      "bgm": "tension",
       "title": "第三年的封口",
       "chapter": "本人親口作答",
       "beats": [
@@ -1488,6 +1506,7 @@
     },
     {
       "id": "A5O",
+      "bgm": "daily",
       "title": "先問你如今的名字",
       "chapter": "本人親口作答",
       "beats": [
@@ -1549,6 +1568,7 @@
     },
     {
       "id": "A5C",
+      "bgm": "daily",
       "title": "不必知道才算認得",
       "chapter": "本人親口作答",
       "beats": [
@@ -1606,6 +1626,7 @@
     },
     {
       "id": "B0",
+      "bgm": "tension",
       "title": "先把門關上，聽本人",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -1670,6 +1691,7 @@
     },
     {
       "id": "B1P",
+      "bgm": "tension",
       "title": "不必在人群裡答一生",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -1721,6 +1743,7 @@
     },
     {
       "id": "B1F",
+      "bgm": "tension",
       "title": "翠娥有自己的去處",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -1772,6 +1795,7 @@
     },
     {
       "id": "B2",
+      "bgm": "daily",
       "title": "喜事以外的人也在",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -1854,6 +1878,7 @@
     },
     {
       "id": "B3S",
+      "bgm": "daily",
       "title": "一桌坐得下自己的人",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -1917,6 +1942,7 @@
     },
     {
       "id": "B3D",
+      "bgm": "daily",
       "title": "一季不是一道試題",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -1972,6 +1998,7 @@
     },
     {
       "id": "B4",
+      "bgm": "daily",
       "title": "成家第三年，仍可往外看",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -2046,6 +2073,7 @@
     },
     {
       "id": "B5T",
+      "bgm": "daily",
       "title": "把這座城畫到有人回家",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -2107,6 +2135,7 @@
     },
     {
       "id": "B5R",
+      "bgm": "daily",
       "title": "帶一張還能添筆的圖",
       "chapter": "熱鬧之外的家",
       "beats": [
@@ -2168,6 +2197,7 @@
     },
     {
       "id": "C0",
+      "bgm": "tension",
       "title": "喜燈底下有煙",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2236,6 +2266,7 @@
     },
     {
       "id": "C1F",
+      "bgm": "tension",
       "title": "他們先叫了彼此的名字",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2287,6 +2318,7 @@
     },
     {
       "id": "C1G",
+      "bgm": "tension",
       "title": "客名不是一行喜字",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2338,6 +2370,7 @@
     },
     {
       "id": "C2",
+      "bgm": "tension",
       "title": "沒有婚禮，仍可以問婚事",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2420,6 +2453,7 @@
     },
     {
       "id": "C3H",
+      "bgm": "tension",
       "title": "重建不是重辦一場給人看",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2475,6 +2509,7 @@
     },
     {
       "id": "C3W",
+      "bgm": "daily",
       "title": "一把傘下還有自己的手",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2526,6 +2561,7 @@
     },
     {
       "id": "C4H",
+      "bgm": "daily",
       "title": "三年後，杯底仍有月",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2594,6 +2630,7 @@
     },
     {
       "id": "C4W",
+      "bgm": "daily",
       "title": "知道來處，還能選去處",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2658,6 +2695,7 @@
     },
     {
       "id": "C5R",
+      "bgm": "daily",
       "title": "這一生，先到白頭",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2726,6 +2764,7 @@
     },
     {
       "id": "C5B",
+      "bgm": "daily",
       "title": "帶著名字回去，不帶一份欠",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2786,6 +2825,7 @@
     },
     {
       "id": "C5H",
+      "bgm": "daily",
       "title": "不把明日交回判詞",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2847,6 +2887,7 @@
     },
     {
       "id": "C5E",
+      "bgm": "daily",
       "title": "畫卷收好，門仍朝外開",
       "chapter": "杯底仍有月",
       "beats": [
@@ -2904,6 +2945,7 @@
     },
     {
       "id": "E1",
+      "bgm": "ending",
       "title": "七頁人間",
       "chapter": "第七頁的日常",
       "beats": [
@@ -2993,6 +3035,7 @@
     },
     {
       "id": "E2",
+      "bgm": "ending",
       "title": "不問前生",
       "chapter": "第七頁的日常",
       "beats": [
@@ -3070,6 +3113,7 @@
     },
     {
       "id": "E3",
+      "bgm": "ending",
       "title": "一城燈火",
       "chapter": "第七頁的日常",
       "beats": [
@@ -3134,6 +3178,7 @@
     },
     {
       "id": "E4",
+      "bgm": "ending",
       "title": "山河同行",
       "chapter": "第七頁的日常",
       "beats": [
@@ -3194,6 +3239,7 @@
     },
     {
       "id": "E5",
+      "bgm": "ending",
       "title": "杯中有月",
       "chapter": "第七頁的日常",
       "beats": [
@@ -3321,6 +3367,7 @@
     },
     {
       "id": "E6",
+      "bgm": "ending",
       "title": "把明日留給人間",
       "chapter": "第七頁的日常",
       "beats": [

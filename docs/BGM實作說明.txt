@@ -1,0 +1,39 @@
+月老｜七世人間 BGM
+
+音檔
+使用玩家提供的五個MP3，原樣複製到public/music，正式檔名統一大小寫：
+theme   RED_LINE01.mp3   封面、各世序幕
+daily   RED_LINE02.mp3   相識、日常、重建
+tension RED_LINE03.mp3   徵役、假信、替嫁、暴雨、查證與危機
+sad     RED_LINE04.mp3   死訊、失散、失去與道別；部分哀傷結局維持本曲
+ending  RED_LINE05.mp3   重逢、相守、白頭及天庭請願後的出發
+
+節點
+八世正文366節點、第〇世3節點、後日談入口及4場共374個公開配樂標記。
+舊序幕qin-opening亦補上bgm。後日談六種入口沿用同一個theme標記。
+對照見BGM節點對照.tsv。標記直接寫入節點資料，不在播放器靠段號或文字猜測。
+段號只是起點：例如荊釵篇假信前已轉緊張、藍橋篇前四段仍偏日常；亡故後的教養與告別仍有sad。
+劇情文字、路線ID、條件、結局、句數書籤及所有進度鍵未更改。
+
+播放器
+src/data/bgm.json設定路徑、maxVolume=0.45、crossfadeMs=2000。
+src/hx/bgm_engine.ts管理純狀態與淡化；src/hx/bgm.ts提供瀏覽器串流與React接點。
+同bgm的節點不重新呼叫play，也不更動currentTime；不同bgm等待新曲可播放才讓舊曲淡出。
+採HTMLAudioElement串流與Web Audio GainNode控制音量，不整首解碼成AudioBuffer，也不依賴iOS的audio.volume。
+首次pointerdown／Enter／Space內同步resume AudioContext與解鎖media elements；以極短靜音PCM啟用音訊，不預先下載全部五首。
+每曲循環播放。換曲以2秒線性音量交叉淡化；快速換第三首時，從當下的插值音量重新淡化，不讓總增益超過0.45。
+淡出完成才pause舊曲；回到該曲可從既有時間續播。
+visibilitychange／pagehide會取消過渡、立即歸零並pause全部曲目，保留播放位置。恢復前景則僅將目前劇情的曲目由0淡入續播。
+非同步載入若已過時、已靜音或已在背景，不得重新響起。play拒絕不影響閱讀，下次有效手勢可重試。
+右上音樂開關及設定內背景音樂開關共用hx.bgm.muted.v1；原有hx.muted只控制合成音效。
+偏好為靜音時，返回前景或重新整理不會自行取消靜音。
+
+驗證
+test:bgm：首次手勢前不建音訊、同曲續播、2秒淡化、快速切換、音量上限、背景保留時間、靜音保存、過時載入、播放拒絕與重試。
+另檢查416個實例節點／入口（含六種後日談與舊序幕）配樂有效、五首MP3存在且檔頭正確。
+Chrome實測：第一次點擊才建立音訊；主題曲在封面與序章間不中斷；靜音立即pause全部、重新整理仍保持關閉。
+iPhone／Android實機音量、鎖屏解鎖及不同Safari版本的首次播放仍需實機試讀。
+
+平台參考
+Apple Safari HTML5 Audio and Video Guide（音訊自動播放與iOS音量限制）：
+https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/Device-SpecificConsiderations/Device-SpecificConsiderations.html
