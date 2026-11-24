@@ -36,7 +36,8 @@ function walk(position:NovelPosition,chars=0){
   chars+=beats.reduce((s,b)=>s+b.text.length,0)
   if(node.ending){
     assert.equal(route.length,16);assert.equal(position.choices.length,6)
-    assert.ok(chars>=12500&&chars<=14000,node.id+': actual visible text '+chars)
+    // The editorial trial trims repeated daily scenes while retaining all 16 scenes.
+    assert.ok(chars>=11500&&chars<=14000,node.id+': actual visible text '+chars)
     assert.deepEqual(advanceNovel(story,position),position)
     assert.deepEqual(restoreNovel(story,finishNovel(story,position)),{...position,finished:true})
     assert.equal(flags.together,!['E4','E6'].includes(node.id))

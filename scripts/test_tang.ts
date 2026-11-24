@@ -37,7 +37,8 @@ function walk(position:NovelPosition, chars=0){
   chars+=beats.reduce((n,b)=>n+b.text.length,0)
   if(node.ending){
     assert.equal(route.length,16);assert.equal(position.choices.length,6)
-    assert.ok(chars>=12500&&chars<=14000,`${node.id}: actual visible length ${chars}`)
+    // The editorial trial trims repeated daily scenes while retaining all 16 scenes.
+    assert.ok(chars>=11500&&chars<=14000,`${node.id}: actual visible length ${chars}`)
     assert.deepEqual(advanceNovel(story,position),position)
     assert.deepEqual(restoreNovel(story,finishNovel(story,position)),{...position,finished:true})
     if(node.id==='E1'){assert.equal(node.perfect,true);assert.ok(beats.some(b=>b.text.includes('白首')))}
