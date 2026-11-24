@@ -9,6 +9,9 @@ export function ReaderHeader({ subtitle, onBack, backLabel = '返回首頁', lef
 }) {
   const { large, muted, toggleLarge, toggleSound } = useReaderPreferences()
   const music = useBgm()
+  const musicPlaying = !music.muted && music.status === 'playing'
+  const musicRetry = !music.muted && ['locked', 'paused', 'blocked'].includes(music.status)
+  const musicLabel = music.muted ? '音樂關' : music.status === 'blocked' ? '重試' : musicRetry ? '播放' : music.status === 'loading' ? '載入中' : '音樂開'
   const dialog = useRef<HTMLDialogElement>(null)
   const titleId = useId()
   const open = () => {
@@ -20,7 +23,7 @@ export function ReaderHeader({ subtitle, onBack, backLabel = '返回首頁', lef
       {onBack ? <button type="button" aria-label={backLabel} onClick={onBack}>← 返回</button> : <span className="reader-header-note">{leftNote}</span>}
       <div className="reader-brand">月老<small>{subtitle}</small></div>
       <div className="reader-header-actions">
-        <button type="button" className={`reader-music-trigger${music.muted ? '' : ' music-enabled'}`} aria-label={music.muted ? '開啟音樂' : '靜音音樂'} aria-pressed={!music.muted} data-bgm-track={music.track} data-bgm-status={music.status} onClick={music.toggleMusic}>{music.muted ? '音樂關' : '音樂開'}</button>
+        <button type="button" className={`reader-music-trigger${musicPlaying ? ' music-enabled' : ''}`} aria-label={music.muted ? '開啟音樂' : musicRetry ? '播放音樂' : '靜音音樂'} aria-pressed={musicPlaying} data-bgm-track={music.track} data-bgm-status={music.status} onClick={musicRetry ? music.playMusic : music.toggleMusic}>{musicLabel}</button>
         <button type="button" className={`reader-settings-trigger${auto ? " is-playing" : ""}`} aria-haspopup="dialog" onClick={open}>設定</button>
       </div>
     </header>

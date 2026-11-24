@@ -1,6 +1,7 @@
 {
   "maxVolume": 0.45,
   "crossfadeMs": 2000,
+  "startTimeoutMs": 10000,
   "tracks": {
     "theme": "/music/RED_LINE01.mp3",
     "daily": "/music/RED_LINE02.mp3",

@@ -25,27 +25,51 @@ class Voice implements BgmVoice {
     if (!this.running) { this.running = true; this.since = this.clock() }
   }
   pause() { this.stored = this.position; this.running = false }
+  isPlaying() { return this.running }
   ramp(from: number, to: number, seconds: number) { this.from = from; this.to = to; this.seconds = seconds; this.at = this.clock() }
 }
 function setup(muted = false) {
-  let now = 0; let created = 0; let primes = 0
+  let now = 0; let created = 0
   const timers = new Set<{ due: number; callback: () => void }>()
   const voices = Object.fromEntries(tracks.map(track => [track, new Voice(() => now)])) as Record<BgmTrack, Voice>
   const saved: boolean[] = []
-  const backend: BgmBackend = { voices, prime: async () => { primes++ }, resume: async () => {}, now: () => now,
+  const backend: BgmBackend = { voices, resume: async () => {}, now: () => now,
     later: (callback, ms) => { const timer = { due: now + ms / 1000, callback }; timers.add(timer); return () => { timers.delete(timer) } },
   }
   const engine = new BgmEngine(() => { created++; return backend }, muted, value => saved.push(value))
-  return { engine, voices, saved, get created() { return created }, get primes() { return primes },
+  return { engine, voices, saved, get created() { return created },
     tick: (seconds: number) => { now += seconds; for (const timer of [...timers]) if (timer.due <= now) { timers.delete(timer); timer.callback() } },
   }
 }
+const gesture = setup()
+gesture.engine.unlock()
+assert.equal(gesture.voices.theme.plays, 1, 'Start the real track synchronously inside the gesture, before awaiting resume or other media')
+await settle()
+
+const hung = setup()
+hung.voices.theme.delay = new Promise<void>(() => {})
+hung.engine.unlock()
+hung.tick(10)
+assert.equal(hung.engine.getSnapshot().status, 'blocked', 'A stalled start must expose retry instead of staying loading forever')
+hung.voices.theme.delay = undefined
+hung.engine.unlock(); await settle()
+assert.equal(hung.engine.getSnapshot().status, 'playing', 'A subsequent gesture can recover a stalled start')
+
+const interrupted = setup()
+interrupted.engine.unlock(); await settle(); interrupted.tick(2)
+interrupted.voices.theme.pause()
+const interruptedAt = interrupted.voices.theme.position
+interrupted.engine.unlock()
+assert.equal(interrupted.voices.theme.plays, 2, 'Retry a media element paused by the operating system, even if the mixer previously reported playing')
+await settle()
+assert.equal(interrupted.voices.theme.position, interruptedAt, 'Recovery must keep the playback position')
+
 const a = setup()
 assert.equal(a.created, 0, 'Do not construct audio or autoplay before interaction')
 a.engine.setTrack('daily')
 assert.equal(a.voices.daily.plays, 0)
 a.engine.unlock(); await settle()
-assert.equal(a.created, 1); assert.equal(a.primes, 1)
+assert.equal(a.created, 1)
 assert.equal(a.voices.daily.seconds, 2)
 a.tick(2)
 assert.equal(a.voices.daily.level, .45)
@@ -89,7 +113,7 @@ assert.deepEqual(a.saved, [true, false])
 const b = setup(true)
 b.engine.unlock(); await settle()
 assert.ok(tracks.every(track => b.voices[track].plays === 0), 'Restored mute suppresses music')
-b.engine.setMuted(false); await settle(); b.tick(2)
+b.engine.setMuted(false); b.engine.unlock(); await settle(); b.tick(2)
 let resolve!: () => void
 b.voices.daily.delay = new Promise<void>(yes => { resolve = yes })
 b.engine.setTrack('daily'); await settle()

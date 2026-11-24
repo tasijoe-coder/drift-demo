@@ -20,7 +20,10 @@ src/data/bgm.json設定路徑、maxVolume=0.45、crossfadeMs=2000。
 src/hx/bgm_engine.ts管理純狀態與淡化；src/hx/bgm.ts提供瀏覽器串流與React接點。
 同bgm的節點不重新呼叫play，也不更動currentTime；不同bgm等待新曲可播放才讓舊曲淡出。
 採HTMLAudioElement串流與Web Audio GainNode控制音量，不整首解碼成AudioBuffer，也不依賴iOS的audio.volume。
-首次pointerdown／Enter／Space內同步resume AudioContext與解鎖media elements；以極短靜音PCM啟用音訊，不預先下載全部五首。
+首次click／touchend／Enter／Space內同步resume AudioContext，並直接對當前真正的MP3呼叫play，不等待靜音片段或其他四首曲目。
+支援Audio Session API的瀏覽器指定playback用途；未支援時沿用正常音訊流程。
+播放未開始時顯示播放／載入中／重試，而非直接顯示音樂開；10秒未完成初始化可重新點擊，不永久卡住。
+作業系統中斷音訊後，即使舊狀態曾顯示播放中，也會檢查實際context及media element狀態並允許點擊恢復。
 每曲循環播放。換曲以2秒線性音量交叉淡化；快速換第三首時，從當下的插值音量重新淡化，不讓總增益超過0.45。
 淡出完成才pause舊曲；回到該曲可從既有時間續播。
 visibilitychange／pagehide會取消過渡、立即歸零並pause全部曲目，保留播放位置。恢復前景則僅將目前劇情的曲目由0淡入續播。
@@ -30,6 +33,7 @@ visibilitychange／pagehide會取消過渡、立即歸零並pause全部曲目，
 
 驗證
 test:bgm：首次手勢前不建音訊、同曲續播、2秒淡化、快速切換、音量上限、背景保留時間、靜音保存、過時載入、播放拒絕與重試。
+另測試真正的曲目必須在手勢呼叫堆疊內立即啟動、初始化卡住後重試，以及作業系統暫停後原位置續播。
 另檢查416個實例節點／入口（含六種後日談與舊序幕）配樂有效、五首MP3存在且檔頭正確。
 Chrome實測：第一次點擊才建立音訊；主題曲在封面與序章間不中斷；靜音立即pause全部、重新整理仍保持關閉。
 iPhone／Android實機音量、鎖屏解鎖及不同Safari版本的首次播放仍需實機試讀。
@@ -37,3 +41,4 @@ iPhone／Android實機音量、鎖屏解鎖及不同Safari版本的首次播放�
 平台參考
 Apple Safari HTML5 Audio and Video Guide（音訊自動播放與iOS音量限制）：
 https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/Device-SpecificConsiderations/Device-SpecificConsiderations.html
+WebKit音訊靜音／Audio Session問題記錄：https://bugs.webkit.org/show_bug.cgi?id=252746

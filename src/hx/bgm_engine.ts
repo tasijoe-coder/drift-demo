@@ -8,12 +8,12 @@ export interface BgmVoice {
   play(): Promise<void>
   pause(): void
   ramp(from: number, to: number, seconds: number): void
+  isPlaying?(): boolean
 }
 export interface BgmBackend {
   voices: Record<BgmTrack, BgmVoice>
-  /** Called synchronously within the first user gesture. */
-  prime(): Promise<void>
   resume(): Promise<void>
+  isRunning?(): boolean
   now(): number
   later(callback: () => void, ms: number): () => void
 }
@@ -67,6 +67,16 @@ export class BgmEngine {
     this.playing.clear()
     this.publish({ status: this.ready ? 'paused' : 'locked' })
   }
+  private startTrack(track: BgmTrack) {
+    let play = this.pending.get(track)
+    if (!play) {
+      this.fade(track, 0, 0)
+      play = this.backend!.voices[track].play()
+      this.pending.set(track, play)
+      void play.finally(() => { if (this.pending.get(track) === play) this.pending.delete(track) }).catch(() => {})
+    }
+    return play
+  }
   setTrack(track: BgmTrack) {
     if (this.snapshot.track === track) return
     this.publish({ track })
@@ -85,20 +95,48 @@ export class BgmEngine {
     if (hidden) this.stop()
     else void this.reconcile()
   }
-  /** All resume/priming calls happen before the first await, inside the gesture. */
+  /** Start the actual MP3 inside the trusted gesture, not after an async warmup. */
   unlock = () => {
-    if (this.hidden || this.unlocking || (this.ready && this.snapshot.status !== 'blocked')) return
+    if (this.hidden || this.snapshot.muted || this.unlocking) return
+    const track = this.snapshot.track
+    if (this.ready && this.snapshot.status === 'playing' && this.backend?.isRunning?.() !== false && this.backend?.voices[track].isPlaying?.() !== false) return
     this.unlocking = true
     try {
       this.backend ??= this.createBackend()
       const resume = this.backend.resume()
-      const prime = this.ready ? Promise.resolve() : this.backend.prime()
-      void Promise.all([resume, prime]).then(() => {
+      const play = this.playing.has(track) && this.backend.voices[track].isPlaying?.() !== false ? Promise.resolve() : this.startTrack(track)
+      this.publish({ status: 'loading' })
+      let settled = false
+      const cancelTimeout = this.backend.later(() => {
+        if (settled) return
+        settled = true
+        this.unlocking = false
+        if (!this.playing.has(track) || this.pending.has(track) || this.backend!.isRunning?.() === false) {
+          this.backend!.voices[track].pause()
+          this.playing.delete(track)
+          this.pending.delete(track)
+        }
+        if (!this.hidden && !this.snapshot.muted) this.publish({ status: 'blocked' })
+      }, config.startTimeoutMs)
+      void Promise.all([resume, play]).then(() => {
+        if (settled) return
+        settled = true
+        cancelTimeout()
         this.ready = true
         this.unlocking = false
-        if (this.hidden || this.snapshot.muted) this.stop()
-        else void this.reconcile()
-      }).catch(() => { this.unlocking = false; this.publish({ status: 'blocked' }) })
+        if (this.hidden || this.snapshot.muted) { this.backend!.voices[track].pause(); this.stop() }
+        else {
+          if (this.snapshot.track === track) this.playing.add(track)
+          else this.backend!.voices[track].pause()
+          void this.reconcile()
+        }
+      }).catch(() => {
+        if (settled) return
+        settled = true
+        cancelTimeout()
+        this.unlocking = false
+        if (!this.hidden && !this.snapshot.muted) this.publish({ status: 'blocked' })
+      })
     } catch { this.unlocking = false; this.publish({ status: 'blocked' }) }
   }
   private async reconcile() {
@@ -111,15 +149,8 @@ export class BgmEngine {
     try {
       await this.backend.resume()
       if (token !== this.generation) return
-      if (!this.playing.has(track)) {
-        let play = this.pending.get(track)
-        if (!play) {
-          this.fade(track, 0, 0)
-          play = voice.play()
-          this.pending.set(track, play)
-          void play.finally(() => { if (this.pending.get(track) === play) this.pending.delete(track) }).catch(() => {})
-        }
-        await play
+      if (!this.playing.has(track) || voice.isPlaying?.() === false) {
+        await this.startTrack(track)
       }
       if (token !== this.generation) {
         if (this.hidden || this.snapshot.muted || (this.snapshot.track !== track && this.level(track) === 0)) voice.pause()

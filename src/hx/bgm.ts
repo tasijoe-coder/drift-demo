@@ -4,41 +4,30 @@ import { BgmEngine, type BgmBackend, type BgmTrack } from './bgm_engine'
 
 export const BGM_MUTE_KEY = 'hx.bgm.muted.v1'
 const tracks = Object.keys(config.tracks) as BgmTrack[]
-// Tiny silent PCM clips unlock media elements without downloading all five MP3s.
-function silence() {
-  const data = new Uint8Array(844)
-  const view = new DataView(data.buffer)
-  for (const [offset, word] of [[0, 'RIFF'], [8, 'WAVE'], [12, 'fmt '], [36, 'data']] as const)
-    for (let i = 0; i < word.length; i++) data[offset + i] = word.charCodeAt(i)
-  view.setUint32(4, 836, true); view.setUint32(16, 16, true)
-  view.setUint16(20, 1, true); view.setUint16(22, 1, true)
-  view.setUint32(24, 8000, true); view.setUint32(28, 16000, true)
-  view.setUint16(32, 2, true); view.setUint16(34, 16, true); view.setUint32(40, 800, true)
-  return 'data:audio/wav;base64,' + btoa(String.fromCharCode(...data))
-}
 function createBackend(): BgmBackend {
   const Context = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+  // Ask supported Safari versions to treat this as music, not ambient effects.
+  try {
+    const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession
+    if (session) session.type = 'playback'
+  } catch { /* Older browsers can still use the normal media session. */ }
   const context = new Context()
-  const silent = silence()
   const channels = tracks.map(track => {
     const audio = document.createElement('audio')
     audio.hidden = true
     audio.loop = true
     audio.preload = 'none'
-    audio.src = silent
+    audio.src = config.tracks[track]
     audio.dataset.bgm = track
     document.body.append(audio)
     const source = context.createMediaElementSource(audio)
     const gain = context.createGain()
     gain.gain.value = 0
     source.connect(gain).connect(context.destination)
-    let configured = false
     return { track, audio, gain,
       voice: {
-        play: () => {
-          if (!configured) { audio.src = config.tracks[track]; configured = true }
-          return audio.play()
-        },
+        play: () => audio.play(),
+        isPlaying: () => !audio.paused,
         pause: () => audio.pause(),
         ramp: (from: number, to: number, seconds: number) => {
           const now = context.currentTime
@@ -52,8 +41,11 @@ function createBackend(): BgmBackend {
   })
   return {
     voices: Object.fromEntries(channels.map(channel => [channel.track, channel.voice])) as BgmBackend['voices'],
-    prime: () => Promise.all(channels.map(channel => channel.audio.play().then(() => channel.audio.pause()))).then(() => {}),
-    resume: () => context.state === 'running' ? Promise.resolve() : context.resume(),
+    resume: async () => {
+      if (context.state !== 'running') await context.resume()
+      if (context.state !== 'running') throw new Error('Audio context did not resume')
+    },
+    isRunning: () => context.state === 'running',
     now: () => context.currentTime,
     later: (callback, ms) => { const timer = window.setTimeout(callback, ms); return () => window.clearTimeout(timer) },
   }
@@ -64,7 +56,8 @@ export const bgm = new BgmEngine(createBackend, muted, value => {
   try { localStorage.setItem(BGM_MUTE_KEY, value ? '1' : '0') } catch { /* Keep session preference. */ }
 })
 export function installBgm() {
-  document.addEventListener('pointerdown', bgm.unlock, { capture: true })
+  document.addEventListener('click', bgm.unlock, { capture: true })
+  document.addEventListener('touchend', bgm.unlock, { capture: true, passive: true })
   document.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') bgm.unlock() }, { capture: true })
   document.addEventListener('visibilitychange', () => bgm.setHidden(document.hidden))
   window.addEventListener('pagehide', () => bgm.setHidden(true))
@@ -74,7 +67,7 @@ export function installBgm() {
 export function useBgmTrack(track?: BgmTrack) { useEffect(() => { if (track) bgm.setTrack(track) }, [track]) }
 export function useBgm() {
   const snapshot = useSyncExternalStore(bgm.subscribe, bgm.getSnapshot)
-  return { ...snapshot, toggleMusic: () => {
+  return { ...snapshot, playMusic: bgm.unlock, toggleMusic: () => {
     bgm.setMuted(!snapshot.muted)
     if (snapshot.muted) bgm.unlock()
   } }
