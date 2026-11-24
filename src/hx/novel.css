@@ -1,4 +1,35 @@
-.novel-reader .novel-placeholder{height:22svh;max-height:180px;aspect-ratio:auto}.novel-reader .novel-placeholder img{object-fit:cover;object-position:50% 58%;opacity:.85}
-.novel-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#9c795555 transparent;padding:20px 12px 30px;scroll-padding-top:20px}.novel-body:focus-visible{outline:2px solid #e6bd7d;outline-offset:-2px}.novel-body h1{font-size:24px;letter-spacing:3px;font-weight:400;margin:4px 0 28px;color:#e7c49b}.novel-body h1:focus{outline:0}.novel-paragraph{margin:0 0 22px}.novel-paragraph p{margin:0;font-size:17px;line-height:2.05;letter-spacing:.45px;overflow-wrap:anywhere}.novel-paragraph .zero-speaker{display:block;font-size:13px;margin:0 0 5px}.novel-large .novel-paragraph p{font-size:20px;line-height:2}.novel-choice{border-top:1px solid #c4946150;margin-top:34px;padding-top:18px}.novel-choice h2{font-weight:400;font-size:19px;line-height:1.8;margin:14px 0 22px;color:#f0d4ac}.novel-choice button{display:block;width:100%;text-align:left;min-height:64px;padding:18px 15px;margin:0 0 14px;border:1px solid #ae735d;border-radius:6px;background:#542b25;color:#f2e4d1}.novel-choice button:hover{background:#734035}.novel-choice button strong{display:block;font-size:17px;line-height:1.7;font-weight:400;margin-bottom:7px}.novel-choice button span{display:block;font-size:14px;line-height:1.8;color:#ddc4ac}.novel-choice-note{font-size:13px;line-height:1.85;color:#c8ae96}.novel-next{margin-top:32px}.novel-footer{display:flex;justify-content:space-between;gap:7px;flex:none;padding:8px 0 max(8px,env(safe-area-inset-bottom));border-top:1px solid #ddbe8330}.novel-footer button{min-height:44px;flex:1;font-size:13px;padding:8px 4px;background:transparent;border:1px solid #ac806250;color:#ddc4ac;border-radius:5px}.novel-ending .zero-primary{letter-spacing:1px;font-size:14px;justify-content:center}.novel-ending-count{padding-top:20px}.novel-ending-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0 10px}.novel-ending-list span{font-size:13px;line-height:1.7;color:#c8ae96;padding:9px 4px;border:1px solid #a47e5e30}.novel-entry{margin-top:14px}.novel-entry .zero-primary{background:linear-gradient(#4c382e,#35251e);border-color:#9b805b}.novel-entry .zero-primary:disabled{opacity:.6}.novel-entry p{font-size:12px;line-height:1.8;color:#c8ae96;letter-spacing:1px;margin:7px 0 0}.zero-home-actions>.zero-text-button{margin-top:5px}.zero-home-note{max-width:100%}
-@media(max-height:680px){.novel-reader .novel-placeholder{height:19svh;max-height:132px}.novel-body{padding-top:16px}.novel-paragraph p{font-size:17px;line-height:2}.novel-large .novel-paragraph p{font-size:20px}.novel-reader .zero-chapter-row{font-size:11px;letter-spacing:1px}}
-@media(prefers-reduced-motion:reduce){.novel-body{scroll-behavior:auto}}
+.novel-reader .novel-placeholder { height: 21svh; max-height: 170px; aspect-ratio: auto; }
+.novel-reader .novel-placeholder img { object-fit: cover; object-position: 50% 58%; opacity: .88; }
+.novel-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #9c795555 transparent; padding: 34px 12px 24px; scroll-padding-top: 34px; mask-image: linear-gradient(to bottom, transparent 0, #000 32px, #000 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 32px, #000 100%); }
+.novel-body:focus-visible { outline: 2px solid #e6bd7d; outline-offset: -2px; }
+.novel-body h1 { font: 400 25px/1.8 var(--reader-literary); letter-spacing: 2px; margin: 2px 0 30px; color: #e7c49b; }
+.novel-body h1:focus { outline: 0; }
+.novel-paragraph { margin: 0 0 24px; }
+.novel-paragraph p { margin: 0; font: 18px/2.05 var(--reader-literary); letter-spacing: .035em; overflow-wrap: anywhere; }
+.novel-paragraph .zero-speaker { margin: 0 0 8px; }
+.novel-large .novel-paragraph p { font-size: 21px; line-height: 2; }
+.novel-choice { border-top: 1px solid #c4946150; margin-top: 36px; padding: 22px 0 44px; }
+.novel-choice h2 { font: 400 20px/1.9 var(--reader-literary); margin: 14px 0 24px; color: #f0d4ac; }
+.novel-choice button { display: block; width: 100%; text-align: left; min-height: 64px; padding: 19px 17px; margin: 0 0 16px; border: 1px solid #bd91634a; border-left: 3px solid #9e3b33; border-radius: 4px; background: linear-gradient(110deg, #522e26, #33201c); color: #f6e8d3; box-shadow: inset 0 1px #ebbd7a09; }
+.novel-choice button:hover { background: #65382e; border-color: #b78357; border-left-color: #c45e48; }
+.novel-choice button strong { display: block; font: 500 18px/1.85 var(--reader-literary); color: #f8ead6; margin-bottom: 10px; }
+.novel-choice button span { display: block; font: 13px/1.9 var(--reader-ui); color: #c3ac96; }
+.novel-choice-note { font: 12px/1.9 var(--reader-ui); color: #bfa58d; }
+.novel-choice-note:last-child { margin: 14px 0 0; }
+.novel-next { margin-top: 32px; }
+.novel-footer { display: flex; justify-content: space-between; gap: 8px; flex: none; padding: 10px 0 max(8px, env(safe-area-inset-bottom)); border-top: 1px solid #ddbe832b; background: #190e0cf2; }
+.novel-footer button { min-height: 44px; min-width: 0; flex: 1; font: 12px/1.6 var(--reader-ui); padding: 8px 3px; background: transparent; border: 1px solid #ac80623d; color: #d5bca1; border-radius: 4px; }
+.novel-ending .zero-primary { letter-spacing: .8px; font-size: 15px; justify-content: center; }
+.novel-ending-count { padding-top: 20px; }
+.novel-ending .novel-ending-count { font-family: var(--reader-ui); font-size: 12px; }
+.novel-ending-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0 10px; }
+.novel-ending-list span { font: 12px/1.8 var(--reader-ui); color: #bfa58d; padding: 10px 5px; border: 1px solid #a47e5e30; }
+.novel-entry { margin-top: 16px; }
+.novel-entry p { font: 11px/1.8 var(--reader-ui); color: #ac947e; letter-spacing: .4px; margin: 8px 2px 0; }
+.novel-entry-primary { margin-top: 0; margin-bottom: 12px; }
+.novel-entry-primary .home-current-label { margin: 0 0 8px 2px; color: #d4ad79; font-size: 11px; letter-spacing: 3px; }
+.novel-entry-primary > p:last-child { color: #c0a58b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.zero-home-actions > .zero-text-button { margin-top: 8px; }
+@media (max-height: 700px) {
+  .novel-reader .novel-placeholder { height: 18svh; max-height: 128px; }
+}

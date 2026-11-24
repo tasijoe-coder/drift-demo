@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { advanceNovel, chooseNovel, finishNovel, novelNode, novelView, previousDecision, previousNovel, startNovel, type Novel, type NovelPosition } from '../engine/novel'
 import { novelKeys } from './novel_save'
+import { ReaderHeader } from './ReaderHeader'
+import { useReaderPreferences } from './reader_preferences'
 import './novel.css'
 
 export function NovelReader({ story, position, onChange, onHome, endings, onFinish, onAfterword }: {
@@ -15,9 +17,7 @@ export function NovelReader({ story, position, onChange, onHome, endings, onFini
   const heading = useRef<HTMLHeadingElement>(null)
   const lastNode = useRef<string | null>(null)
   const [imageFailed, setImageFailed] = useState(false)
-  const [textSize, setTextSize] = useState(() => {
-    try { return localStorage.getItem('hx.novel.large-text') === 'true' } catch { return false }
-  })
+  const { large: textSize } = useReaderPreferences()
   const remember = () => {
     try { localStorage.setItem(bookmarkKey, JSON.stringify({ node: position.node, top: body.current?.scrollTop ?? 0 })) } catch { /* Keep reading. */ }
   }
@@ -40,19 +40,10 @@ export function NovelReader({ story, position, onChange, onHome, endings, onFini
     try { localStorage.removeItem(bookmarkKey) } catch { /* Optional bookmark. */ }
     onChange(next)
   }
-  const toggleSize = () => {
-    const next = !textSize
-    setTextSize(next)
-    try { localStorage.setItem('hx.novel.large-text', String(next)) } catch { /* Session preference. */ }
-  }
   const finish = () => { onFinish(view.node.id); onChange(finishNovel(story, position)) }
   return <main className="zero-page">
     <div className={`zero-reader novel-reader${textSize ? ' novel-large' : ''}`} data-novel-node={view.node.id}>
-      <header className="zero-header">
-        <button type="button" aria-label="返回首頁" onClick={() => { remember(); onHome() }}>← 返回</button>
-        <div>紅線千年<small>{story.title}</small></div>
-        <button type="button" onClick={toggleSize} aria-pressed={textSize}>{textSize ? '標準字' : '大字'}</button>
-      </header>
+      <ReaderHeader subtitle={story.title} onBack={() => { remember(); onHome() }} />
       <figure className="zero-still novel-placeholder">
         {imageFailed ? <p className="zero-image-error">月老案前・暫代圖</p> : <img src="/art/zero/ledger.webp" alt={`暫代畫面：月老在渡口的姻緣簿前。${label}各段使用同一張圖。`} width="1200" height="800" onError={() => setImageFailed(true)} />}
         <figcaption>姻緣簿・{label}（暫代圖）</figcaption>
@@ -62,7 +53,7 @@ export function NovelReader({ story, position, onChange, onHome, endings, onFini
       <section className="novel-body" ref={body} tabIndex={0} aria-label={`${label}小說正文`} onScroll={remember}>
         <h1 ref={heading} tabIndex={-1}>{view.node.title}</h1>
         {view.beats.map((beat, i) => <article className="novel-paragraph" key={i}>
-          {beat.speaker !== '旁白' && <span className="zero-speaker">{beat.speaker}</span>}
+          {beat.speaker && beat.speaker !== '旁白' && <span className="zero-speaker">{beat.speaker}</span>}
           <p>{beat.text}</p>
         </article>)}
         {view.node.choice && <section className="novel-choice" aria-label="劇情選擇">
@@ -95,15 +86,17 @@ export function NovelReader({ story, position, onChange, onHome, endings, onFini
   </main>
 }
 
-export function NovelEntry({ story, position, unlocked, onBegin, lovers, unlockHint }: {
+export function NovelEntry({ story, position, unlocked, onBegin, lovers, unlockHint, primary = false }: {
   story: Novel; position: NovelPosition; unlocked: boolean; onBegin: () => void; lovers: string; unlockHint: string
+  primary?: boolean
 }) {
   const hasProgress = position.node !== story.start
   const label = story.title.split('・')[0]
   const ordinal = label.replace('第', '').replace('世', '')
   const endingCount = story.nodes.filter(node => node.ending).length
-  return <div className="novel-entry">
-    <button type="button" className="zero-primary" disabled={!unlocked} onClick={() => { if (unlocked) onBegin() }}>
+  return <div className={`novel-entry${primary ? ' novel-entry-primary' : ''}`}>
+    {primary && <p className="home-current-label">接續姻緣</p>}
+    <button type="button" className={`zero-primary${primary ? ' home-primary' : ' zero-secondary'}`} disabled={!unlocked} onClick={() => { if (unlocked) onBegin() }}>
       {unlocked ? position.finished ? `重訪${label}` : hasProgress ? `繼續閱讀${label}` : `閱讀${label}` : `${label}・尚未開啟`}
       <span aria-hidden="true">{unlocked ? ordinal : '鎖'}</span>
     </button>
