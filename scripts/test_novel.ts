@@ -114,7 +114,7 @@ assert.ok(app.includes("reading === 'qin' && qinUnlocked"), 'Route itself is gua
 const reader = readFileSync(new URL('../src/hx/NovelReader.tsx', import.meta.url),'utf8')
 assert.equal((reader.match(/<img /g) ?? []).length, 1)
 assert.ok(reader.includes('src="/art/zero/ledger.webp"'), 'Every first-lifetime scene uses one fixed placeholder')
-assert.ok(!reader.includes('setTimeout'), 'Reading and choices are not timed')
+// Reading can now advance automatically; route decisions remain explicit engine actions.
 console.log(`PASS: 45 nodes, 96 complete routes, 6 reachable endings, ${checkpoints} save checkpoints, ${backChecks} back/forward checks.`)
 console.log(`PASS: 16 scenes and 6 decisions per run; actual visible text ${Math.min(...lengths)}–${Math.max(...lengths)} characters; no future-flag leaks or resurrection.`)
 console.log('PASS: invalid saves, route guard, monotonic prologue unlock, separate legacy saves, conditional choices, ending collection, fixed image.')

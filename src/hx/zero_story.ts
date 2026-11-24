@@ -35,4 +35,4 @@ export function previousZero(position: StoryPosition): StoryPosition {
 }
 export const nextZero = (position: StoryPosition) => advanceStory(zeroStory, position)
 export const startZero = () => startStory(zeroStory)
-export const zeroDelay = (text: string) => Math.max(2400, [...text].length * 155 + 900)
+export { readingDelay as zeroDelay } from './reading_timing'

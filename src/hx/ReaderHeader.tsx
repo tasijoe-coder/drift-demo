@@ -16,8 +16,8 @@ export function ReaderHeader({ subtitle, onBack, backLabel = '返回首頁', lef
   return <>
     <header className="zero-header reader-header">
       {onBack ? <button type="button" aria-label={backLabel} onClick={onBack}>← 返回</button> : <span className="reader-header-note">{leftNote}</span>}
-      <div className="reader-brand">紅線千年<small>{subtitle}</small></div>
-      <button type="button" className="reader-settings-trigger" aria-haspopup="dialog" onClick={open}>設定</button>
+      <div className="reader-brand">月老<small>{subtitle}</small></div>
+      <button type="button" className={`reader-settings-trigger${auto ? " is-playing" : ""}`} aria-haspopup="dialog" onClick={open}>設定</button>
     </header>
     <dialog ref={dialog} className="reader-settings" aria-labelledby={titleId} onClick={event => {
       if (event.target === dialog.current) {

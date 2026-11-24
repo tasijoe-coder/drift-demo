@@ -14,7 +14,7 @@ for (const node of zeroStory.nodes) {
   for (const beat of node.beats) {
     assert.ok(beat.text.trim())
     assert.ok(beat.still && zeroStills[beat.still], 'Every displayed sentence must resolve to a static frame')
-    assert.ok(zeroDelay(beat.text) >= 2400)
+    assert.equal(zeroDelay(beat.text), 1200 + [...beat.text].length * 120)
   }
 }
 let position = startZero()

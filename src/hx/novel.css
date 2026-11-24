@@ -5,10 +5,16 @@
 .novel-body h1 { font: 400 25px/1.8 var(--reader-literary); letter-spacing: 2px; margin: 2px 0 30px; color: #e7c49b; }
 .novel-body h1:focus { outline: 0; }
 .novel-paragraph { margin: 0 0 24px; }
-.novel-paragraph p { margin: 0; font: 18px/2.05 var(--reader-literary); letter-spacing: .035em; overflow-wrap: anywhere; }
+.novel-history { color: #b9a896; }
+.novel-paragraph p { margin: 0; font: 18px/1.9 var(--reader-literary); letter-spacing: .035em; overflow-wrap: anywhere; }
 .novel-paragraph .zero-speaker { margin: 0 0 8px; }
 .novel-large .novel-paragraph p { font-size: 21px; line-height: 2; }
 .novel-choice { border-top: 1px solid #c4946150; margin-top: 36px; padding: 22px 0 44px; }
+.novel-choice { animation: reading-arrive 400ms ease-out both; }
+.novel-choice fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
+.novel-choice fieldset:disabled button { opacity: 1; cursor: default; }
+.novel-footer .novel-advance { flex: 1.4; background: #692e27; border-color: #bc87585e; color: #f5e4cc; }
+@media (prefers-reduced-motion: reduce) { .novel-choice { animation: none; } }
 .novel-choice h2 { font: 400 20px/1.9 var(--reader-literary); margin: 14px 0 24px; color: #f0d4ac; }
 .novel-choice button { display: block; width: 100%; text-align: left; min-height: 64px; padding: 19px 17px; margin: 0 0 16px; border: 1px solid #bd91634a; border-left: 3px solid #9e3b33; border-radius: 4px; background: linear-gradient(110deg, #522e26, #33201c); color: #f6e8d3; box-shadow: inset 0 1px #ebbd7a09; }
 .novel-choice button:hover { background: #65382e; border-color: #b78357; border-left-color: #c45e48; }
