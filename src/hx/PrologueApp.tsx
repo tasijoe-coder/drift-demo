@@ -2,13 +2,13 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { storyNode, storyTranscript, type StoryPosition } from './theatre_story'
 import { nextZero, previousZero, restoreZero, startZero, ZERO_SAVE_KEY, zeroDelay, zeroFinished, zeroReadCount, zeroStills, zeroStory, zeroTotal } from './zero_story'
 import { isMuted, setMuted, sfx, unlock } from './sfx'
-import { NOVELS } from '../data/lives'
+import { BONUS_NOVELS, NOVELS } from '../data/lives'
 import type { NovelPosition } from '../engine/novel'
 import { NovelEntry, NovelReader } from './NovelReader'
 import { readZeroUnlock, ZERO_COMPLETED_KEY } from './novel_save'
 import { useNovelProgress } from './useNovelProgress'
 import { AfterwordReader } from './AfterwordReader'
-import { isAfterwordOrigin, type AfterwordOrigin } from './afterword_story'
+import { AFTERWORD_COMPLETED_KEY, isAfterwordOrigin, readAfterwordUnlock, type AfterwordOrigin } from './afterword_story'
 import './prologue.css'
 
 function loadPosition() {
@@ -23,6 +23,7 @@ const song = NOVELS[3]
 const ming1 = NOVELS[4]
 const ming2 = NOVELS[5]
 const seventh = NOVELS[6]
+const fog = BONUS_NOVELS[0]
 function loadCompleted() {
   try { return readZeroUnlock(localStorage) }
   catch { return zeroFinished(loadPosition()) }
@@ -40,7 +41,7 @@ function Still({ id, caption }: { id: string; caption: string }) {
 
 export function PrologueApp() {
   const [position, setPosition] = useState(loadPosition)
-  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song' | 'ming1' | 'ming2' | 'seventh'>('home')
+  const [reading, setReading] = useState<'home' | 'zero' | 'qin' | 'jin' | 'tang' | 'song' | 'ming1' | 'ming2' | 'seventh' | 'fog'>('home')
   const qinProgress = useNovelProgress(qin)
   const jinProgress = useNovelProgress(jin)
   const tangProgress = useNovelProgress(tang)
@@ -48,6 +49,10 @@ export function PrologueApp() {
   const ming1Progress = useNovelProgress(ming1)
   const ming2Progress = useNovelProgress(ming2)
   const seventhProgress = useNovelProgress(seventh)
+  const fogProgress = useNovelProgress(fog)
+  const [afterwordCompleted, setAfterwordCompleted] = useState(() => {
+    try { return readAfterwordUnlock(localStorage) } catch { return false }
+  })
   const [afterwordOrigin, setAfterwordOrigin] = useState<AfterwordOrigin | null>(null)
   const [completed, setCompleted] = useState(loadCompleted)
   const [muted, setMute] = useState(isMuted)
@@ -60,10 +65,16 @@ export function PrologueApp() {
   const ming1Unlocked = songUnlocked && songProgress.completed
   const ming2Unlocked = ming1Unlocked && ming1Progress.completed
   const seventhUnlocked = ming2Unlocked && ming2Progress.completed
+  const fogUnlocked = seventhUnlocked && seventhProgress.completed && afterwordCompleted
   const seventhEnding = seventhProgress.position.node
   const canReadAfterword = seventhUnlocked && seventhProgress.position.finished && seventhProgress.endings.includes(seventhEnding) && isAfterwordOrigin(seventhEnding)
 
   useEffect(() => { document.title = '紅線千年｜杯中月與七世姻緣' }, [])
+  useEffect(() => {
+    if (afterwordCompleted) {
+      try { localStorage.setItem(AFTERWORD_COMPLETED_KEY, 'true') } catch { /* Keep session unlock. */ }
+    }
+  }, [afterwordCompleted])
   useEffect(() => {
     try { localStorage.setItem(ZERO_SAVE_KEY, JSON.stringify(position)) } catch { /* Reading remains available without storage. */ }
   }, [position])
@@ -100,6 +111,7 @@ export function PrologueApp() {
   const changeMing1 = (next: NovelPosition) => { if (ming1Unlocked) ming1Progress.setPosition(next) }
   const changeMing2 = (next: NovelPosition) => { if (ming2Unlocked) ming2Progress.setPosition(next) }
   const changeSeventh = (next: NovelPosition) => { if (seventhUnlocked) seventhProgress.setPosition(next) }
+  const changeFog = (next: NovelPosition) => { if (fogUnlocked) fogProgress.setPosition(next) }
 
   if (reading === 'zero') return <PrologueReader position={position} onChange={changeZero} onHome={() => setReading('home')} muted={muted} onToggleSound={toggleSound} />
   if (reading === 'qin' && qinUnlocked) return <NovelReader key={qin.id} story={qin} position={qinProgress.position} onChange={changeQin} onHome={() => setReading('home')} endings={qinProgress.endings} onFinish={qinProgress.finish} />
@@ -108,7 +120,8 @@ export function PrologueApp() {
   if (reading === 'song' && songUnlocked) return <NovelReader key={song.id} story={song} position={songProgress.position} onChange={changeSong} onHome={() => setReading('home')} endings={songProgress.endings} onFinish={songProgress.finish} />
   if (reading === 'ming1' && ming1Unlocked) return <NovelReader key={ming1.id} story={ming1} position={ming1Progress.position} onChange={changeMing1} onHome={() => setReading('home')} endings={ming1Progress.endings} onFinish={ming1Progress.finish} />
   if (reading === 'ming2' && ming2Unlocked) return <NovelReader key={ming2.id} story={ming2} position={ming2Progress.position} onChange={changeMing2} onHome={() => setReading('home')} endings={ming2Progress.endings} onFinish={ming2Progress.finish} />
-  if (reading === 'seventh' && canReadAfterword && afterwordOrigin === seventhEnding) return <AfterwordReader key={afterwordOrigin} origin={afterwordOrigin} onBack={() => setAfterwordOrigin(null)} onHome={() => { setAfterwordOrigin(null); setReading('home') }} />
+  if (reading === 'fog' && fogUnlocked) return <NovelReader key={fog.id} story={fog} position={fogProgress.position} onChange={changeFog} onHome={() => setReading('home')} endings={fogProgress.endings} onFinish={fogProgress.finish} />
+  if (reading === 'seventh' && canReadAfterword && afterwordOrigin === seventhEnding) return <AfterwordReader key={afterwordOrigin} origin={afterwordOrigin} onBack={() => setAfterwordOrigin(null)} onHome={() => { setAfterwordOrigin(null); setReading('home') }} onComplete={() => setAfterwordCompleted(true)} onBonus={() => { if (fogUnlocked) { setAfterwordOrigin(null); setReading('fog') } }} />
   if (reading === 'seventh' && seventhUnlocked) return <NovelReader key={seventh.id} story={seventh} position={seventhProgress.position} onChange={changeSeventh} onHome={() => setReading('home')} endings={seventhProgress.endings} onFinish={seventhProgress.finish} onAfterword={canReadAfterword ? () => { if (isAfterwordOrigin(seventhEnding)) setAfterwordOrigin(seventhEnding) } : undefined} />
   return <main className="zero-page zero-home">
     <div className="zero-home-inner">
@@ -128,6 +141,7 @@ export function PrologueApp() {
         <NovelEntry story={ming1} position={ming1Progress.position} unlocked={ming1Unlocked} onBegin={() => setReading('ming1')} lovers="秦雪梅・商琳" unlockHint="讀完第四世任一結局後開啟" />
         <NovelEntry story={ming2} position={ming2Progress.position} unlocked={ming2Unlocked} onBegin={() => setReading('ming2')} lovers="賈玉珍・韋燕春" unlockHint="讀完第五世任一結局後開啟" />
         <NovelEntry story={seventh} position={seventhProgress.position} unlocked={seventhUnlocked} onBegin={() => setReading('seventh')} lovers="劉瑞蓮・李奎元" unlockHint="讀完第六世任一結局後開啟" />
+        {fogUnlocked && <NovelEntry story={fog} position={fogProgress.position} unlocked={fogUnlocked} onBegin={() => setReading('fog')} lovers="民初商業諜報番外｜沈照微・陸聞笙" unlockHint="讀完歸天以後開啟" />}
         {hasProgress && !finished && <button type="button" className="zero-text-button" onClick={() => void begin(true)}>從頭閱讀</button>}
       </div>
       <p className="zero-home-note">依序開啟・各世進度分開保存<br />第一至第七世每輪約 45–60 分鐘，依閱讀速度而異</p>

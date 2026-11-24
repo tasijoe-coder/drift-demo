@@ -16,6 +16,17 @@ export function afterwordStory(origin: AfterwordOrigin): Story {
   }
 }
 export const afterwordKey = (origin: AfterwordOrigin) => `hx.theatre.heaven-afterword.${origin}.v2`
+export const AFTERWORD_COMPLETED_KEY = 'hx.theatre.heaven-afterword.completed.v1'
+export function readAfterwordUnlock(storage: Pick<Storage, 'getItem'>): boolean {
+  try { if (storage.getItem(AFTERWORD_COMPLETED_KEY) === 'true') return true } catch { /* Try saved readings. */ }
+  for (const origin of Object.keys(content.intros) as AfterwordOrigin[]) {
+    try {
+      const story = afterwordStory(origin)
+      if (afterwordFinished(story, restoreAfterword(story, JSON.parse(storage.getItem(afterwordKey(origin)) ?? 'null')))) return true
+    } catch { /* One damaged reading must not hide another completed entry. */ }
+  }
+  return false
+}
 export const afterwordFinished = (story: Story, position: StoryPosition) => {
   const node = storyNode(story, position.node)
   return !node.next && position.beat === node.beats.length

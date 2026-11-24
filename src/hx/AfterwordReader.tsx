@@ -3,8 +3,8 @@ import { afterwordFinished, afterwordKey, afterwordStory, advanceAfterword, prev
 import { storyNode, storyTranscript } from './theatre_story'
 import './prologue.css'
 
-export function AfterwordReader({ origin, onBack, onHome }: {
-  origin: AfterwordOrigin; onBack: () => void; onHome: () => void
+export function AfterwordReader({ origin, onBack, onHome, onComplete, onBonus }: {
+  origin: AfterwordOrigin; onBack: () => void; onHome: () => void; onComplete: () => void; onBonus: () => void
 }) {
   const story = useMemo(() => afterwordStory(origin), [origin])
   const key = afterwordKey(origin)
@@ -19,6 +19,11 @@ export function AfterwordReader({ origin, onBack, onHome }: {
   const transcript = storyTranscript(story, position)
   const total = story.nodes.reduce((sum, n) => sum + n.beats.length, 0)
   const count = transcript.length
+  const advance = () => {
+    const next = advanceAfterword(story, position)
+    setPosition(next)
+    if (afterwordFinished(story, next)) onComplete()
+  }
   useEffect(() => {
     try { localStorage.setItem(key, JSON.stringify(position)) } catch { /* Reading continues without storage. */ }
     log.current?.scrollTo({ top: log.current.scrollHeight, behavior: 'instant' })
@@ -48,10 +53,10 @@ export function AfterwordReader({ origin, onBack, onHome }: {
         </div>
       </section>
       <footer className="zero-footer">
-        {finished ? <><button type="button" className="zero-primary" onClick={() => setPosition(startAfterword(story))}>重讀歸天以後<span aria-hidden="true">↺</span></button><button type="button" className="zero-text-button" onClick={onBack}>返回第七世結局</button><button type="button" className="zero-text-button" onClick={onHome}>返回首頁</button></> : <>
+        {finished ? <><button type="button" className="zero-primary" onClick={onBonus}>閱讀第八世・霧港來電<span aria-hidden="true">→</span></button><button type="button" className="zero-text-button" onClick={() => setPosition(startAfterword(story))}>重讀歸天以後</button><button type="button" className="zero-text-button" onClick={onBack}>返回第七世結局</button><button type="button" className="zero-text-button" onClick={onHome}>返回首頁</button></> : <>
           <div className="zero-navigation">
             <button type="button" className="zero-previous" disabled={position.node === story.start && position.beat === 0} onClick={() => setPosition(previousAfterword(story, position))}>上一句</button>
-            <button type="button" className="zero-primary" onClick={() => setPosition(advanceAfterword(story, position))}>{position.beat === node.beats.length - 1 ? node.next ? '下一場' : '讀完後日談' : '下一句'}<span aria-hidden="true">↓</span></button>
+            <button type="button" className="zero-primary" onClick={advance}>{position.beat === node.beats.length - 1 ? node.next ? '下一場' : '讀完後日談' : '下一句'}<span aria-hidden="true">↓</span></button>
           </div><p>依自己的步調閱讀・向上可回看文字</p>
         </>}
       </footer>
