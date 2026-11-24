@@ -22,7 +22,8 @@
     "test:fog": "tsx scripts/test_fog.ts",
     "export:stories": "tsx scripts/export_novel_dossiers.ts",
     "test:reading": "tsx scripts/test_reading.ts",
-    "test:bgm": "tsx scripts/test_bgm.ts"
+    "test:bgm": "tsx scripts/test_bgm.ts",
+    "test:opening": "tsx scripts/test_opening.ts"
   },
   "dependencies": {
     "lucide-react": "^0.577.0",

@@ -132,7 +132,7 @@ export function NovelEntry({ story, position, unlocked, onBegin, lovers, unlockH
   return <div className={`novel-entry${primary ? ' novel-entry-primary' : ''}`}>
     {primary && <p className="home-current-label">接續姻緣</p>}
     <button type="button" className={`zero-primary${primary ? ' home-primary' : ' zero-secondary'}`} disabled={!unlocked} onClick={() => { if (unlocked) onBegin() }}>
-      <span className={primary ? 'home-action-copy' : undefined}>{unlocked ? position.finished ? `重訪${label}` : hasProgress ? `繼續閱讀${label}` : `閱讀${label}` : `${label}・尚未開啟`}
+      <span className={primary ? 'home-action-copy' : undefined}>{primary ? `繼續閱讀 ${label}` : unlocked ? position.finished ? `重訪${label}` : hasProgress ? `繼續閱讀${label}` : `閱讀${label}` : `${label}・尚未開啟`}
       {primary && <small>上次停在：{novelNode(story, position.node).title}</small>}</span>
       <span aria-hidden="true">{unlocked ? ordinal : '鎖'}</span>
     </button>

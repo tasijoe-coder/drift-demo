@@ -91,7 +91,7 @@ const app=readFileSync(new URL('../src/hx/PrologueApp.tsx',import.meta.url),'utf
 assert.ok(app.includes("reading === 'ming2' && ming2Unlocked"))
 assert.ok(app.includes('ming1Unlocked && ming1Progress.completed'))
 assert.ok(app.includes('if (ming2Unlocked) ming2Progress.setPosition(next)'))
-assert.ok(app.indexOf('<NovelEntry story={ming1}')<app.indexOf('<NovelEntry story={ming2}'))
+assert.ok(NOVELS.findIndex(story => story.id === 'ming1-novel') < NOVELS.findIndex(story => story.id === 'ming2-novel'), 'Chapter data preserves directory order')
 assert.ok(readFileSync(new URL('../src/hx/NovelReader.tsx',import.meta.url),'utf8').includes('src="/art/zero/ledger.webp"'))
 console.log('PASS: 47 scenes, 96 routes, 6 endings, '+checkpoints+' restore checkpoints; 16 scenes / 6 decisions per run.')
 console.log('PASS: actual visible text '+Math.min(...lengths)+'–'+Math.max(...lengths)+' characters; all conditional text, four shared ending origins, every route alive.')

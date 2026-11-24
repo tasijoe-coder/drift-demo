@@ -111,7 +111,7 @@ const app=readFileSync(new URL('../src/hx/PrologueApp.tsx',import.meta.url),'utf
 assert.ok(app.includes("reading === 'song' && songUnlocked"))
 assert.ok(app.includes('tangUnlocked && tangProgress.completed'))
 assert.ok(app.includes("if (songUnlocked) songProgress.setPosition(next)"))
-assert.ok(app.indexOf('<NovelEntry story={tang}')<app.indexOf('<NovelEntry story={song}'))
+assert.ok(NOVELS.findIndex(story => story.id === 'tang-novel') < NOVELS.findIndex(story => story.id === 'song-novel'), 'Chapter data preserves directory order')
 assert.ok(readFileSync(new URL('../src/hx/NovelReader.tsx',import.meta.url),'utf8').includes('src="/art/zero/ledger.webp"'))
 console.log('PASS: 47 scenes, 96 complete routes, 6 endings, '+checkpoints+' restore checkpoints; 16 scenes / 6 decisions per run.')
 console.log('PASS: actual visible text '+Math.min(...lengths)+'–'+Math.max(...lengths)+' characters; all conditional text reachable; three verified reunion origins; no resurrection.')

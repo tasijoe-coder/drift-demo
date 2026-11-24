@@ -1,0 +1,93 @@
+.zero-page.opening-cover {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: radial-gradient(ellipse at 50% 35%, #352018 0, #231511 38%, #180f0d 75%, #130c0a 100%);
+}
+.opening-art-frame {
+  position: absolute;
+  width: min(112vw, 62dvh, 550px);
+  aspect-ratio: 1;
+  top: clamp(14px, 6dvh, 60px);
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.opening-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 32%, #000e 58%, #0004 82%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 32%, #000e 58%, #0004 82%, transparent 100%);
+  filter: saturate(.62) brightness(.8);
+  opacity: .84;
+  animation: opening-lamp 5s ease-in-out infinite;
+}
+@keyframes opening-lamp { 0%, 100% { opacity: .76; } 50% { opacity: .94; } }
+.opening-wordmark {
+  position: absolute;
+  top: 64dvh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+.opening-wordmark h1 {
+  margin: 0;
+  padding-left: .35em;
+  font: 400 clamp(3.2rem, 13vw, 3.8rem)/1.45 "Yuji Syuku", "LXGW WenKai TC", "Noto Serif TC", serif;
+  letter-spacing: .35em;
+  color: #ead2ac;
+  background: linear-gradient(160deg, #f5e6d3 10%, #e4c59a 45%, #c89b54 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 2px #080302c0) drop-shadow(0 0 12px #d4a35924);
+}
+.opening-title-rule { width: 60px; height: 1px; margin: 17px auto 16px; background: linear-gradient(90deg, transparent, #b84a39b3, transparent); box-shadow: 0 0 8px #b84a3924; }
+.opening-wordmark p { margin: 0; padding-left: .6em; font: 300 .9rem/1.8 "Noto Serif TC", serif; letter-spacing: .6em; color: #a68f76; }
+.zero-page .opening-hitbox { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; min-height: 44px; padding: 0; border: 0; background: transparent; color: #ad967c; }
+.zero-page .opening-hitbox:disabled { opacity: 1; }
+.opening-hitbox:focus-visible { outline-offset: -8px; }
+.opening-prompt { position: absolute; left: 0; bottom: max(6dvh, calc(env(safe-area-inset-bottom) + 24px)); width: 100%; padding-left: .28em; text-align: center; font: 11px/1.8 var(--reader-ui); letter-spacing: .28em; animation: opening-prompt 5s ease-in-out infinite; }
+@keyframes opening-prompt { 0%, 100% { opacity: .55; } 50% { opacity: .82; } }
+.opening-thread { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; opacity: 0; }
+.opening-thread path { stroke: #c65742; stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 4px #cf503a88); }
+.opening-leaving .opening-thread { opacity: 1; }
+.opening-leaving .opening-thread path { animation: opening-connect 800ms cubic-bezier(.32, .1, .28, 1) both; }
+@keyframes opening-connect { 0% { stroke-dashoffset: 1; opacity: .3; } 70% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+.opening-leaving .opening-art { animation: opening-exit 800ms ease both; }
+.opening-leaving .opening-wordmark { animation: opening-exit 650ms ease both; }
+.opening-leaving .opening-prompt { animation: opening-exit 220ms ease both; }
+@keyframes opening-exit { to { opacity: 0; transform: translateY(-4px); } }
+.zero-page.chapter-hall { height: 100dvh; min-height: 100dvh; overflow-y: auto; overscroll-behavior: contain; animation: hall-arrive 350ms ease-out both; }
+.chapter-hall-inner { max-width: 520px; min-height: 100%; margin: auto; padding: max(env(safe-area-inset-top), 8px) 22px max(env(safe-area-inset-bottom), 32px); }
+.chapter-hall .reader-header { margin-bottom: 30px; }
+.chapter-hall h1 { margin: 0 0 28px; font: 400 28px/1.8 var(--reader-literary); letter-spacing: 5px; color: #e6c6a0; }
+.chapter-hall h1:focus { outline: none; }
+.chapter-hall h2 { margin: 30px 0 14px; font: 400 14px/1.9 var(--reader-literary); letter-spacing: 3px; color: #bda084; }
+.chapter-hall .home-primary { background: linear-gradient(115deg, #81372e, #57251f); border-color: #bc8b5e80; box-shadow: 0 8px 28px #10090755; }
+.chapter-hall .zero-secondary { background: #30201877; border-color: #ac856140; color: #ddc5a8; }
+.chapter-hall .zero-secondary:disabled { background: #1e141177; color: #8b7969; opacity: .65; }
+.chapter-hall .novel-entry { margin-top: 18px; }
+.chapter-hall .novel-entry-primary { margin: 0 0 32px; }
+.chapter-resume { margin: 0 0 32px; }
+.chapter-hall .chapter-resume p { margin: 0 0 8px; font: 11px/1.8 var(--reader-ui); letter-spacing: 3px; color: #d4ad79; }
+.chapter-resume small { display: block; margin-top: 6px; font: 11px/1.8 var(--reader-ui); letter-spacing: .5px; color: #dec6a9; }
+.chapter-hall .bonus-entry { margin-top: 32px; }
+@keyframes hall-arrive { from { opacity: 0; } to { opacity: 1; } }
+@media (max-height: 550px) {
+  .opening-wordmark { top: 58dvh; }
+  .opening-wordmark h1 { font-size: 2.8rem; }
+  .opening-title-rule { margin-top: 8px; margin-bottom: 8px; }
+  .opening-prompt { bottom: max(4dvh, env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening-art, .opening-prompt, .opening-leaving .opening-art, .opening-leaving .opening-wordmark, .opening-leaving .opening-prompt, .opening-leaving .opening-thread path, .chapter-hall { animation: none; }
+}
