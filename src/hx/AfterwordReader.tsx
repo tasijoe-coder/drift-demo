@@ -39,9 +39,9 @@ export function AfterwordReader({ origin, onBack, onHome, onComplete, onBonus }:
     <div className={`zero-reader${large ? ' reader-large' : ''}`} data-afterword-node={node.id} data-beat={position.beat}>
       <ReaderHeader subtitle={story.title} onBack={onBack} backLabel="返回第七世結局" auto={auto && !finished} onAutoChange={finished ? undefined : setAuto} autoHint={finished ? '已讀完，可從頭重讀' : undefined} />
       <figure className="zero-still">
-        {imageFailed ? <p className="zero-image-error">月老案前・暫代圖</p> :
-          <img src="/art/zero/ledger.webp" alt="暫代畫面：月老案前的姻緣簿。後日談各場暫用同一張圖。" width="1200" height="800" onError={() => setImageFailed(true)} />}
-        <figcaption>{node.setting}（暫代圖）</figcaption>
+        {imageFailed ? <p className="zero-image-error">月老案前</p> :
+          <img src="/art/zero/ledger.webp" alt="月老案前的姻緣簿。" width="1200" height="800" onError={() => setImageFailed(true)} />}
+        <figcaption>{node.setting}</figcaption>
       </figure>
       <div className="zero-chapter-row"><span>{node.chapter}</span><span className="zero-progress" aria-label="閱讀進度">{count} / {total}</span></div>
       <div className="zero-progress-track" aria-hidden="true"><div style={{ width: `${count / total * 100}%` }} /></div>

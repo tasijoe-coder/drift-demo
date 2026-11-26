@@ -63,8 +63,8 @@ function NovelScene({ story, position, onChange, onHome, endings, onFinish, onAf
     <div className={`zero-reader novel-reader${textSize ? ' novel-large' : ''}`} data-novel-node={view.node.id}>
       <ReaderHeader subtitle={story.title} onBack={() => { remember(); onHome() }} auto={auto} onAutoChange={blocked ? undefined : setAuto} autoHint={blocked ? "已到選擇或結尾，請依自己的步調繼續" : undefined} />
       <figure className="zero-still novel-placeholder">
-        {imageFailed ? <p className="zero-image-error">月老案前・暫代圖</p> : <img src="/art/zero/ledger.webp" alt={`暫代畫面：月老在渡口的姻緣簿前。${label}各段使用同一張圖。`} width="1200" height="800" onError={() => setImageFailed(true)} />}
-        <figcaption>姻緣簿・{label}（暫代圖）</figcaption>
+        {imageFailed ? <p className="zero-image-error">月老案前</p> : <img src="/art/zero/ledger.webp" alt="月老在渡口的姻緣簿前。" width="1200" height="800" onError={() => setImageFailed(true)} />}
+        <figcaption>姻緣簿・{label}</figcaption>
       </figure>
       <div className="zero-chapter-row"><span>{view.node.chapter}</span><span className="zero-progress">{count} / {sentences.length} 句</span></div>
       <div className="zero-progress-track" aria-hidden="true"><div style={{ width: `${view.route.length / story.pageCount * 100}%` }} /></div>
