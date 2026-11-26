@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { afterwordFinished, afterwordKey, afterwordStory, advanceAfterword, previousAfterword, restoreAfterword, startAfterword, type AfterwordOrigin } from './afterword_story'
 import { storyNode, storyTranscript } from './theatre_story'
+import { afterwordArt } from './novel_art'
 import './prologue.css'
 import { ReaderHeader } from './ReaderHeader'
 import { useReaderPreferences } from './reader_preferences'
@@ -40,7 +41,7 @@ export function AfterwordReader({ origin, onBack, onHome, onComplete, onBonus }:
       <ReaderHeader subtitle={story.title} onBack={onBack} backLabel="返回第七世結局" auto={auto && !finished} onAutoChange={finished ? undefined : setAuto} autoHint={finished ? '已讀完，可從頭重讀' : undefined} />
       <figure className="zero-still">
         {imageFailed ? <p className="zero-image-error">月老案前</p> :
-          <img src="/art/zero/ledger.webp" alt="月老案前的姻緣簿。" width="1200" height="800" onError={() => setImageFailed(true)} />}
+          <img src={afterwordArt().src} alt={afterwordArt().alt} style={{ objectPosition: afterwordArt().position }} width="1200" height="800" onError={() => setImageFailed(true)} />}
         <figcaption>{node.setting}</figcaption>
       </figure>
       <div className="zero-chapter-row"><span>{node.chapter}</span><span className="zero-progress" aria-label="閱讀進度">{count} / {total}</span></div>
