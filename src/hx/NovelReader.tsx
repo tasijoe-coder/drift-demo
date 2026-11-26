@@ -7,6 +7,7 @@ import { novelKeys } from './novel_save'
 import { ReaderHeader } from './ReaderHeader'
 import { useReaderPreferences } from './reader_preferences'
 import './novel.css'
+import { novelArt } from './novel_art'
 
 type ReaderProps = {
   story: Novel; position: NovelPosition; onChange: (next: NovelPosition) => void
@@ -63,7 +64,7 @@ function NovelScene({ story, position, onChange, onHome, endings, onFinish, onAf
     <div className={`zero-reader novel-reader${textSize ? ' novel-large' : ''}`} data-novel-node={view.node.id}>
       <ReaderHeader subtitle={story.title} onBack={() => { remember(); onHome() }} auto={auto} onAutoChange={blocked ? undefined : setAuto} autoHint={blocked ? "已到選擇或結尾，請依自己的步調繼續" : undefined} />
       <figure className="zero-still novel-placeholder">
-        {imageFailed ? <p className="zero-image-error">月老案前</p> : <img src="/art/zero/ledger.webp" alt="月老在渡口的姻緣簿前。" width="1200" height="800" onError={() => setImageFailed(true)} />}
+        {imageFailed ? <p className="zero-image-error">月老案前</p> : <img src={novelArt(story.id).src} alt={novelArt(story.id).alt} style={novelArt(story.id).position ? { objectPosition: novelArt(story.id).position } : undefined} width="1200" height="800" onError={() => setImageFailed(true)} />}
         <figcaption>姻緣簿・{label}</figcaption>
       </figure>
       <div className="zero-chapter-row"><span>{view.node.chapter}</span><span className="zero-progress">{count} / {sentences.length} 句</span></div>
