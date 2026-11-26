@@ -45,6 +45,7 @@ const SCENES: Record<string, NovelArt> = {
   'tang-novel#E3': { src: '/art/novel/tang_end_E3.webp', alt: '雨後的街道，背著行囊的郭華與月英並肩慢慢走著。', position: '50% 30%' },
   'tang-novel#E4': { src: '/art/novel/tang_end_E4.webp', alt: '月英一個人在胭脂鋪門口掛新的燈穗，門邊放著一張空凳。', position: '50% 18%' },
   'tang-novel#E5': { src: '/art/novel/tang_end_E5.webp', alt: '傍晚的胭脂鋪櫃台，月英把一杯茶遞給郭華，王母在後面探頭。', position: '50% 18%' },
+  'tang-novel#E6': { src: '/art/novel/tang_end_E6.webp', alt: '清晨的出城路上，背著包袱的郭華一個人往前走，客棧掌櫃在門口揮手送別。', position: '50% 25%' },
   'qin-novel#EC2': { src: '/art/novel/qin_end_EC2.webp', alt: '黃昏的村口，年邁的父親伸手迎接抱著布包回鄉的孟姜女，遠處山坡上有一座小墳。', position: '50% 25%' },
 }
 
