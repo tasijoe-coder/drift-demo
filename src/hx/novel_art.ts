@@ -12,7 +12,7 @@ const ART: Record<string, NovelArt> = {
   'ming2-novel': { src: '/art/novel/ming2.webp', alt: '井邊，賈玉珍提著水桶，韋燕春向她借水，身後是一座石橋。', position: '50% 40%' },
   'seventh-novel': { src: '/art/novel/seventh.webp', alt: '彩樓上，劉瑞蓮捧著繡球低頭看著樓下的李奎元，滿月高掛。', position: '50% 50%' },
   'fog-novel': { src: '/art/novel/fog.webp', alt: '雨夜霧港，沈照微在電報行門口拿著電話，陸聞笙捏著一角燒焦的紙，遠處停著汽船。', position: '50% 40%' },
-  'matinee-novel': { src: '/art/novel/matinee.webp', alt: '一九八六年的海邊戲院，許懷生扛著梯子、抱著片盤、咬著票根，紅線從他手上牽到江宜寧手上，她正伸手撫過褪色的舊海報。', position: '50% 25%' },
+  'matinee-novel': { src: '/art/novel/matinee.webp', alt: '一九八六年的海邊戲院門口，抱著片盤的許懷生與站在褪色舊海報前的江宜寧重逢，紅線從他的小指牽到她的小指。', position: '50% 20%' },
 }
 
 const AFTERWORD: NovelArt = { src: '/art/novel/afterword.webp', alt: '天庭，月老坐在攤開的姻緣簿前，金童玉女重逢，土地公端著茶在一旁微笑。', position: '50% 40%' }
