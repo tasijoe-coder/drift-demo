@@ -38,6 +38,13 @@ const SCENES: Record<string, NovelArt> = {
   'jin-novel#E3': { src: '/art/novel/jin_end_E3.webp', alt: '小小的家宴上，祝父替女兒倒茶，祝英台扶穩茶壺，梁山伯坐在一旁。', position: '50% 25%' },
   'jin-novel#E4': { src: '/art/novel/jin_end_E4.webp', alt: '祝英台與梁山伯各自在不同的地方教孩子讀書，一條紅線連起兩間學堂。', position: '50% 25%' },
   'jin-novel#E5': { src: '/art/novel/jin_end_E5.webp', alt: '清晨，祝英台獨自在窗邊寫字，身旁留著一個空坐墊，窗外兩隻蝴蝶飛過。', position: '50% 25%' },
+  'tang-novel@如期而至': { src: '/art/novel/tang_ch2.webp', alt: '元宵夜城外的土地廟前，提著燈籠趕到的郭華與等在廟前的王月英相視而笑。', position: '50% 18%' },
+  'tang-novel@失約以後': { src: '/art/novel/tang_ch3.webp', alt: '清晨，郭華拿著一雙繡鞋站在胭脂鋪門外，手停在門上，窗後是月英的身影。', position: '50% 30%' },
+  'tang-novel#E1': { src: '/art/novel/tang_end_E1.webp', alt: '胭脂鋪裡，成親後的月英與郭華坐著吃早飯，王母端湯過來，梅香在開門。', position: '50% 30%' },
+  'tang-novel#E2': { src: '/art/novel/tang_end_E2.webp', alt: '新開的小鋪子前，月英與郭華坐在門檻上捧著麵碗相視而笑。', position: '50% 30%' },
+  'tang-novel#E3': { src: '/art/novel/tang_end_E3.webp', alt: '雨後的街道，背著行囊的郭華與月英並肩慢慢走著。', position: '50% 30%' },
+  'tang-novel#E4': { src: '/art/novel/tang_end_E4.webp', alt: '月英一個人在胭脂鋪門口掛新的燈穗，門邊放著一張空凳。', position: '50% 18%' },
+  'tang-novel#E5': { src: '/art/novel/tang_end_E5.webp', alt: '傍晚的胭脂鋪櫃台，月英把一杯茶遞給郭華，王母在後面探頭。', position: '50% 18%' },
   'qin-novel#EC2': { src: '/art/novel/qin_end_EC2.webp', alt: '黃昏的村口，年邁的父親伸手迎接抱著布包回鄉的孟姜女，遠處山坡上有一座小墳。', position: '50% 25%' },
 }
 
