@@ -17,5 +17,12 @@ const ART: Record<string, NovelArt> = {
 
 const AFTERWORD: NovelArt = { src: '/art/novel/afterword.webp', alt: '天庭，月老坐在攤開的姻緣簿前，金童玉女重逢，土地公端著茶在一旁微笑。', position: '50% 40%' }
 
-export const novelArt = (storyId: string): NovelArt => ART[storyId] ?? FALLBACK
+/**
+ * 章節與結局的專屬圖。key 為 `<故事 id>@<章節名>` 或 `<故事 id>#<段落 id>`。
+ * 只登記已經有檔案的圖；沒有登記的章節或結局會沿用該世主圖。
+ */
+const SCENES: Record<string, NovelArt> = {}
+
+export const novelArt = (storyId: string, chapter?: string, nodeId?: string): NovelArt =>
+  (nodeId && SCENES[`${storyId}#${nodeId}`]) || (chapter && SCENES[`${storyId}@${chapter}`]) || ART[storyId] || FALLBACK
 export const afterwordArt = (): NovelArt => AFTERWORD

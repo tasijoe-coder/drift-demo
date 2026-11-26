@@ -21,7 +21,9 @@ function NovelScene({ story, position, onChange, onHome, endings, onFinish, onAf
   useBgmTrack(view.node.bgm)
   const label = story.title.split('・')[0]
   const bookmarkKey = novelKeys(story).bookmark
-  const [imageFailed, setImageFailed] = useState(false)
+  const art = novelArt(story.id, view.node.chapter, view.node.id)
+  const [failedSrc, setFailedSrc] = useState<string | null>(null)
+  const imageFailed = failedSrc === art.src
   const { large: textSize } = useReaderPreferences()
   const sentences = view.beats.flatMap(beat => splitReadingText(beat.text).map(text => ({ ...beat, text })))
   const preceding = view.route.at(-2)
@@ -64,7 +66,7 @@ function NovelScene({ story, position, onChange, onHome, endings, onFinish, onAf
     <div className={`zero-reader novel-reader${textSize ? ' novel-large' : ''}`} data-novel-node={view.node.id}>
       <ReaderHeader subtitle={story.title} onBack={() => { remember(); onHome() }} auto={auto} onAutoChange={blocked ? undefined : setAuto} autoHint={blocked ? "已到選擇或結尾，請依自己的步調繼續" : undefined} />
       <figure className="zero-still novel-placeholder">
-        {imageFailed ? <p className="zero-image-error">月老案前</p> : <img src={novelArt(story.id).src} alt={novelArt(story.id).alt} style={novelArt(story.id).position ? { objectPosition: novelArt(story.id).position } : undefined} width="1200" height="800" onError={() => setImageFailed(true)} />}
+        {imageFailed ? <p className="zero-image-error">月老案前</p> : <img key={art.src} src={art.src} alt={art.alt} style={art.position ? { objectPosition: art.position } : undefined} width="1200" height="800" onError={() => setFailedSrc(art.src)} />}
         <figcaption>姻緣簿・{label}</figcaption>
       </figure>
       <div className="zero-chapter-row"><span>{view.node.chapter}</span><span className="zero-progress">{count} / {sentences.length} 句</span></div>
