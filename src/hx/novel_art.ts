@@ -32,7 +32,7 @@ const SCENES: Record<string, NovelArt> = {
   'qin-novel#EC1': { src: '/art/novel/qin_end_EC1.webp', alt: '孟姜女跪在崩塌的長城前落淚，斷掉的紅線落在地上。', position: '50% 35%' },
   'jin-novel@家門內的聲音': { src: '/art/novel/jin_ch2.webp', alt: '祝英台換回女裝，把自己寫的文章遞給坐著的父親，姑母在一旁倒茶。', position: '50% 32%' },
   'jin-novel@離家與自立': { src: '/art/novel/jin_ch3.webp', alt: '離家後租下的小屋裡，祝英台在桌邊寫字，病後的梁山伯坐在床邊，紅線連著兩人。', position: '50% 32%' },
-  'jin-novel@等待與往後': { src: '/art/novel/jin_ch4.webp', alt: '夜裡祝英台在燈下寫信，病中的梁山伯躺在床上，梁母替他擦汗，紅線從她的小指連到他的小指。', position: '50% 30%' },
+  'jin-novel@等待與往後': { src: '/art/novel/jin_ch4.webp', alt: '夜裡祝英台在燈下寫信，病中的梁山伯躺在床上，梁母替他擦汗，紅線從她手邊連到他手上。', position: '50% 35%' },
   'jin-novel#E1': { src: '/art/novel/jin_end_E1.webp', alt: '新家裡，祝英台與梁山伯拿著紙相視微笑，窗邊的梁母在學寫字。', position: '50% 30%' },
   'jin-novel#E2': { src: '/art/novel/jin_end_E2.webp', alt: '雨夜的小屋，地上放著接水的盆，祝英台與梁山伯在油燈下一起批同一份稿子。', position: '50% 32%' },
   'jin-novel#E3': { src: '/art/novel/jin_end_E3.webp', alt: '小小的家宴上，祝父替女兒倒茶，祝英台扶穩茶壺，梁山伯坐在一旁。', position: '50% 25%' },
