@@ -22,11 +22,15 @@ const AFTERWORD: NovelArt = { src: '/art/novel/afterword.webp', alt: '天庭，�
  * 只登記已經有檔案的圖；沒有登記的章節或結局會沿用該世主圖。
  */
 const SCENES: Record<string, NovelArt> = {
+  'qin-novel@名冊上的另一戶': { src: '/art/novel/qin_ch2.webp', alt: '孟姜女與范喜良一起讀著一張被風吹來的紙，神情沉重，腳邊放著一碗湯。', position: '50% 35%' },
   'qin-novel@北地與家書': { src: '/art/novel/qin_ch3.webp', alt: '孟姜女在家中縫寒衣，遠在長城邊的范喜良倚著大石，一條紅線連起兩地。', position: '50% 35%' },
   'qin-novel@寒衣與歸途': { src: '/art/novel/qin_ch4.webp', alt: '孟姜女抱著寒衣坐在渡船上，紅線拖在水面上往北方延伸。', position: '50% 35%' },
   'qin-novel#EA1': { src: '/art/novel/qin_end_EA1.webp', alt: '白髮的孟姜女與范喜良坐在花樹下，手中牽著同一條紅線。', position: '50% 35%' },
+  'qin-novel#EA2': { src: '/art/novel/qin_end_EA2.webp', alt: '孟姜女在桌邊把信念給王大娘聽，桌上擺著三碗飯和一張空凳。', position: '50% 35%' },
   'qin-novel#EB1': { src: '/art/novel/qin_end_EB1.webp', alt: '長城腳下，范喜良整理竹籃，孟姜女在一旁縫補，紅線連著兩人。', position: '50% 35%' },
+  'qin-novel#EB2': { src: '/art/novel/qin_end_EB2.webp', alt: '孟姜女在家鄉曬藥時笑著讀信，遠在北方河邊的范喜良正寫著回信，紅線連起兩封信。', position: '50% 30%' },
   'qin-novel#EC1': { src: '/art/novel/qin_end_EC1.webp', alt: '孟姜女跪在崩塌的長城前落淚，斷掉的紅線落在地上。', position: '50% 35%' },
+  'qin-novel#EC2': { src: '/art/novel/qin_end_EC2.webp', alt: '黃昏的村口，年邁的父親伸手迎接抱著布包回鄉的孟姜女，遠處山坡上有一座小墳。', position: '50% 25%' },
 }
 
 export const novelArt = (storyId: string, chapter?: string, nodeId?: string): NovelArt =>
