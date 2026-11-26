@@ -30,6 +30,11 @@ const SCENES: Record<string, NovelArt> = {
   'qin-novel#EB1': { src: '/art/novel/qin_end_EB1.webp', alt: '長城腳下，范喜良整理竹籃，孟姜女在一旁縫補，紅線連著兩人。', position: '50% 35%' },
   'qin-novel#EB2': { src: '/art/novel/qin_end_EB2.webp', alt: '孟姜女在家鄉曬藥時笑著讀信，遠在北方河邊的范喜良正寫著回信，紅線連起兩封信。', position: '50% 30%' },
   'qin-novel#EC1': { src: '/art/novel/qin_end_EC1.webp', alt: '孟姜女跪在崩塌的長城前落淚，斷掉的紅線落在地上。', position: '50% 35%' },
+  'jin-novel@家門內的聲音': { src: '/art/novel/jin_ch2.webp', alt: '祝英台換回女裝，把自己寫的文章遞給坐著的父親，姑母在一旁倒茶。', position: '50% 32%' },
+  'jin-novel@離家與自立': { src: '/art/novel/jin_ch3.webp', alt: '離家後租下的小屋裡，祝英台在桌邊寫字，病後的梁山伯坐在床邊，紅線連著兩人。', position: '50% 32%' },
+  'jin-novel#E2': { src: '/art/novel/jin_end_E2.webp', alt: '雨夜的小屋，地上放著接水的盆，祝英台與梁山伯在油燈下一起批同一份稿子。', position: '50% 32%' },
+  'jin-novel#E4': { src: '/art/novel/jin_end_E4.webp', alt: '祝英台與梁山伯各自在不同的地方教孩子讀書，一條紅線連起兩間學堂。', position: '50% 25%' },
+  'jin-novel#E5': { src: '/art/novel/jin_end_E5.webp', alt: '清晨，祝英台獨自在窗邊寫字，身旁留著一個空坐墊，窗外兩隻蝴蝶飛過。', position: '50% 25%' },
   'qin-novel#EC2': { src: '/art/novel/qin_end_EC2.webp', alt: '黃昏的村口，年邁的父親伸手迎接抱著布包回鄉的孟姜女，遠處山坡上有一座小墳。', position: '50% 25%' },
 }
 
