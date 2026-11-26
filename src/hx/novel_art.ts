@@ -21,7 +21,13 @@ const AFTERWORD: NovelArt = { src: '/art/novel/afterword.webp', alt: '天庭，�
  * 章節與結局的專屬圖。key 為 `<故事 id>@<章節名>` 或 `<故事 id>#<段落 id>`。
  * 只登記已經有檔案的圖；沒有登記的章節或結局會沿用該世主圖。
  */
-const SCENES: Record<string, NovelArt> = {}
+const SCENES: Record<string, NovelArt> = {
+  'qin-novel@北地與家書': { src: '/art/novel/qin_ch3.webp', alt: '孟姜女在家中縫寒衣，遠在長城邊的范喜良倚著大石，一條紅線連起兩地。', position: '50% 35%' },
+  'qin-novel@寒衣與歸途': { src: '/art/novel/qin_ch4.webp', alt: '孟姜女抱著寒衣坐在渡船上，紅線拖在水面上往北方延伸。', position: '50% 35%' },
+  'qin-novel#EA1': { src: '/art/novel/qin_end_EA1.webp', alt: '白髮的孟姜女與范喜良坐在花樹下，手中牽著同一條紅線。', position: '50% 35%' },
+  'qin-novel#EB1': { src: '/art/novel/qin_end_EB1.webp', alt: '長城腳下，范喜良整理竹籃，孟姜女在一旁縫補，紅線連著兩人。', position: '50% 35%' },
+  'qin-novel#EC1': { src: '/art/novel/qin_end_EC1.webp', alt: '孟姜女跪在崩塌的長城前落淚，斷掉的紅線落在地上。', position: '50% 35%' },
+}
 
 export const novelArt = (storyId: string, chapter?: string, nodeId?: string): NovelArt =>
   (nodeId && SCENES[`${storyId}#${nodeId}`]) || (chapter && SCENES[`${storyId}@${chapter}`]) || ART[storyId] || FALLBACK
